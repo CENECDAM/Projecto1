@@ -1,4 +1,6 @@
- class Empleado
+  //Clase de Empleado. Creado por Niels Bosch dia 20/10/2015
+   //Ultima Edición: Dia 20/10/2015 --- > Creación de la clase, constructores y propiedades.
+    class Empleado
     {
         //================== Declaracion de los atributos de la clase ==================
         private string DniEmpleado; //String PRIVADO que contiene el DNI
@@ -36,6 +38,8 @@
             {
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama ValidacionDNI
+                //importante: primero pasar a mayuscula
+
                 ValidacionDNI(DniEmpleado);
 
             }
@@ -50,8 +54,8 @@
             {
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama CompNombres
-               CompNombres(NombreEmpleado);
-                //AQUI FALTA QUE SALTE ERROR EN CASO DE ESTAR MAL. TODAVIA NO ESTA TERMINADO
+                Console.WriteLine(CompNombres(NombreEmpleado));
+
 
             }
         }
@@ -65,8 +69,7 @@
             {
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama CompNombres
-                CompNombres(ApellidosEmpleado);
-                 //AQUI FALTA QUE SALTE ERROR EN CASO DE ESTAR MAL. TODAVIA NO ESTA TERMINADO
+                Console.WriteLine(CompNombres(ApellidosEmpleado));
             }
         }
 
@@ -75,9 +78,17 @@
 
       
 
-        public static bool ValidacionDNI(string identificationDocument)
+        public static bool ValidacionDNI(string docIdentitat)
         {
-            // FALTA LA VALIDACION DEL DNI, ESTOY EN ELLO! :-)
+            
+            string patron = "\\d{8}[TRWAGMYFPDXBNJZSQVHLCKE]|\\d{0,7}[TRWAGMYFPDXBNJZSQVHLCKE]";
+            string sRemp = "";
+            bool ret = false;
+            System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(patron);
+            sRemp = rgx.Replace(docIdentitat, "OK");
+            if (sRemp == "OK") ret = true;
+            return ret;
+        
         }
 
         // ============ Este metodo comprueba si el string dado son todos Letras. Lo usamos para el Apellido y para el Nombre ===============
