@@ -1,0 +1,98 @@
+ class Empleado
+    {
+        //================== Declaracion de los atributos de la clase ==================
+        private string DniEmpleado; //String PRIVADO que contiene el DNI
+        private string NombreEmpleado; //String PRIVADO que contiene el Nombre
+        private string ApellidosEmpleado; //String PRIVADO que contiene el Apellido
+        // ================== Fin declaracion de Atributos de la Clase ==================
+
+        //Esta Clase contiene 2 constructores. Empleado() y Empleado(String Nombre, String Apellido, String DNI)
+        //La primera clase de Empleado esta por si no se especifican parametros a la hora de crearlo. Asigna los distintas variables
+        //a null. Mientras que el segundo constructor (el que recibe datos) asigna cada dato recibido a los atributos de la clase.
+        // ================== Declaracion Constructor 1 ==================
+        public Empleado()
+        {
+            DniEmpleado = null;
+            NombreEmpleado = null;
+            ApellidosEmpleado = null;
+           
+        } //================== Fin Constructor 1 ==================
+        // ================== Declaracion Constructor 2 ==================
+        public Empleado(String Nombre, String Apellido, String DNI)
+        {
+            DniEmpleado = DNI;
+            NombreEmpleado = Nombre;
+            ApellidosEmpleado = Apellido;
+        }
+        // ================== Fin Constructor 2 =================
+        // ================== Declaración de las propiedades de la clase ==================
+        public string PropEmpleadoDNI //Propiedad del DNI del Empleado
+        {
+            get
+            {
+                return DniEmpleado; //El GET devuelve el valor del DNI
+            }
+            set
+            {
+                //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
+                //se llama ValidacionDNI
+                ValidacionDNI(DniEmpleado);
+
+            }
+        }
+        public string PropNombreEmpleado //Propiedad del Nombre del Empleado
+        {
+            get
+            {
+                return NombreEmpleado; //El GET devuelve el valor del Nombre
+            }
+            set
+            {
+                //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
+                //se llama CompNombres
+               CompNombres(NombreEmpleado);
+                //AQUI FALTA QUE SALTE ERROR EN CASO DE ESTAR MAL. TODAVIA NO ESTA TERMINADO
+
+            }
+        }
+        public string PropApellidosEmpleado //Propiedad del Apellido del Empleado
+        {
+            get
+            {
+                return ApellidosEmpleado; //El GET devuelve el valor del Apellido
+            }
+            set
+            {
+                //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
+                //se llama CompNombres
+                CompNombres(ApellidosEmpleado);
+                 //AQUI FALTA QUE SALTE ERROR EN CASO DE ESTAR MAL. TODAVIA NO ESTA TERMINADO
+            }
+        }
+
+
+        //================== Fin Declaracion de las propiedades de la clase ==================
+
+      
+
+        public static bool ValidacionDNI(string identificationDocument)
+        {
+            // FALTA LA VALIDACION DEL DNI, ESTOY EN ELLO! :-)
+        }
+
+        // ============ Este metodo comprueba si el string dado son todos Letras. Lo usamos para el Apellido y para el Nombre ===============
+        private static bool CompNombres(string cadena)
+        { //CompNombres recibe una cadena tipo String
+
+            bool error = true;
+
+            // Validación nombre y apellido
+            //  Comprobación de carácteres extraños
+            if (!System.Text.RegularExpressions.Regex.IsMatch(cadena, "^[a-zA-Záéíóúñ]+ *[a-zA-Záéíóúñ]*$"))
+            {
+                error = false; //devuelve false si encuentra algo que no deberia.
+            }
+
+            return error; //devuelve el error
+        }
+    }
