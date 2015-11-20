@@ -76,7 +76,7 @@
 
         //================== Fin Declaracion de las propiedades de la clase ==================
 
-      
+    
 
         public static bool ValidacionDNI(string docIdentitat)
         {
