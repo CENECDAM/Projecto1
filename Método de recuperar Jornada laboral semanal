@@ -1,0 +1,23 @@
+// Método para recuperar la jornada laboral semanal del fichero de configuración
+// Desarrollador: Samuel Stratos Bater Herrero
+// Fecha de última comprobación: 20/11/2015
+public static int getJornada() {
+	int jornada = 0;
+	string aux = "";
+	string[] info; // Array en el que se almacena el split de la cadena del documento
+	StreamReader lector;
+
+	lector = File.OpenText("../../Datos.co");	// Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
+	while (lector.Peek() != -1 && jornada == 0)	// Comprobación de final de documento y si ha encontrado la jornada
+	{
+		aux = lector.ReadLine();				// Almacenar la lectura de la línea
+		info = aux.Split(":".ToCharArray());	// Especificar por que parte de la cadena se realiza la separación
+		if (info[0].Equals("JORNADA"))			// Comprobar que es la jornada
+		{
+			Int32.TryParse(info[1], out jornada);
+		}
+	}
+	lector.Close();		// Cerrar el flujo de lectura del fichero
+
+	return jornada;
+}
