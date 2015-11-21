@@ -1,11 +1,12 @@
-  //Clase de Empleado. Creado por Niels Bosch dia 20/10/2015
-   //Ultima Edición: Dia 20/10/2015 --- > Creación de la clase, constructores y propiedades.
+   //Clase de Empleado. Creado por Niels Bosch dia 20/10/2015
+    //Ultima Edición: Dia 20/10/2015 --- > Creación de la clase, constructores y propiedades.
+    //Ultima Edición: Dia 21/10/2015 --- > Añadir control de errores y comprobación de inserción de datos
     class Empleado
     {
         //================== Declaracion de los atributos de la clase ==================
-        private string DniEmpleado; //String PRIVADO que contiene el DNI
-        private string NombreEmpleado; //String PRIVADO que contiene el Nombre
-        private string ApellidosEmpleado; //String PRIVADO que contiene el Apellido
+        private string dni; //String PRIVADO que contiene el DNI
+        private string nombre; //String PRIVADO que contiene el Nombre
+        private string apellidos; //String PRIVADO que contiene el Apellido
         // ================== Fin declaracion de Atributos de la Clase ==================
 
         //Esta Clase contiene 2 constructores. Empleado() y Empleado(String Nombre, String Apellido, String DNI)
@@ -14,96 +15,139 @@
         // ================== Declaracion Constructor 1 ==================
         public Empleado()
         {
-            DniEmpleado = null;
-            NombreEmpleado = null;
-            ApellidosEmpleado = null;
-           
+            dni = null;
+            nombre = null;
+            apellidos = null;
+
         } //================== Fin Constructor 1 ==================
         // ================== Declaracion Constructor 2 ==================
         public Empleado(String Nombre, String Apellido, String DNI)
         {
-            DniEmpleado = DNI;
-            NombreEmpleado = Nombre;
-            ApellidosEmpleado = Apellido;
+            dni = DNI;
+            nombre = Nombre;
+            apellidos = Apellido;
         }
         // ================== Fin Constructor 2 =================
         // ================== Declaración de las propiedades de la clase ==================
-        public string PropEmpleadoDNI //Propiedad del DNI del Empleado
+        public string DNI //Propiedad del DNI del Empleado
         {
             get
             {
-                return DniEmpleado; //El GET devuelve el valor del DNI
+                return dni; //El GET devuelve el valor del DNI
             }
             set
             {
+                bool error = false;
+                string mensaje = null;
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama ValidacionDNI
                 //importante: primero pasar a mayuscula
-
-                ValidacionDNI(DniEmpleado);
-
+               
+                error = validar_Dni(dni);
+                if (error)
+                {
+                    mensaje = "Se ha introducido el DNI de forma incorrecta.";
+                    MostrarError(mensaje);  // Presentación de Errores
+                    error = false;          // Reinicio del Control de Errores
+                }
             }
         }
-        public string PropNombreEmpleado //Propiedad del Nombre del Empleado
+        public string NOMBRE //Propiedad del Nombre del Empleado
         {
             get
             {
-                return NombreEmpleado; //El GET devuelve el valor del Nombre
+                return nombre; //El GET devuelve el valor del Nombre
             }
             set
             {
+                bool error = false;
+                string mensaje = null;
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama CompNombres
-                Console.WriteLine(CompNombres(NombreEmpleado));
+
+                error = validar_Nombre(nombre);
+                if (error)
+                {
+                    mensaje = "El Nombre introducido no es valido. Porfavor vuelva a introducirlo.";
+                    MostrarError(mensaje);  // Presentación de Errores
+                    error = false;          // Reinicio del Control de Errores
+                }
 
 
             }
         }
-        public string PropApellidosEmpleado //Propiedad del Apellido del Empleado
+        public string APELLIDOS //Propiedad del Apellido del Empleado
         {
             get
             {
-                return ApellidosEmpleado; //El GET devuelve el valor del Apellido
+                return apellidos; //El GET devuelve el valor del Apellido
             }
             set
             {
+                bool error = false;
+                string mensaje = null;
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama CompNombres
-                Console.WriteLine(CompNombres(ApellidosEmpleado));
+               
+                error = validar_Nombre(apellidos);
+                if (error)
+                {
+                    mensaje = "El Apellido introducido es incorrecto. Porfavor vuelva a intentarlo.";
+                    MostrarError(mensaje);  // Presentación de Errores
+                    error = false;          // Reinicio del Control de Errores
+                }
             }
         }
 
 
         //================== Fin Declaracion de las propiedades de la clase ==================
 
-    
 
-        public static bool ValidacionDNI(string docIdentitat)
+
+        public static bool validar_Dni(string docIdentitat)
         {
-            
+           
+
             string patron = "\\d{8}[TRWAGMYFPDXBNJZSQVHLCKE]|\\d{0,7}[TRWAGMYFPDXBNJZSQVHLCKE]";
             string sRemp = "";
             bool ret = false;
-            System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(patron);
-            sRemp = rgx.Replace(docIdentitat, "OK");
-            if (sRemp == "OK") ret = true;
+            if (docIdentitat != null) //Comprobación si la cadena no esta vacia. En el caso de estarlo, iguala el resultado a Falso (para que salte el error en la propiedad.
+            {
+                ret = false;
+            }
+            else
+            {
+                System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(patron);
+                sRemp = rgx.Replace(docIdentitat, "OK");
+                if (sRemp == "OK") ret = true;
+                
+            }
             return ret;
-        
         }
 
         // ============ Este metodo comprueba si el string dado son todos Letras. Lo usamos para el Apellido y para el Nombre ===============
-        private static bool CompNombres(string cadena)
+        private static bool validar_Nombre(string cadena)
         { //CompNombres recibe una cadena tipo String
-
+         
             bool error = true;
 
             // Validación nombre y apellido
             //  Comprobación de carácteres extraños
-            if (!System.Text.RegularExpressions.Regex.IsMatch(cadena, "^[a-zA-Záéíóúñ]+ *[a-zA-Záéíóúñ]*$"))
+            if (cadena != null)//Comprobación si la cadena no esta vacia. En el caso de estarlo, iguala el resultado a Falso (para que salte el error en la propiedad.
             {
-                error = false; //devuelve false si encuentra algo que no deberia.
+                error = false;
             }
-
+            else
+            {
+                if (!System.Text.RegularExpressions.Regex.IsMatch(cadena, "^[a-zA-Záéíóúñ]+ *[a-zA-Záéíóúñ]*$"))
+                {
+                    error = false; //devuelve false si encuentra algo que no deberia.
+                }
+            }
             return error; //devuelve el error
+        }
+        private static void MostrarError(string message) // Mensaje que enseñar cuando salta el error.
+        {
+            Console.WriteLine("ERROR: {0}\n", message);
         }
     }
