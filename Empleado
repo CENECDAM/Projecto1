@@ -1,4 +1,5 @@
-  //Clase de Empleado. Creado por Niels Bosch dia 20/10/2015
+ 
+     //Clase de Empleado. Creado por Niels Bosch dia 20/10/2015
     //Ultima Edición: Dia 20/10/2015 --- > Creación de la clase, constructores y propiedades.
     //Ultima Edición: Dia 21/10/2015 --- > Añadir control de errores y comprobación de inserción de datos
     //ultima edidicon: Dia 22/10/2015 --- > Modificar el mostrar errores con Throw new exception.
@@ -9,7 +10,7 @@
         private string nombre; //String PRIVADO que contiene el Nombre
         private string apellidos; //String PRIVADO que contiene el Apellido
         // ================== Fin declaracion de Atributos de la Clase ==================
-
+        string mensaje = null;
         //Esta Clase contiene 2 constructores. Empleado() y Empleado(String Nombre, String Apellido, String DNI)
         //La primera clase de Empleado esta por si no se especifican parametros a la hora de crearlo. Asigna los distintas variables
         //a null. Mientras que el segundo constructor (el que recibe datos) asigna cada dato recibido a los atributos de la clase.
@@ -39,7 +40,7 @@
             set
             {
                 bool error = false;
-                string mensaje = null;
+               
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama ValidacionDNI
                 //importante: primero pasar a mayuscula
@@ -48,7 +49,7 @@
                 if (error)
                 {
                    
-                    mensaje = "Se ha introducido el DNI de forma incorrecta.";
+                   
                     throw new Exception(mensaje); // Throw de Errores
                     error = false;          // Reinicio del Control de Errores
                 }
@@ -63,14 +64,14 @@
             set
             {
                 bool error = false;
-                string mensaje = null;
+            
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama CompNombres
 
                 error = validar_Nombre(nombre);
                 if (error)
                 {
-                    mensaje = "El Nombre introducido no es valido. Porfavor vuelva a introducirlo.";
+                   
                     throw new Exception(mensaje); // Throw de Errores
                     error = false;          // Reinicio del Control de Errores
                 }
@@ -87,14 +88,14 @@
             set
             {
                 bool error = false;
-                string mensaje = null;
+               
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama CompNombres
 
                 error = validar_Nombre(apellidos);
                 if (error)
                 {
-                    mensaje = "El Apellido introducido es incorrecto. Porfavor vuelva a intentarlo.";
+                   
                     throw new Exception(mensaje); // Throw de Errores
                     error = false;          // Reinicio del Control de Errores
                 }
@@ -115,13 +116,18 @@
             bool ret = false;
             if (docIdentitat != null) //Comprobación si la cadena no esta vacia. En el caso de estarlo, iguala el resultado a Falso (para que salte el error en la propiedad.
             {
-                ret = false;
+                throw new Exception("El DNI esta vacio. Porfavor insertelo con el formato XXXXXXXXZ");
+                
             }
             else
             {
                 System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(patron);
                 sRemp = rgx.Replace(docIdentitat, "OK");
-                if (sRemp == "OK") ret = true;
+                if (sRemp == "OK") { ret = true; }
+                else
+                {
+                    throw new Exception("El DNI esta mal escrito. Porfavor vuelve a internarlo.");
+                }
 
             }
             return ret;
@@ -138,12 +144,14 @@
             if (cadena != null)//Comprobación si la cadena no esta vacia. En el caso de estarlo, iguala el resultado a Falso (para que salte el error en la propiedad.
             {
                 error = false;
+                throw new Exception("La cadena introducida esta vacia, porfavor introduzca algo");
             }
             else
             {
                 if (!System.Text.RegularExpressions.Regex.IsMatch(cadena, "^[a-zA-Záéíóúñ]+ *[a-zA-Záéíóúñ]*$"))
                 {
                     error = false; //devuelve false si encuentra algo que no deberia.
+                    throw new Exception("La cadena contiene caracteres invalidos. Porfavor solo use letras y espacios.");
                 }
             }
             return error; //devuelve el error
