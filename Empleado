@@ -1,6 +1,7 @@
-   //Clase de Empleado. Creado por Niels Bosch dia 20/10/2015
+  //Clase de Empleado. Creado por Niels Bosch dia 20/10/2015
     //Ultima Edición: Dia 20/10/2015 --- > Creación de la clase, constructores y propiedades.
     //Ultima Edición: Dia 21/10/2015 --- > Añadir control de errores y comprobación de inserción de datos
+    //ultima edidicon: Dia 22/10/2015 --- > Modificar el mostrar errores con Throw new exception.
     class Empleado
     {
         //================== Declaracion de los atributos de la clase ==================
@@ -42,12 +43,13 @@
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama ValidacionDNI
                 //importante: primero pasar a mayuscula
-               
+
                 error = validar_Dni(dni);
                 if (error)
                 {
+                   
                     mensaje = "Se ha introducido el DNI de forma incorrecta.";
-                    MostrarError(mensaje);  // Presentación de Errores
+                    throw new Exception(mensaje); // Throw de Errores
                     error = false;          // Reinicio del Control de Errores
                 }
             }
@@ -69,7 +71,7 @@
                 if (error)
                 {
                     mensaje = "El Nombre introducido no es valido. Porfavor vuelva a introducirlo.";
-                    MostrarError(mensaje);  // Presentación de Errores
+                    throw new Exception(mensaje); // Throw de Errores
                     error = false;          // Reinicio del Control de Errores
                 }
 
@@ -88,12 +90,12 @@
                 string mensaje = null;
                 //Contiene la Validación de los datos (creado con metodos externos) en este caso el del dni 
                 //se llama CompNombres
-               
+
                 error = validar_Nombre(apellidos);
                 if (error)
                 {
                     mensaje = "El Apellido introducido es incorrecto. Porfavor vuelva a intentarlo.";
-                    MostrarError(mensaje);  // Presentación de Errores
+                    throw new Exception(mensaje); // Throw de Errores
                     error = false;          // Reinicio del Control de Errores
                 }
             }
@@ -106,7 +108,7 @@
 
         public static bool validar_Dni(string docIdentitat)
         {
-           
+
 
             string patron = "\\d{8}[TRWAGMYFPDXBNJZSQVHLCKE]|\\d{0,7}[TRWAGMYFPDXBNJZSQVHLCKE]";
             string sRemp = "";
@@ -120,7 +122,7 @@
                 System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(patron);
                 sRemp = rgx.Replace(docIdentitat, "OK");
                 if (sRemp == "OK") ret = true;
-                
+
             }
             return ret;
         }
@@ -128,7 +130,7 @@
         // ============ Este metodo comprueba si el string dado son todos Letras. Lo usamos para el Apellido y para el Nombre ===============
         private static bool validar_Nombre(string cadena)
         { //CompNombres recibe una cadena tipo String
-         
+
             bool error = true;
 
             // Validación nombre y apellido
@@ -146,8 +148,5 @@
             }
             return error; //devuelve el error
         }
-        private static void MostrarError(string message) // Mensaje que enseñar cuando salta el error.
-        {
-            Console.WriteLine("ERROR: {0}\n", message);
-        }
+       
     }
