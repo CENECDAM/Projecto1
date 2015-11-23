@@ -1,0 +1,208 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BancoNomina
+{
+    static class ControladorNominas
+    {
+        // Desarrollador: Pedro Cánovas Medina
+        // Fecha de última comprobación: 23/11/2015
+        // Método Privado: Comprueba existencia de nominas
+        private static bool ExisteNomina(Nomina[] lista, string dni)
+        {
+            bool existe = false;
+            int indice = 0;
+
+            if (lista != null)
+            {
+                // Recorre la lista de nominas hasta que:
+                //      Peor caso: Realiza un recorrido completo (No lo encuentra)
+                //      Mejor caso: Encuentra equivalencia
+                for (indice = 0; (indice < lista.Length) && !existe; indice++)
+                {
+                    if (lista[indice].Dni.Equals(dni)) existe = true;
+                }
+            }
+
+            return existe;
+        }
+
+        // Método Privado: Comprueba existencia de nominas ya registradas
+        // Si existe, indica la posición (índice) en el que se encuentra
+        private static bool ExisteNomina(Nomina[] lista, string dni, ref int posicion)
+        {
+            bool existe = false;    // Control de existencia
+            int indice = 0;
+
+            if (lista != null)
+            {
+                // Recorre la lista de nominas hasta que:
+                //      Peor caso: Realiza un recorrido completo (No lo encuentra)
+                //      Mejor caso: Encuentra equivalencia
+                for (indice = 0; (indice < lista.Length) && !existe; indice++)
+                {
+                    if (lista[indice].Dni.Equals(dni))
+                    {
+                        existe = true;
+                        posicion = indice;
+                    }
+                }
+            }
+
+            return existe;
+        }
+
+
+        // Método público: Añadir nueva nomina
+        public static void NuevaNomina(ref Nomina[] nomina)
+        {
+            Nomina nominaTemp;          // Datos de la nomina a añadir
+            Nomina[] copia = null;    // Lista temporal de nominas
+        
+            bool salir = false;
+            string mensaje = null;
+            
+            // Entrada de Datos
+            do
+            {
+                // ENTRADA
+                nominaTemp = Interfaz.DatosNomina ();  // Solicitud de Datos para crear la nomina
+
+                // PROCESAMIENTO
+                // Validación: Comprobar si la nomina existe
+                if (!ExisteNomina(nomina, nominaTemp.Dni))
+                {
+                    // Registro Cliente: Gestión Dinámica de Memoria
+                    if (nomina == null)
+                    {
+                        nomina = new Nomina[1];
+                    }
+                    else
+                    {
+                        copia = new Nomina[nominas.Length];
+                        nomina.CopyTo(copia, 0);
+                        nomina = new Nomina[nominas.Length + 1];
+                        copia.CopyTo(nomina, 0);
+                        copia = null;   // Liberación de Memoria
+                    }
+                    // Almacenamiento de la nomina
+                    nomina[nomina.Length - 1] = nominaTemp;
+
+                    mensaje = "\n\t Nomina registrada correctamente";
+                }
+                else
+                {
+                    mensaje = "\n\t El Empleado ya tiene una nomina, desea editarla?";
+                }
+
+                // SALIDA
+                mensaje = mensaje + "\n\n\t Desea seguir operando con nominas? (s/n): ";
+
+                // Sí desea continuar --> salir = false
+                // No desea continuar --> salir = true
+                salir = Interfaz.Continuar(mensaje) ? false : true;
+
+            } while (!salir);
+
+        }
+
+
+        // Método público: Mostrar lista de nominas
+        public static void ListarNominas(Nomina[] nominas)
+        {
+
+            if (nominas != null)
+            {
+                Interfaz.MostrarListaNominas(nominas);
+                Interfaz.Continuar("\n\tPulse ENTER para continuar");
+            }
+            else
+            {
+                Interfaz.Continuar("\n\tNo hay nominas que mostrar. \n\tPulse ENTER para continuar");
+            }
+        }
+
+
+        // Método público: Eliminar nomina
+        public static void EliminarNomina(ref Nomina[] nomina)
+        {
+            string semana = null;      // que semana se desea eliminar en la nomina
+           
+            int indice = 0;         // Posición del cliente en la lista de clientes
+            string mensaje = null;
+            bool salir = false;
+
+            do
+            {
+                // ENTRADA: Solicitud de la semana que deseamos eliminar
+                semana = Interfaz.SolicitarSemana(nomina,semana);
+                if (ExisteSemana(nomina, semana, ref indice))
+                {
+                    
+                        //eliminacion del cliente seleccionado
+                        //creo un array de tipo RNominas pra almacenar el array de nominas original
+                        //tiene la longitud del original menos uno porque como vamos a borrar un elemento lo 
+                        //hacemos con una dimension menos
+                        Nommina[] nominaC = new Nomina[nomina.Length - 1];
+
+                        //recorro desde 0 hasta la longiud del array de copia 
+                        //la i es la que controla al array de copia y la j la que controla el array original
+                        
+                        for (int i = 0, j = 0; i < nominaC.Length; i++, j++)
+                        {
+
+                            //si la posicion que queremos borrar (indice) es igual a i, entonces es que ese 
+                            //elemento no lo queremos
+                            //asi que hacemos que el indice del segundo array de un salto y no pase por 
+                            //ese elemento en concreto
+                            if (i == indice)
+                            {
+                                j++;
+                            }
+
+                            
+                           
+                            //voy asignando los elementos que han quedado del array original al array de copia 
+
+                            nominaC[i] = nomina[j];
+                        }
+                        //como es una dimension menos se sobreescribe al pasarlo
+                        nomina = nominaC;
+
+                      
+                        
+                        Interfaz.MostraNomina(clientes);
+                        mensaje = "\n\tSEMANA ELIMINADA CON EXITO\n";
+
+                    
+
+
+
+                }
+                else
+                {
+                    mensaje = "\n\tERROR: No se encuentra la semana\n";
+                }
+
+                // SALIDA
+                mensaje = mensaje + "\n\n\t Desea eliminar otra semana (s/n): ";
+
+                // Sí desea continuar --> salir = false
+                // No desea continuar --> salir = true
+                salir = Interfaz.Continuar(mensaje) ? false : true;
+                // mensaje = mensaje + "\n\tPulse ENTER para continuar";
+                //Interfaz.Continuar(mensaje);
+
+
+            } while (!salir);
+	{
+	         
+	}
+
+
+        }
+    }
+}
