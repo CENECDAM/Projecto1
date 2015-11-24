@@ -43,6 +43,11 @@ namespace MetodosNomina
             
         }
         
+        /*
+* --METODOS NOMINA--
+* --JOAQUIN CANCA LÓPEZ
+* --MODIFICADO EL 24//11/2015 12:05
+*/
         //Método para calcular el salario Bruto
 		private float salarioBruto(int horas, float eurosHora, float salarioExtra)
 		{
