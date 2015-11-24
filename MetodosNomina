@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-/*
-* --METODOS NOMINA--
-* --JOAQUIN CANCA LÓPEZ
-* --COMPROBADO EL 22//11/2015 21:13
-*/
+
+// --METODOS NOMINA--
+// --JOAQUIN CANCA LÓPEZ
+// --COMPROBADO EL 22//11/2015 21:13
+
 namespace MetodosNomina
 {
     class Nomina
@@ -44,10 +44,10 @@ namespace MetodosNomina
         }
         
         /*
-* --METODOS NOMINA--
-* --JOAQUIN CANCA LÓPEZ
-* --MODIFICADO EL 24//11/2015 12:05
-*/
+// --METODOS NOMINA--
+//--JOAQUIN CANCA LÓPEZ
+//--MODIFICADO EL 24//11/2015 12:05
+
         //Método para calcular el salario Bruto
 		private float salarioBruto(int horas, float eurosHora, float salarioExtra)
 		{
