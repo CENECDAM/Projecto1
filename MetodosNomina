@@ -17,6 +17,7 @@ namespace MetodosNomina
         //Calculamos la existencia de horas extra así como de su valor
         private int horasExtra (int horas)
         {
+        
             int res;
                 if (horas<40)
             {
@@ -30,6 +31,7 @@ namespace MetodosNomina
             return res;
 
         }
+        
         //Calculamos el salario extra
         private float salarioExtra (int horasExtra,float eurosHora)
         {
@@ -38,19 +40,23 @@ namespace MetodosNomina
             res = (eurosHora * 1.5F) * horasExtra; 
             //El salario horas se corresponde con el salario de las horas ordinarias y será obtenido del fichero de configuraciín
             return res;
+            
         }
-
+        
         //Método para calcular el salario Bruto
-
-        private float salarioBruto(int horas, float eurosHora,int horasExtra,float salarioExtra )
-        {
-            float res;
-            res = (horas * eurosHora) + (horasExtra * (eurosHora * 1.5F));
-            return res;
-        }
+		private float salarioBruto(int horas, float eurosHora, float salarioExtra)
+		{
+		
+			float res;
+			res = (horas * eurosHora) + salarioExtra;
+			return res;
+			
+		}
+		
         //Método para calcular los impuestos a pagar
         private float Impuesto (float salarioBruto)
         {
+        
             float res;
             res = salarioBruto * 0.16F; //0.16 es el valor del pocentaje de las retenciones el cual deberá ser obtenido del fichero de configuración
             return res;
@@ -58,12 +64,13 @@ namespace MetodosNomina
         }
 
         //Método para calcular el salario neto
-
         private float Neto (float salarioBruto,float impuesto)
         {
+        
             float res;
             res = salarioBruto - impuesto;
             return res;
+            
         }
     }
 }
