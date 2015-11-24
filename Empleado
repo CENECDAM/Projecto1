@@ -114,6 +114,7 @@ namespace NominaTester
 			}
 			else if (!rgx.IsMatch(docIdentitat))
 			{
+			
 				mensaje = "El DNI no tiene el formato correcto (XXXXXXXXA).";
 				error = true;
 			}
