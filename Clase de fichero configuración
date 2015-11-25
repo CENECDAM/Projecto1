@@ -5,66 +5,189 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FichConf
+namespace FicheroConf
 {
-	class FicheroConf
+	class FicheroConfig
 	{
 		// IMPORTANTE: TODAS LAS UBICACIONES DE LOS ARCHIVOS EN LA APERTURA DE FLUJOS Y COMPROBACIONES ESTÁN SUJETAS A MODIFICACIÓN
+		// Declaración de los atributos de la clase
+		private int jornada;
+		private float horas_extra;
+		private int retencion;
+		private string pass;
+		private bool creacion; // Este booleano sirve para saber si el fichero de configuración ha tenido que ser creado por que no existía
 
-		#region Privado: utilidades del fichero de configuración
-
-		// Método privado para la apertura de los flujos en los ficheros
+		// Constructor de la clase
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		private static void AperturaFicheros(out StreamReader lector, out StreamWriter escritor)
+		// Fecha de última comprobación: 25/11/2015
+		public FicheroConfig()
 		{
-			if (File.Exists("../../temp.txt"))	// Comprobación si el fichero temporal existe ya
+			if (!CompExist()) // Comprobar si existe el fichero de configuración
 			{
-				File.Delete("../../temp.txt");	// En caso de que exista eliminarlo
+				CreacionDefecto();	// En caso de que no exista, crear uno con datos por defecto
+				creacion = true;
+			}
+			else
+			{
+				creacion = false;
 			}
 
-			lector = File.OpenText("../../Datos.co");	// Crear un flujo de lectura sobre el fichero de configuración
-			escritor = new StreamWriter(File.OpenWrite("../../temp.txt"));	// Crear el fichero temporal y crear un flujo de escritura sobre él
+			jornada = getJornada();
+			horas_extra = getHoraExtra();
+			retencion = getRetenciones();
+			pass = getPass();
 		}
 
-		// Método para guardar los cambios realizados en el fichero
-		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		private static void GuardarDatos()
-		{
-			File.Delete("../../Datos.co");	// Eliminar el fichero de configuración sin los datos actualizados
-			File.Copy("../../temp.txt", "../../Datos.co");	// Copiar el contenido del fichero temporal (que son los datos actualizados) en un fichero de configuración nuevo que se crea en el mismo momento de copia
-			File.Delete("../../temp.txt");	// Eliminar el fichero temporal
-		}
+		#region Propiedades
 
-		// Método para comprobar que el fichero existe
+		// Propiedad para la jornada
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		private static void CompExist()
+		// Fecha de última comprobación: 25/11/2015
+		public int Jornada
 		{
-
-			if (!File.Exists("../../Datos.co"))		// Comprobar que el fichero de configuración existe
+			get
 			{
-				throw new IOException("El fichero de configuración al que intenta acceder no existe.");		// En caso de que no exista lanzar una excepción con el mensaje de error.
+				return jornada;
 			}
+			set
+			{
+				escribirJornada(value.ToString());
+				jornada = value;
+			}
+		}
 
-			// IMPORTANTE: si el fichero de configuración ya existe, se asume que el formato es correcto ("[variable]:[valor]")
-			// En caso contrario, el programa fallará. El formato viene especificado en la documentación.
+		// Propiedad para el incremento de las horas extra
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 25/11/2015
+		public float Extra
+		{
+			get
+			{
+				return horas_extra;
+			}
+			set
+			{
+				escribirHoraExtra(value.ToString());
+				horas_extra = value;
+			}
+		}
+
+		// Propiedad para El porcentaje de las retenciones
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 25/11/2015
+		public int Retencion
+		{
+			get
+			{
+				return retencion;
+			}
+			set
+			{
+				escribirRetenciones(value.ToString());
+				retencion = value;
+			}
+		}
+
+		// Propiedad para la contraseña del fichero
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 25/11/2015
+		public string Pass
+		{
+			get
+			{
+				return pass;
+			}
+			set
+			{
+				escribirPass(value);
+				pass = value;
+			}
+		}
+
+		// Propiedad para saber si el fichero se tuvo que crear
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 25/11/2015
+		public bool CreacionFichero
+		{
+			get
+			{
+				return creacion;
+			}
 		}
 
 		#endregion
 
+		#region Utilidades del fichero de configuración
+
+		// Método privado para la apertura de los flujos en los ficheros
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 25/11/2015
+		private void AperturaFicheros(out StreamReader lector, out StreamWriter escritor)
+		{
+			if (File.Exists("../../temp.txt"))  // Comprobación si el fichero temporal existe ya
+			{
+				File.Delete("../../temp.txt");  // En caso de que exista eliminarlo
+			}
+
+			lector = File.OpenText("../../Datos.co");   // Crear un flujo de lectura sobre el fichero de configuración
+			escritor = new StreamWriter(File.OpenWrite("../../temp.txt"));  // Crear el fichero temporal y crear un flujo de escritura sobre él
+		}
+
+		// Método para guardar los cambios realizados en el fichero
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 25/11/2015
+		private void GuardarDatos()
+		{
+			File.Delete("../../Datos.co");  // Eliminar el fichero de configuración sin los datos actualizados
+			File.Copy("../../temp.txt", "../../Datos.co");  // Copiar el contenido del fichero temporal (que son los datos actualizados) en un fichero de configuración nuevo que se crea en el mismo momento de copia
+			File.Delete("../../temp.txt");  // Eliminar el fichero temporal
+		}
+
+		// Método para comprobar que el fichero existe
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 25/11/2015
+		private bool CompExist()
+		{
+			bool existe = true;
+
+			if (!File.Exists("../../Datos.co"))     // Comprobar que el fichero de configuración existe
+			{
+				existe = false;
+			}
+
+			return existe;
+			// IMPORTANTE: si el fichero de configuración ya existe, se asume que el formato es correcto ("[variable]:[valor]")
+			// En caso contrario, el programa fallará. El formato viene especificado en la documentación.
+		}
+
+		// Método para crear un fichero por defecto
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 25/11/2015
+		private void CreacionDefecto()
+		{
+			StreamWriter escritor;
+
+			escritor = new StreamWriter(File.OpenWrite("../../Datos.co"));  // Crear el fichero de configuración y crear un flujo de escritura sobre él
+			escritor.WriteLine("JORNADA:40");
+			escritor.WriteLine("HORASEXTRAS:1.5");
+			escritor.WriteLine("RETENCIONES:16");
+			escritor.WriteLine("PASS:T3sT");
+			escritor.Close();
+		}
+
+		#endregion
+
+		#region Recuperación de datos del fichero
+
 		// Método para recuperar la jornada laboral semanal del fichero de configuración
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		public static int getJornada()
+		// Fecha de última comprobación: 25/11/2015
+		private int getJornada()
 		{
 			int jornada = 0;
 			string aux = "";
 			string[] info; // Array en el que se almacena el split de la cadena del documento
 			StreamReader lector;
-
-			CompExist();	// Comprobación de la existencia del fichero de configuración
 
 			lector = File.OpenText("../../Datos.co");   // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
 			while (lector.Peek() != -1 && jornada == 0) // Comprobación de final de documento y si ha encontrado la jornada
@@ -83,24 +206,22 @@ namespace FichConf
 
 		// Método para recuperar el incremento de las horas extras del fichero de configuración
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		public static float getHoraExtra()
+		// Fecha de última comprobación: 25/11/2015
+		private float getHoraExtra()
 		{
 			float extra = 0.00F;
 			string aux = "";
 			string[] info; // Array en el que se almacena el split de la cadena del documento
 			StreamReader lector;
 
-			CompExist();	// Comprobación de la existencia del fichero de configuración
-
-			lector = File.OpenText("../../Datos.co");		// Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
-			while (lector.Peek() != -1 && extra == 0.00F)	// Comprobación de final de documento y si ha encontrado la jornada
+			lector = File.OpenText("../../Datos.co");       // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
+			while (lector.Peek() != -1 && extra == 0.00F)   // Comprobación de final de documento y si ha encontrado la jornada
 			{
-				aux = lector.ReadLine();					// Almacenar la lectura de la línea
-				info = aux.Split(":".ToCharArray());		// Especificar por que parte de la cadena se realiza la separación
-				if (info[0].Equals("HORASEXTRAS"))			// Comprobar que son las horas extras
+				aux = lector.ReadLine();                    // Almacenar la lectura de la línea
+				info = aux.Split(":".ToCharArray());        // Especificar por que parte de la cadena se realiza la separación
+				if (info[0].Equals("HORASEXTRAS"))          // Comprobar que son las horas extras
 				{
-					info[1] = info[1].Replace(".",",");
+					info[1] = info[1].Replace(".", ",");
 					Single.TryParse(info[1], out extra);
 				}
 			}
@@ -111,15 +232,13 @@ namespace FichConf
 
 		// Método para recuperar las retenciones del fichero de configuración
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		public static int getRetenciones()
+		// Fecha de última comprobación: 25/11/2015
+		private int getRetenciones()
 		{
 			int retenciones = 0;
 			string aux = "";
 			string[] info; // Array en el que se almacena el split de la cadena del documento
 			StreamReader lector;
-
-			CompExist();    // Comprobación de la existencia del fichero de configuración
 
 			lector = File.OpenText("../../Datos.co");   // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
 			while (lector.Peek() != -1 && retenciones == 0) // Comprobación de final de documento y si ha encontrado la jornada
@@ -138,15 +257,13 @@ namespace FichConf
 
 		// Método para recuperar la contraseña del fichero de configuración
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		public static string getPass()
+		// Fecha de última comprobación: 25/11/2015
+		private string getPass()
 		{
 			string pass = "";
 			string aux = "";
 			string[] info; // Array en el que se almacena el split de la cadena del documento
 			StreamReader lector;
-
-			CompExist();    // Comprobación de la existencia del fichero de configuración
 
 			lector = File.OpenText("../../Datos.co");   // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
 			while (lector.Peek() != -1 && pass.Equals("")) // Comprobación de final de documento y si ha encontrado la jornada
@@ -163,43 +280,43 @@ namespace FichConf
 			return pass;
 		}
 
+		#endregion
+
+		#region Escritura en el fichero de configuración
+
 		// Método para reescribir la jornada laboral semanal del fichero de configuración
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		public static void escribirJornada(string nuevajornada)
-		{
-			string[] info;
-			StreamReader lector;	// Variable de lectura del fichero de configuración
-			StreamWriter escritor;  // Variable de escritura en fichero temporal
-
-			CompExist();  // Comprobación de la existencia del fichero de configuración
-
-			AperturaFicheros(out lector, out escritor);		// Apertura de ambos ficheros con sus respectivos flujos
-			while (lector.Peek() != -1)
-			{
-				info = lector.ReadLine().Split(":".ToCharArray());	
-				if (info[0].Equals("JORNADA"))				// Comprobar si se llega al dato que queremos modificar
-				{
-					info[1] = nuevajornada;					// Modificación en los datos
-				}
-				escritor.WriteLine(info[0] + ":" + info[1]);	// Escritura en el fichero temporal
-			}
-			escritor.Close();
-			lector.Close();		// Cerrar los flujos
-
-			GuardarDatos();		// Copiar los datos del fichero temporal al fichero de configuración y eliminar el temporal
-		}
-
-		// Método para reescribir el incremento de las horas extras del fichero de configuración
-		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		public static void escribirHoraExtra(string nuevahora)
+		// Fecha de última comprobación: 25/11/2015
+		private void escribirJornada(string nuevajornada)
 		{
 			string[] info;
 			StreamReader lector;    // Variable de lectura del fichero de configuración
 			StreamWriter escritor;  // Variable de escritura en fichero temporal
 
-			CompExist();    // Comprobación de la existencia del fichero de configuración
+			AperturaFicheros(out lector, out escritor);     // Apertura de ambos ficheros con sus respectivos flujos
+			while (lector.Peek() != -1)
+			{
+				info = lector.ReadLine().Split(":".ToCharArray());
+				if (info[0].Equals("JORNADA"))              // Comprobar si se llega al dato que queremos modificar
+				{
+					info[1] = nuevajornada;                 // Modificación en los datos
+				}
+				escritor.WriteLine(info[0] + ":" + info[1]);    // Escritura en el fichero temporal
+			}
+			escritor.Close();
+			lector.Close();     // Cerrar los flujos
+
+			GuardarDatos();     // Copiar los datos del fichero temporal al fichero de configuración y eliminar el temporal
+		}
+
+		// Método para reescribir el incremento de las horas extras del fichero de configuración
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 25/11/2015
+		private void escribirHoraExtra(string nuevahora)
+		{
+			string[] info;
+			StreamReader lector;    // Variable de lectura del fichero de configuración
+			StreamWriter escritor;  // Variable de escritura en fichero temporal
 
 			AperturaFicheros(out lector, out escritor);     // Apertura de ambos ficheros con sus respectivos flujos
 			while (lector.Peek() != -1)
@@ -219,14 +336,12 @@ namespace FichConf
 
 		// Método para reescribir las retenciones de las horas extras del fichero de configuración
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		public static void escribirRetenciones(string nuevaretencion)
+		// Fecha de última comprobación: 25/11/2015
+		private void escribirRetenciones(string nuevaretencion)
 		{
 			string[] info;
 			StreamReader lector;    // Variable de lectura del fichero de configuración
 			StreamWriter escritor;  // Variable de escritura en fichero temporal
-
-			CompExist();    // Comprobación de la existencia del fichero de configuración
 
 			AperturaFicheros(out lector, out escritor);     // Apertura de ambos ficheros con sus respectivos flujos
 			while (lector.Peek() != -1)
@@ -246,14 +361,12 @@ namespace FichConf
 
 		// Método para reescribir la contraseña de las horas extras del fichero de configuración
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 23/11/2015
-		public static void escribirPass(string nuevapass)
+		// Fecha de última comprobación: 25/11/2015
+		private void escribirPass(string nuevapass)
 		{
 			string[] info;
 			StreamReader lector;    // Variable de lectura del fichero de configuración
-			StreamWriter escritor;	// Variable de escritura en fichero temporal
-
-			CompExist();    // Comprobación de la existencia del fichero de configuración
+			StreamWriter escritor;  // Variable de escritura en fichero temporal
 
 			AperturaFicheros(out lector, out escritor);     // Apertura de ambos ficheros con sus respectivos flujos
 			while (lector.Peek() != -1)
@@ -270,6 +383,8 @@ namespace FichConf
 
 			GuardarDatos();     // Copiar los datos del fichero temporal al fichero de configuración y eliminar el temporal
 		}
+
+		#endregion
+
 	}
 }
-
