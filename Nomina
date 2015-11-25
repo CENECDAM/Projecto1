@@ -32,6 +32,7 @@ namespace MetodosNomina
             return res;
 
         }
+        
         // METODOS PARA CALCULAR EL SALARIO EXTRA
 	// DESARROLLADOR: JOAQUIN CANCA
 	// ÚLTIMA REVISIÓN EL 22//11/2015 20:20
@@ -47,7 +48,7 @@ namespace MetodosNomina
             
         }
         
-        /*
+        
 // METODOS PARA DESARROLLAR EL SALARIO BRUTO
 // DESARROLLADORES: JOAQUIN Y SAMUEL
 // ÚLTIMA REVISIÓN EL 24//11/2015 12:05
