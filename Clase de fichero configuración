@@ -105,13 +105,14 @@ namespace FicheroConf
 		}
 
 		// Propiedad para saber si el fichero se tuvo que crear
+		// IMPORTANTE: LLAMAR A ESTA PROPIEDAD ANTES DE REALIZAR NINGUNA OPERACIÓN PARA ENVIAR MENSAJES DE RETROALIMENTACIÓN AL USUARIO
 		// Desarrollador: Samuel Stratos Bater Herrero
 		// Fecha de última comprobación: 25/11/2015
 		public bool CreacionFichero
 		{
 			get
 			{
-				return creacion;
+				return creacion; 
 			}
 		}
 
