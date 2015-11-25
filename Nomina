@@ -10,9 +10,11 @@ namespace MetodosNomina
 {
     class Nomina
     {
+    
 // METODOS PARA CALCULAR LAS HORAS EXTRA
 // DESARROLLADOR: JOAQUIN CANCA
 // ÚLTIMA REVISIÓN EL 22//11/2015 20:20
+
         //Calculamos la existencia de horas extra así como de su valor
         private int horasExtra (int horas)
         {
@@ -33,6 +35,7 @@ namespace MetodosNomina
         // METODOS PARA CALCULAR EL SALARIO EXTRA
 	// DESARROLLADOR: JOAQUIN CANCA
 	// ÚLTIMA REVISIÓN EL 22//11/2015 20:20
+	
         //Calculamos el salario extra
         private float salarioExtra (int horasExtra,float eurosHora)
         {
