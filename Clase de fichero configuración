@@ -125,13 +125,13 @@ namespace FicheroConf
 		// Fecha de última comprobación: 25/11/2015
 		private void AperturaFicheros(out StreamReader lector, out StreamWriter escritor)
 		{
-			if (File.Exists("../../temp.txt"))  // Comprobación si el fichero temporal existe ya
+			if (File.Exists("..\\..\\temp.txt"))  // Comprobación si el fichero temporal existe ya
 			{
-				File.Delete("../../temp.txt");  // En caso de que exista eliminarlo
+				File.Delete("..\\..\\temp.txt");  // En caso de que exista eliminarlo
 			}
 
-			lector = File.OpenText("../../Datos.co");   // Crear un flujo de lectura sobre el fichero de configuración
-			escritor = new StreamWriter(File.OpenWrite("../../temp.txt"));  // Crear el fichero temporal y crear un flujo de escritura sobre él
+			lector = File.OpenText("..\\..\\Datos.co");   // Crear un flujo de lectura sobre el fichero de configuración
+			escritor = new StreamWriter(File.OpenWrite("..\\..\\temp.txt"));  // Crear el fichero temporal y crear un flujo de escritura sobre él
 		}
 
 		// Método para guardar los cambios realizados en el fichero
@@ -139,9 +139,9 @@ namespace FicheroConf
 		// Fecha de última comprobación: 25/11/2015
 		private void GuardarDatos()
 		{
-			File.Delete("../../Datos.co");  // Eliminar el fichero de configuración sin los datos actualizados
-			File.Copy("../../temp.txt", "../../Datos.co");  // Copiar el contenido del fichero temporal (que son los datos actualizados) en un fichero de configuración nuevo que se crea en el mismo momento de copia
-			File.Delete("../../temp.txt");  // Eliminar el fichero temporal
+			File.Delete("..\\..\\Datos.co");  // Eliminar el fichero de configuración sin los datos actualizados
+			File.Copy("..\\..\\temp.txt", "..\\..\\Datos.co");  // Copiar el contenido del fichero temporal (que son los datos actualizados) en un fichero de configuración nuevo que se crea en el mismo momento de copia
+			File.Delete("..\\..\\temp.txt");  // Eliminar el fichero temporal
 		}
 
 		// Método para comprobar que el fichero existe
@@ -151,7 +151,7 @@ namespace FicheroConf
 		{
 			bool existe = true;
 
-			if (!File.Exists("../../Datos.co"))     // Comprobar que el fichero de configuración existe
+			if (!File.Exists("..\\..\\Datos.co"))     // Comprobar que el fichero de configuración existe
 			{
 				existe = false;
 			}
@@ -168,7 +168,7 @@ namespace FicheroConf
 		{
 			StreamWriter escritor;
 
-			escritor = new StreamWriter(File.OpenWrite("../../Datos.co"));  // Crear el fichero de configuración y crear un flujo de escritura sobre él
+			escritor = new StreamWriter(File.OpenWrite("..\\..\\Datos.co"));  // Crear el fichero de configuración y crear un flujo de escritura sobre él
 			escritor.WriteLine("JORNADA:40");
 			escritor.WriteLine("HORASEXTRAS:1.5");
 			escritor.WriteLine("RETENCIONES:16");
@@ -190,7 +190,7 @@ namespace FicheroConf
 			string[] info; // Array en el que se almacena el split de la cadena del documento
 			StreamReader lector;
 
-			lector = File.OpenText("../../Datos.co");   // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
+			lector = File.OpenText("..\\..\\Datos.co");   // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
 			while (lector.Peek() != -1 && jornada == 0) // Comprobación de final de documento y si ha encontrado la jornada
 			{
 				aux = lector.ReadLine();                // Almacenar la lectura de la línea
@@ -215,7 +215,7 @@ namespace FicheroConf
 			string[] info; // Array en el que se almacena el split de la cadena del documento
 			StreamReader lector;
 
-			lector = File.OpenText("../../Datos.co");       // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
+			lector = File.OpenText("..\\..\\Datos.co");       // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
 			while (lector.Peek() != -1 && extra == 0.00F)   // Comprobación de final de documento y si ha encontrado la jornada
 			{
 				aux = lector.ReadLine();                    // Almacenar la lectura de la línea
@@ -241,7 +241,7 @@ namespace FicheroConf
 			string[] info; // Array en el que se almacena el split de la cadena del documento
 			StreamReader lector;
 
-			lector = File.OpenText("../../Datos.co");   // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
+			lector = File.OpenText("..\\..\\Datos.co");   // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
 			while (lector.Peek() != -1 && retenciones == 0) // Comprobación de final de documento y si ha encontrado la jornada
 			{
 				aux = lector.ReadLine();                // Almacenar la lectura de la línea
@@ -266,7 +266,7 @@ namespace FicheroConf
 			string[] info; // Array en el que se almacena el split de la cadena del documento
 			StreamReader lector;
 
-			lector = File.OpenText("../../Datos.co");   // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
+			lector = File.OpenText("..\\..\\Datos.co");   // Apertura del flujo de lectura del fichero -- SUJETO A MODIFICACIÓN
 			while (lector.Peek() != -1 && pass.Equals("")) // Comprobación de final de documento y si ha encontrado la jornada
 			{
 				aux = lector.ReadLine();                // Almacenar la lectura de la línea
