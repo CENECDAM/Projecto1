@@ -1,0 +1,91 @@
+using System;
+using System.IO;
+
+namespace FichNomSemanal
+{
+	class FNomSemanal
+	{
+		private string path_archivo;
+
+		// Constructor de la clase
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 26/11/2015
+		public FNomSemanal(string dni)
+		{
+			path_archivo = "..\\..\\nsemanal\\" + dni.ToUpper() + ".mact";
+		}
+
+		// Método para saber si existe el fichero de las nóminas para el dni dado
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 26/11/2015
+		public bool ExisteArchivo()
+		{
+			return File.Exists(path_archivo);
+		}
+
+		// Método para leer las semanas del archivo del empleado con el dni dado
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 26/11/2015
+		public bool LeerSemanas(ref string[][] nominas)
+		{
+			FileStream flujofichero;
+			StreamReader lector;
+			string[] aux = null;
+			string[][] copia = null;
+
+			if (File.Exists(path_archivo))
+			{
+				flujofichero = new FileStream(path_archivo, FileMode.Open);
+				lector = new StreamReader(flujofichero);
+				while (lector.Peek() != -1)
+				{
+					aux = lector.ReadLine().Split("/".ToCharArray());
+					if (nominas == null)
+					{
+						nominas = new string[1][];
+					}
+					else
+					{
+						copia = new string[nominas.Length][];
+						nominas.CopyTo(copia, 0);
+						nominas = new string[nominas.Length + 1][];
+						copia.CopyTo(nominas, 0);
+						copia = null;
+					}
+					nominas[nominas.Length - 1] = new string[aux.Length];
+					aux.CopyTo(nominas[nominas.Length-1], 0);
+					aux = null;
+				}
+				lector.Close();
+				flujofichero.Close();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
+		}
+
+		// Método para escribir las nominas semanales del empleado en el archivo con el dni dado
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 26/11/2015
+		public bool EscribirFichero(string[][] nominas)
+		{
+			FileStream flujofichero;
+			StreamWriter escritor;
+			int contador = 0;
+
+			flujofichero = new FileStream(path_archivo, FileMode.Create);
+			escritor = new StreamWriter(flujofichero);
+			for (contador = 0; contador < nominas.Length; contador++)
+			{
+				escritor.WriteLine(String.Join("/", nominas[contador]));
+			}
+			escritor.Close();
+			flujofichero.Close();
+
+			return true;
+		}
+	}
+}
