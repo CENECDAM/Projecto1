@@ -168,7 +168,7 @@ namespace FicheroConf
 		{
 			StreamWriter escritor;
 
-			escritor = new StreamWriter(File.OpenWrite("..\\..\\Datos.co"));  // Crear el fichero de configuración y crear un flujo de escritura sobre él
+			escritor = new StreamWriter("..\\..\\Datos.co");  // Crear el fichero de configuración y crear un flujo de escritura sobre él
 			escritor.WriteLine("JORNADA:40");
 			escritor.WriteLine("HORASEXTRAS:1.5");
 			escritor.WriteLine("RETENCIONES:16");
