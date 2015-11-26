@@ -122,7 +122,7 @@ namespace FicheroConf
 
 		// Método privado para la apertura de los flujos en los ficheros
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 25/11/2015
+		// Fecha de última comprobación: 26/11/2015
 		private void AperturaFicheros(out StreamReader lector, out StreamWriter escritor)
 		{
 			if (File.Exists("..\\..\\temp.txt"))  // Comprobación si el fichero temporal existe ya
@@ -130,8 +130,8 @@ namespace FicheroConf
 				File.Delete("..\\..\\temp.txt");  // En caso de que exista eliminarlo
 			}
 
-			lector = File.OpenText("..\\..\\Datos.co");   // Crear un flujo de lectura sobre el fichero de configuración
-			escritor = new StreamWriter(File.OpenWrite("..\\..\\temp.txt"));  // Crear el fichero temporal y crear un flujo de escritura sobre él
+			lector = new StreamReader("..\\..\\Datos.co");   // Crear un flujo de lectura sobre el fichero de configuración
+			escritor = new StreamWriter("..\\..\\temp.txt");  // Crear el fichero temporal y crear un flujo de escritura sobre él
 		}
 
 		// Método para guardar los cambios realizados en el fichero
