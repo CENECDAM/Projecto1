@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication10
+{
+    //Clase de controlador de Empleado creado por Niels Bosch
+    //Esta clase contiene todos los metodos necesarios para lo siguiente: Crear empleado, Modificarlo, Eliminarlo, listarlo y salir.
+    //Ultima Edicion: 27/10/2015 ---- > He creado la clase y creado los metodos para que Ruben sepa
+                                       // lo que tiene que llamar.
+    class ControladorEmpleado
+    {
+
+
+        // ----------------- FALTA METER COMPROBACION DE EMPLEADO PARA VER SI YA EXISTE --------------------- 
+
+
+        //Este Metodo permite la CREACIÓN de un empleado nuevo.
+        // Metodo Publico
+        public static void NuevoEmpleado( //aqui falta especificar los datos que tiene que recibir)
+        {
+
+        }
+
+        //Este metodo permite LISTAR los empleados
+        //Metodo Publico
+          public static void ListarEmpleado( //aqui falta especificar los datos que tiene que recibir)
+        {
+
+        }
+
+    }
+}
