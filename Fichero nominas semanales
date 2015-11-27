@@ -87,5 +87,23 @@ namespace FichNomSemanal
 
 			return true;
 		}
+		
+		// Método para eliminar la nomina de las semanas de un empleado
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 27/11/2015
+		public bool EliminarArchivo()
+		{
+
+			if (ExisteArchivo())
+			{
+				File.Delete(path_archivo);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
+		}
 	}
 }
