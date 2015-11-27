@@ -12,8 +12,8 @@ namespace ConsoleApplication10
     */
     /** 
     *Ultima Edicion: 27/10/2015 ---- > He creado la clase y creado los metodos para que Ruben sepa lo que tiene que llamar. 
-    *                                  Ademas he comentado lo que tiene que hacer cada metodo para que a la hora de empezar, 
-    *                                  asi no hay duda de lo que hace cada metodo.
+    *                                  Ademas he comentado lo que tiene que hacer cada metodo para que a la hora de empezar (yo, Niels)
+    *                                  a programar no hay duda de lo que hace cada metodo.
     */
                                        
     class ControladorEmpleado
