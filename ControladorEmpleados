@@ -6,21 +6,31 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication10
 {
-    //Clase de controlador de Empleado creado por Niels Bosch
-    //Esta clase contiene todos los metodos necesarios para lo siguiente: Crear empleado, Modificarlo, Eliminarlo, listarlo y salir.
-    //Ultima Edicion: 27/10/2015 ---- > He creado la clase y creado los metodos para que Ruben sepa
-                                       // lo que tiene que llamar.
+    /** Clase de controlador de Empleado creado por --- > Niels Bosch
+    *Esta clase contiene todos los metodos necesarios para lo siguiente: Crear empleado, Modificarlo, Eliminarlo, listarlo y salir.
+    *Es llamado principalmente por la Interfaz y hace uso de metodos y constructores de la clase de Empleado creado por Niels Bosch
+    */
+    /** 
+    *Ultima Edicion: 27/10/2015 ---- > He creado la clase y creado los metodos para que Ruben sepa lo que tiene que llamar. 
+    *                                  Ademas he comentado lo que tiene que hacer cada metodo para que a la hora de empezar, 
+    *                                  asi no hay duda de lo que hace cada metodo.
+    */
+                                       
     class ControladorEmpleado
     {
 
 
         // COMPROBACIÓN DE EXISTENCIA DEL EMPLEADO
+        //Creado: Niels Bosch
         //Es un metodo privado ya que solo lo vamos a usar dentro de esta clase
-         private static bool ExisteEmpleado()
+         private static bool ExisteEmpleado() //devuelve un true o false dependiendo si existe o no.
         {
              return true;
          }
+
+
         //Este Metodo permite la CREACIÓN de un empleado nuevo.
+        //Creado: Niels Bosch
         // Metodo Publico
         public static void NuevoEmpleado( //Pedir DNI, Nombre y apellido. )
         {
@@ -32,16 +42,16 @@ namespace ConsoleApplication10
         }
 
         //Este metodo permite LISTAR los empleados
+        //Creado: Niels Bosch
         //Metodo Publico
           public static void ListarEmpleado()
         {
               //Lista todos los empelados que tenemos almacenados
 
-
-
         }
         
-        //Este metodo permite ELIMINAR un empleados
+        //Este metodo permite ELIMINAR un empleado
+        //Creado: Niels Bosch
         //Metodo Publico
           public static void EliminarEmpleado( //Minimo el DNI)
         {
@@ -49,13 +59,14 @@ namespace ConsoleApplication10
               //Primero comprobara si existe el empleado
               //Mostrara la información del empleado y volvera a pedir si este es el que se quiere eliminar
               //si el usuario vuelve a confirmar, se elimina.
-
+              //Mostrar mensaje de exito de eliminación
 
 
         }
 
           //Este metodo permite MODIFICAR un empleado especifico.
-        //Metodo Publico
+          //Creado: Niels Bosch
+          //Metodo Publico
           public static void ModificarEmpelado( //Vamos a necesitar minimo el DNI del empleado que vamos a modificar.)
         {
 
