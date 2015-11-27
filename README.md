@@ -2,6 +2,12 @@
 Equipo: Joaquin, Samu, Pedro, Ruben y Niels
 
 
-ToDo: 1. Ver cuando podemos quedar
+Clases Finalizadas: Empleado y Nomina
 
-ToDo: 2. Cumplir entregas previstas
+-------------------------------------
+
+Ruben: Interfaz
+Niels: Clase ControladorEmpleado
+Joaquin: Terminar clase Nomina 
+Pedro: Terminar Gestion Nomina (segun joaquin, getter y setters) 
+Samu: 
