@@ -14,21 +14,56 @@ namespace ConsoleApplication10
     {
 
 
-        // ----------------- FALTA METER COMPROBACION DE EMPLEADO PARA VER SI YA EXISTE --------------------- 
-
-
+        // COMPROBACIÓN DE EXISTENCIA DEL EMPLEADO
+        //Es un metodo privado ya que solo lo vamos a usar dentro de esta clase
+         private static bool ExisteEmpleado()
+        {
+             return true;
+         }
         //Este Metodo permite la CREACIÓN de un empleado nuevo.
         // Metodo Publico
-        public static void NuevoEmpleado( //aqui falta especificar los datos que tiene que recibir)
+        public static void NuevoEmpleado( //Pedir DNI, Nombre y apellido. )
         {
+
+            //Permite crear un empleado con su DNI, Nombre y Apellido.
+
+
 
         }
 
         //Este metodo permite LISTAR los empleados
         //Metodo Publico
-          public static void ListarEmpleado( //aqui falta especificar los datos que tiene que recibir)
+          public static void ListarEmpleado()
+        {
+              //Lista todos los empelados que tenemos almacenados
+
+
+
+        }
+        
+        //Este metodo permite ELIMINAR un empleados
+        //Metodo Publico
+          public static void EliminarEmpleado( //Minimo el DNI)
         {
 
+              //Primero comprobara si existe el empleado
+              //Mostrara la información del empleado y volvera a pedir si este es el que se quiere eliminar
+              //si el usuario vuelve a confirmar, se elimina.
+
+
+
+        }
+
+          //Este metodo permite MODIFICAR un empleado especifico.
+        //Metodo Publico
+          public static void ModificarEmpelado( //Vamos a necesitar minimo el DNI del empleado que vamos a modificar.)
+        {
+
+
+              //Hacer comprobacion si esta vacio, en el caso de serlo que sale un mensaje.
+
+              //Si no lo esta mostrar la información del empleado
+              //una vez mostrado, ***********************************PREGUNTAR COMO SE QUIERE HACER LA MODIFICACION*************
         }
 
     }
