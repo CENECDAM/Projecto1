@@ -29,7 +29,7 @@ namespace ConsoleApplication10
         //Creado: Niels Bosch
         //Es un metodo privado ya que solo lo vamos a usar dentro de esta clase
          private static bool ExisteEmpleado(Empleado[] DNI , string dni) //devuelve un true o false dependiendo si existe o no.
-        { //1234 - Empleado[] DNI esta bien? El array Empleado donde deberia de estar creado? en la clase Empleado o en esta clase?
+        { //1234 - Empleado[] DNI esta bien? El array Empleado donde deberia de estar creado? en la clase Empleado o en esta clase?--> En esta clase, en cada método que vayas a tener una lista de empleados
             bool existe = false;
             int indice = 0;
 
@@ -66,7 +66,7 @@ namespace ConsoleApplication10
                 // ENTRADA
                 //1234 - Interfaz.DatosEmpleados() no entiendo bien que le tengo que pedir a ruben que me haga el return de ese metodo
                 // porque me tiene que devolver todos lo datos de los empleados (nombre, apellido y dni)
-                //practicamente: No se si ese metodo esta bien.
+                //practicamente: No se si ese metodo esta bien.--> Ese método de la interfaz te devolverá un objeto empleado con todos sus datos. Por ahora está bien.
                 clienteTemp = Interfaz.DatosEmpleados();  // Solicitud de Datos de Empleado
 
                 // PROCESAMIENTO
@@ -129,7 +129,7 @@ namespace ConsoleApplication10
         //Creado: Niels Bosch
         //Metodo Publico
           public static void EliminarEmpleado( //Minimo el DNI)
-        //1234 - Duda que tengo es que parametros me va a tener que recibir este metodo, el DNI solo, no?
+        //1234 - Duda que tengo es que parametros me va a tener que recibir este metodo, el DNI solo, no?--> Si, es lo único que necesitas para saber que empleado eliminar
               //APUNTES: Crear array temporal. Si el DNI no coincide, meter los datos en el array temporal. Si coincide, no meterlo. 
 //luego sobreescribir el array temporal por el original asi eliminando el empleado que se queria eliminar
           
@@ -166,12 +166,12 @@ namespace ConsoleApplication10
 
             // PROCESO
             // Comprobación de la existencia del Cliente
-            if (!ExisteEmpleado(empleados, dni)) //1234 - No se si los parametros especificados aqui (empleados, dni) estan correctos o si deberia de pedir otros datos o lo que sea
+            if (!ExisteEmpleado(empleados, dni)) //1234 - No se si los parametros especificados aqui (empleados, dni) estan correctos o si deberia de pedir otros datos o lo que sea--> Yo tendré que crear un método que devolverá un boolean que te dirá si ese empleado está, y me tendrias que pasar solo el dni
             {
                //Insertar codigo para pedir la opcion de la interfaz.
                 //1234 - Aqui esta hecho para que imprima el menu. Deberia de estar hecho por ruben todo lo de la interfaz
                 //pero creo que es mas sencillo que en este caso, lo haga yo no? ya que ademas las cosas que va a pedir
-                // es algo que solo se aplica si queremos eliminar un cliente. Jesus tambien lo hizo asi en su programa.
+                // es algo que solo se aplica si queremos eliminar un cliente. Jesus tambien lo hizo asi en su programa.--> No, en esta clase no puede ir nada de la interfaz, en todo caso ruben tendrá que mirar que opción ha sido seleccionada y él se encargará de llamar al método correspondiente.
                 switch (opcion)
                 {
                     // Salida del Menú de Operación
