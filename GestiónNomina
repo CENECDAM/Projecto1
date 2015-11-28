@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//creado por Pedro Canovas el dia 19/11/2015
 namespace BancoNomina
-{	//Última comprobación: 2/11/2015
+{	//Última comprobación: 28/11/2015
     static class GestiónNomina
     {
         // Desarrollador: Pedro Cánovas Medina
