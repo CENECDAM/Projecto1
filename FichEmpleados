@@ -1,0 +1,171 @@
+class FichEmpleados
+	{
+		// Método para leer todos los empleados
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 28/11/2015
+		public static bool LeerEmpleados(ref Empleado[] empleados)
+		{
+			FileStream flujo = null;
+			StreamReader lector = null;
+			Empleado empleado = null;
+			Empleado[] copia = null;
+			string[] datos = new string[3];
+			string[] dato_valor = null;
+			string aux = "";
+
+			if (File.Exists("..\\..\\empleados.lst"))
+			{
+				flujo = new FileStream("..\\..\\empleados.lst", FileMode.Open);
+				lector = new StreamReader(flujo);
+
+				while (lector.Peek() != -1)
+				{
+					aux = lector.ReadLine();
+					if (!aux.Equals(""))
+					{
+						dato_valor = aux.Split(":".ToCharArray());
+						if (dato_valor[0].Equals("NOMBRE"))
+						{
+							datos[0] = dato_valor[1];
+						}
+						else if (dato_valor[0].Equals("APELLIDOS"))
+						{
+							datos[1] = dato_valor[1];
+						}
+						else
+						{
+							datos[2] = dato_valor[1];
+						}
+						dato_valor = null;
+					}
+
+					if(aux.Equals("") || lector.Peek() == -1)
+					{
+						empleado = new Empleado(datos[0], datos[1], datos[2]);
+
+						if (empleados == null)
+						{
+							empleados = new Empleado[1];
+						}
+						else
+						{
+							copia = new Empleado[empleados.Length];
+							empleados.CopyTo(copia, 0);
+							empleados = new Empleado[empleados.Length + 1];
+							copia.CopyTo(empleados, 0);
+							copia = null;
+						}
+
+						empleados[empleados.Length - 1] = empleado;
+						datos = new string[3];
+						empleado = null;
+					}
+				}
+
+				lector.Close();
+				flujo.Close();
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		// Método para comprobar si existe un empleado
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 28/11/2015
+		public static bool ExisteEmpleado(string dni)
+		{
+			FileStream flujo = null;
+			StreamReader lector = null;
+			bool existe = false;
+			string[] datos = null;
+
+			flujo = new FileStream("..\\..\\empleados.lst", FileMode.Open);
+			lector = new StreamReader(flujo);
+
+			while (lector.Peek() != -1 && existe == false)
+			{
+				datos = lector.ReadLine().Split(":".ToCharArray());
+
+				if (datos[0].Equals("DNI") && datos[1].Equals(dni.ToUpper()))
+				{
+					existe = true;
+				}
+			}
+
+			lector.Close();
+			flujo.Close();
+
+			return existe;
+		}
+
+		// Método para escribir un único empleado
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 28/11/2015
+		public static bool EscribirEmpleado(Empleado empleado)
+		{
+			FileStream flujo = null;
+			StreamWriter escritor = null;
+			bool primero = true;
+
+			if (File.Exists("..\\..\\empleados.lst"))
+			{
+
+				if (!File.ReadAllText("..\\..\\empleados.lst").Equals(""))
+				{
+					primero = false;
+				}
+
+				flujo = new FileStream("..\\..\\empleados.lst", FileMode.Append);
+				escritor = new StreamWriter(flujo);
+
+				if (!primero)
+				{
+					escritor.WriteLine("\r\n");
+				}
+
+				escritor.WriteLine("NOMBRE:" + empleado.NOMBRE.ToUpper());
+				escritor.WriteLine("APELLIDOS:" + empleado.APELLIDOS.ToUpper());
+				escritor.Write("DNI:" + empleado.DNI.ToUpper());
+
+				escritor.Close();
+				flujo.Close();
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		// Método para ver si el fichero existe
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 28/11/2015
+		public static bool ExisteFichero()
+		{
+
+			if (File.Exists("..\\..\\empleados.lst"))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
+		}
+
+		// Método para crear el fichero
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 28/11/2015
+		public static void CrearFichero()
+		{
+
+			File.Create("..\\..\\empleados.lst");
+
+		}
+	}
