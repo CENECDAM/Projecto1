@@ -122,6 +122,9 @@ namespace ConsoleApplication10
         //Metodo Publico
           public static void EliminarEmpleado( //Minimo el DNI)
         {
+//APUNTES: Crear array temporal. Si el DNI no coincide, meter los datos en el array temporal. Si coincide, no meterlo. 
+//luego sobreescribir el array temporal por el original asi eliminando el empleado que se queria eliminar
+
 
               //Primero comprobara si existe el empleado
               //Mostrara la información del empleado y volvera a pedir si este es el que se quiere eliminar
