@@ -19,24 +19,83 @@ namespace ConsoleApplication10
     class ControladorEmpleado
     {
 
-
+        
         // COMPROBACIÓN DE EXISTENCIA DEL EMPLEADO
         //Creado: Niels Bosch
         //Es un metodo privado ya que solo lo vamos a usar dentro de esta clase
-         private static bool ExisteEmpleado() //devuelve un true o false dependiendo si existe o no.
+         private static bool ExisteEmpleado(Empleado[] DNI , string dni) //devuelve un true o false dependiendo si existe o no.
         {
-             return true;
+            bool existe = false;
+            int indice = 0;
+
+            if (DNI != null)
+            {
+                // Recorre la lista de nominas hasta que:
+                //      Peor caso: Realiza un recorrido completo (No lo encuentra)
+                //      Mejor caso: Encuentra equivalencia
+                for (indice = 0; (indice < DNI.Length) && !existe; indice++)
+                {
+                    if (DNI[indice].Dni.Equals(dni)) existe = true;
+                }
+            }
+
+            return existe;
          }
 
 
         //Este Metodo permite la CREACIÓN de un empleado nuevo.
         //Creado: Niels Bosch
         // Metodo Publico
-        public static void NuevoEmpleado( //Pedir DNI, Nombre y apellido. )
+        public static void NuevoEmpleado( ref Empleado[] empleados) // <--------- TENGO DUDAS SI ESTA ES LA MANERA CORRECTA DE HACERLO
         {
 
             //Permite crear un empleado con su DNI, Nombre y Apellido.
+             Empleado empleadoTemp;          // Datos del nuevo cliente a añadir
+            Empleado[] copia = null;    // Lista temporal de clientes
+            bool salir = false;
+            string mensaje = null;
 
+            // Entrada de Datos
+            do
+            {
+                // ENTRADA
+                clienteTemp = Interfaz.DatosEmpleados();  // Solicitud de Datos de Empleado
+
+                // PROCESAMIENTO
+                // Validación: Comprobar si el Cliente se encuentra ya registrado
+                if (!ExisteEmpleado(empleados, empleadoTemp.Dni))
+                {
+                    // Registro Cliente: Gestión Dinámica de Memoria
+                    if (empleados == null)
+                    {
+                        empleados = new Cliente[1];
+                    }
+                    else
+                    {
+                        copia = new Cliente[empleados.Length];
+                        empleados.CopyTo(copia, 0);
+                        empleados = new Cliente[empleados.Length + 1];
+                        copia.CopyTo(empleados, 0);
+                        copia = null;   // Liberación de Memoria
+                    }
+                    // Almacenamiento del Cliente
+                    empleados[empleados.Length - 1] = empleadoTemp;
+
+                    mensaje = "\n\t Empeado registrado correctamente";
+                }
+                else
+                {
+                    mensaje = "\n\t El Empleado ya se encuentra registrado";
+                }
+
+                // SALIDA
+                mensaje = mensaje + "\n\n\t Desea registrar otro Empleado (s/n): ";
+
+                // Sí desea continuar --> salir = false
+                // No desea continuar --> salir = true
+                salir = Interfaz.Continuar(mensaje) ? false : true;
+
+            } while (!salir);
 
 
         }
@@ -44,10 +103,18 @@ namespace ConsoleApplication10
         //Este metodo permite LISTAR los empleados
         //Creado: Niels Bosch
         //Metodo Publico
-          public static void ListarEmpleado()
+          public static void ListarEmpleado(Empleado[] empleados)
         {
               //Lista todos los empelados que tenemos almacenados
-
+                if (empleados != null)
+            {
+                Interfaz.ListarEmpleados(empleados);
+                Interfaz.Continuar("\n\tPulse ENTER para continuar");
+            }
+            else
+            {
+                Interfaz.Continuar("\n\tNo hay clientes a mostrar. \n\tPulse ENTER para continuar");
+            }
         }
         
         //Este metodo permite ELIMINAR un empleado
@@ -67,7 +134,7 @@ namespace ConsoleApplication10
           //Este metodo permite MODIFICAR un empleado especifico.
           //Creado: Niels Bosch
           //Metodo Publico
-          public static void ModificarEmpelado( //Vamos a necesitar minimo el DNI del empleado que vamos a modificar.)
+          public static void ModificarEmpelado(ref Empleado[] empleados)
         {
 
 
@@ -75,6 +142,45 @@ namespace ConsoleApplication10
 
               //Si no lo esta mostrar la información del empleado
               //una vez mostrado, ***********************************PREGUNTAR COMO SE QUIERE HACER LA MODIFICACION*************
+
+         string dni = null;      // Empleado para la búsqueda del cliente
+            float cantidad = 0.0F;  // Cantidad a ingresar o reintegrar
+            byte opcion;            // Opción del menú
+            int indice = 0;         // Posición del cliente en la lista de clientes
+            string mensaje = null;
+
+            // ENTRADA: Solicitud del DNI del cliente para operar
+            dni = Interfaz.SolicitarDni();
+
+            // PROCESO
+            // Comprobación de la existencia del Cliente
+            if (!ExisteEmpleado(empleados, dni))
+            {
+               //Insertar codigo para pedir la opcion de la interfaz.
+
+                switch (opcion)
+                {
+                    // Salida del Menú de Operación
+                    case 0:
+                        mensaje = "\n\tOperación Cancelada\n";
+                        break;
+                    
+                    case 1:
+                       
+
+                    case 2:
+                      
+
+                    case 3:
+                }
+            }
+            else {
+                mensaje = "\n\tERROR: No se encuentra el Cliente\n";
+            }
+
+            // SALIDA
+            mensaje = mensaje + "\n\tPulse ENTER para continuar"; 
+            Interfaz.Continuar(mensaje);
         }
 
     }
