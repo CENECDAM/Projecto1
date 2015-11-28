@@ -5,25 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BancoNomina
-{
-    static class ControladorNominas
+{	//Última comprobación: 2/11/2015
+    static class GestiónNomina
     {
         // Desarrollador: Pedro Cánovas Medina
-        // Fecha de última comprobación: 23/11/2015
+        // Fecha de creación: 23/11/2015
         // Método Privado: Comprueba existencia de nominas
-        private static bool ExisteNomina(Nomina[] lista, string dni)
+        private static bool ExisteNomina(Nomina[] listaDni, string dni)
         {
             bool existe = false;
             int indice = 0;
 
-            if (lista != null)
+            if (listaDni != null)
             {
                 // Recorre la lista de nominas hasta que:
                 //      Peor caso: Realiza un recorrido completo (No lo encuentra)
                 //      Mejor caso: Encuentra equivalencia
-                for (indice = 0; (indice < lista.Length) && !existe; indice++)
+                for (indice = 0; (indice < listaDni.Length) && !existe; indice++)
                 {
-                    if (lista[indice].Dni.Equals(dni)) existe = true;
+                    if (listaDni[indice].Dni.Equals(dni)) existe = true;
                 }
             }
 
@@ -32,19 +32,19 @@ namespace BancoNomina
 
         // Método Privado: Comprueba existencia de nominas ya registradas
         // Si existe, indica la posición (índice) en el que se encuentra
-        private static bool ExisteNomina(Nomina[] lista, string dni, ref int posicion)
+        private static bool ExisteNomina(Nomina[] listaDni, string dni, ref int posicion)
         {
             bool existe = false;    // Control de existencia
             int indice = 0;
 
-            if (lista != null)
+            if (listaDni != null)
             {
                 // Recorre la lista de nominas hasta que:
                 //      Peor caso: Realiza un recorrido completo (No lo encuentra)
                 //      Mejor caso: Encuentra equivalencia
-                for (indice = 0; (indice < lista.Length) && !existe; indice++)
+                for (indice = 0; (indice < listaDni.Length) && !existe; indice++)
                 {
-                    if (lista[indice].Dni.Equals(dni))
+                    if (listaDni[indice].Dni.Equals(dni))
                     {
                         existe = true;
                         posicion = indice;
@@ -56,11 +56,11 @@ namespace BancoNomina
         }
 
 
-        // Método público: Añadir nueva nomina
-        public static void NuevaNomina(ref Nomina[] nomina)
+        // Método público: Añadir nueva nomina - esto lo haremos desde el main: ControladorNomina.NuevaNomina()
+        public static void NuevaNomina()
         {
             Nomina nominaTemp;          // Datos de la nomina a añadir
-            Nomina[] copia = null;    // Lista temporal de nominas
+            Nomina[][] copia = null;    // Lista temporal de nominas
         
             bool salir = false;
             string mensaje = null;
@@ -68,34 +68,25 @@ namespace BancoNomina
             // Entrada de Datos
             do
             {
-                // ENTRADA
-                nominaTemp = Interfaz.DatosNomina ();  // Solicitud de Datos para crear la nomina
-
+                // ENTRADA de datos para la nomina, como vamos a crearla nueva, pedimos los datos de la primera semana
+                nominaTemp = Interfaz.DatosNominaSemana();  // Solicitud de Datos para crear la nomina
+                //se debera de crear el flujo para solicitar las semanas una a una
+		//una vez rellenado el array nominaTemp, se lo mandamos a Samu para que cree el file
                 // PROCESAMIENTO
                 // Validación: Comprobar si la nomina existe
-                if (!ExisteNomina(nomina, nominaTemp.Dni))
+                if (!ExisteNomina(DatosNomina, nominaTemp.Dni))
                 {
                     // Registro Cliente: Gestión Dinámica de Memoria
-                    if (nomina == null)
-                    {
-                        nomina = new Nomina[1];
-                    }
-                    else
-                    {
-                        copia = new Nomina[nominas.Length];
-                        nomina.CopyTo(copia, 0);
-                        nomina = new Nomina[nominas.Length + 1];
-                        copia.CopyTo(nomina, 0);
-                        copia = null;   // Liberación de Memoria
-                    }
+                   
                     // Almacenamiento de la nomina
-                    nomina[nomina.Length - 1] = nominaTemp;
-
+                   
+			//llamo al metodo de escritura del fichero
+			EscribirFichero(nominaTemp);
                     mensaje = "\n\t Nomina registrada correctamente";
                 }
                 else
                 {
-                    mensaje = "\n\t El Empleado ya tiene una nomina, desea editarla?";
+                    mensaje = "\n\t El Empleado ya tiene una nomina";
                 }
 
                 // SALIDA
@@ -127,31 +118,31 @@ namespace BancoNomina
 
 
         // Método público: Eliminar nomina
-        public static void EliminarNomina(ref Nomina[] nomina)
+        public static void EliminarNominaSemana(ref Nomina[] semanas)
         {
-            string semana = null;      // que semana se desea eliminar en la nomina
+            int semana = null;      // que semana se desea eliminar en la nomina
            
-            int indice = 0;         // Posición del cliente en la lista de clientes
+            int indice = 0;         // Posición de la semana en la lista de semanas
             string mensaje = null;
             bool salir = false;
 
             do
             {
                 // ENTRADA: Solicitud de la semana que deseamos eliminar
-                semana = Interfaz.SolicitarSemana(nomina,semana);
-                if (ExisteSemana(nomina, semana, ref indice))
+                semana = Interfaz.SolicitarSemana(semanas,semana);
+                if (ExisteSemana(semanas, semana, ref indice))
                 {
                     
-                        //eliminacion del cliente seleccionado
-                        //creo un array de tipo RNominas pra almacenar el array de nominas original
+                        //eliminacion de la semana seleccionada
+                        //creo un array de tipo RNominas para almacenar el array de nominas original
                         //tiene la longitud del original menos uno porque como vamos a borrar un elemento lo 
                         //hacemos con una dimension menos
-                        Nommina[] nominaC = new Nomina[nomina.Length - 1];
+                        Nomina[] semanasC = new Nomina[semanas.Length - 1];
 
                         //recorro desde 0 hasta la longiud del array de copia 
                         //la i es la que controla al array de copia y la j la que controla el array original
                         
-                        for (int i = 0, j = 0; i < nominaC.Length; i++, j++)
+                        for (int i = 0, j = 0; i < semanasC.Length; i++, j++)
                         {
 
                             //si la posicion que queremos borrar (indice) es igual a i, entonces es que ese 
@@ -167,14 +158,14 @@ namespace BancoNomina
                            
                             //voy asignando los elementos que han quedado del array original al array de copia 
 
-                            nominaC[i] = nomina[j];
+                            semanasC[i] = semanas[j];
                         }
                         //como es una dimension menos se sobreescribe al pasarlo
-                        nomina = nominaC;
+                        semanas = semanasC;
 
                       
                         
-                        Interfaz.MostraNomina(clientes);
+                        Interfaz.MostraNomina(semanas);
                         mensaje = "\n\tSEMANA ELIMINADA CON EXITO\n";
 
                     
@@ -204,5 +195,88 @@ namespace BancoNomina
 
 
         }
+        
+        
+        // Método público: Gestionar las noominas
+        public static void GestionNominas(ref Nomina[] nominas)
+        {
+            string dni = null;      // dni para la búsqueda del usuario
+           
+            byte opcion;            // Opción del menú
+            int indice = 0;         // Posición del cliente en la lista de nominas
+            string mensaje = null;
+            int semana=0;
+            Nomina[][] semanasTemp = new Nominas[5][];
+
+            // ENTRADA: Solicitud del DNI del cliente para gestionar sus nominas
+           
+            try
+            {
+                dni = Interfaz.SolicitarDni();
+            }
+            catch (Exception e)
+            {
+                
+                mensaje = (e.Message.ToString());
+            }
+
+            // PROCESO
+            // Comprobación de la existencia del Cliente
+            if (ExisteCliente(nominas, dni, ref indice))
+            {
+            	//recogemos la opcion deseada del menu de gestion de nominas
+                opcion = Interfaz.MenuGestionNominas();
+
+                switch (opcion)
+                {
+                    // Salida del Menú de Operación
+                    case 0:
+                        mensaje = "\n\tSaliendo...\n";
+                        break;
+                    // Crear Nomina
+                    case 1:
+                        
+                        semanasTemp = Interfaz.PedirDatosSemanas();  // Solicitud de Datos
+                        FichNomSemanal.EscribirFichero(semanasTemp);
+                        //samu creo que hace falta aqui que me pidas el dni para saber de quien son las semanas que me tienes que pintar
+                        FichNomSemanal.LeerSemanas(dni);
+                        //  FichNomSemanal.LeerSemanas(semanasTemp);
+                       
+                       
+                        break;
+                    // Editar Nomina
+                    case 2:
+                        bool salir2 = false;
+                        bool respuesta = true;
+                        Interfaz.ListarSemanas(dni);
+                        semanasTemp = Interfaz.EditarDatosSemanas();  // Solicitud de Datos
+                        FichNomSemanal.EscribirFichero();
+                       
+                        break;
+
+                    case 3:
+
+                        bool close = false;
+                        
+                        Interfaz.CerrarNomina();  // Cerrar nomina para confirmar imprension y eliminar
+                        FichNomSemanal.LeerSemanas(dni);
+                        Interfaz.ImprimirCerrar();
+                        
+                        
+                        break;
+                }
+            }
+            else
+            {
+                mensaje = "\n\tERROR: No se encuentra el Cliente\n";
+            }
+
+            // SALIDA
+            mensaje = mensaje + "\n\tPulse ENTER para continuar";
+            Interfaz.Continuar(mensaje);
+
+        }
     }
 }
+
+
