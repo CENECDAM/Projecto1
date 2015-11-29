@@ -3,19 +3,20 @@ Equipo: Joaquin, Samu, Pedro, Ruben y Niels
 
 
 Clases Finalizadas: Empleado y Nomina
+Clases Finalizadas sujetas a modificaciones: Ficheros
 
 -------------------------------------
 
 Ruben: Interfaz
 
 
-Niels: Clase ControladorEmpleado
+Niels: Terminar ControladorEmpleado
 
 
-Joaquin: Terminar clase Nomina 
+Joaquin: Ayudar a pedro con la gestión de la nómina (por ahora)
 
 
-Pedro: Terminar Gestion Nomina (segun joaquin, getter y setters) 
+Pedro: Terminar Gestion Nomina
 
 
-Samu: 
+Samu: Terminar las clases de impresión de los ficheros
