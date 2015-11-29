@@ -16,20 +16,20 @@ namespace ConsoleApplication10
     *                                  a programar no hay duda de lo que hace cada metodo.
     *
     *Ultima Edicion: 29/10/2015 ---- > Creado el metodo de eliminación del empleado. Limpiado el codigo.
-    */                           
-    
- 
+    */
 
-  
+
+
+
 
     class ControladorEmpleado
     {
         Empleado[] Empleados = null;
-        
+
         // COMPROBACIÓN DE EXISTENCIA DEL EMPLEADO
         //Creado: Niels Bosch
         //Es un metodo privado ya que solo lo vamos a usar dentro de esta clase
-         private static bool ExisteEmpleado(Empleado[] DNI , string dni) //devuelve un true o false dependiendo si existe o no.
+        private static bool ExisteEmpleado(Empleado[] DNI, string dni) //devuelve un true o false dependiendo si existe o no.
         {
             bool existe = false;
             int indice = 0;
@@ -46,17 +46,17 @@ namespace ConsoleApplication10
             }
 
             return existe;
-         }
+        }
 
 
         //Este Metodo permite la CREACIÓN de un empleado nuevo.
         //Creado: Niels Bosch
         // Metodo Publico
-        public static void NuevoEmpleado( ref Empleado[] empleados) // <--------- TENGO DUDAS SI ESTA ES LA MANERA CORRECTA DE HACERLO
+        public static void NuevoEmpleado(ref Empleado[] empleados) // <--------- TENGO DUDAS SI ESTA ES LA MANERA CORRECTA DE HACERLO
         {
 
             //Permite crear un empleado con su DNI, Nombre y Apellido.
-             Empleado empleadoTemp;          // Datos del nuevo cliente a añadir
+            Empleado empleadoTemp;          // Datos del nuevo cliente a añadir
             Empleado[] copia = null;    // Lista temporal de clientes
             bool salir = false;
             string mensaje = null;
@@ -65,7 +65,7 @@ namespace ConsoleApplication10
             do
             {
                 // ENTRADA
-                
+
                 clienteTemp = Interfaz.DatosEmpleados();  // Solicitud de Datos de Empleado
 
                 // PROCESAMIENTO
@@ -110,10 +110,10 @@ namespace ConsoleApplication10
         //Este metodo permite LISTAR los empleados
         //Creado: Niels Bosch
         //Metodo Publico
-          public static void ListarEmpleado(Empleado[] empleados)
+        public static void ListarEmpleado(Empleado[] empleados)
         {
-              //Lista todos los empelados que tenemos almacenados
-                if (empleados != null)
+            //Lista todos los empelados que tenemos almacenados
+            if (empleados != null)
             {
                 Interfaz.ListarEmpleados(empleados);
                 Interfaz.Continuar("\n\tPulse ENTER para continuar");
@@ -123,61 +123,61 @@ namespace ConsoleApplication10
                 Interfaz.Continuar("\n\tNo hay clientes a mostrar. \n\tPulse ENTER para continuar");
             }
         }
-        
+
         //Este metodo permite ELIMINAR un empleado
         //Creado: Niels Bosch
         //Metodo Publico
-          public static void EliminarEmpleado(Empleado[] empleados, String DNI)
-        
+        public static void EliminarEmpleado(Empleado[] empleados, String DNI)
+
 //APUNTES: Crear array temporal. Si el DNI no coincide, meter los datos en el array temporal. Si coincide, no meterlo. 
-//luego sobreescribir el array temporal por el original asi eliminando el empleado que se queria eliminar
-          
-          {
-              
-              string mensaje = null;
-              Empleado empleadoTemp;          // Datos del nuevo cliente a añadir
-              Empleado[] copia = null;
-              int indice = 0;
-             
-               if (!ExisteEmpleado( empleados, DNI))
+        //luego sobreescribir el array temporal por el original asi eliminando el empleado que se queria eliminar
+        {
+
+            string mensaje = null;
+            Empleado empleadoTemp;          // Datos del nuevo cliente a añadir
+            Empleado[] copia = null;
+            int indice = 0;
+
+            if (!ExisteEmpleado(empleados, DNI))
+            {
+                //Explicación: Samu me comento que seria mejor hacer esto de cierta forma. Debido a retraso mental de Niels he decidido hacerlo asi porque de
+                //la otra forma no me salia. 
+
+                for (indice = 0; (indice < empleados.Length); indice++)
                 {
-                   //Explicación: Samu me comento que seria mejor hacer esto de cierta forma. Debido a retraso mental de Niels he decidido hacerlo asi porque de
-                   //la otra forma no me salia. 
-
-                    for (indice = 0; (indice < empleados.Length); indice++)
+                    if (empleados[indice].Dni.Equals(DNI))
                     {
-                        if (empleados[indice].Dni.Equals(DNI))
-                        {
-                            empleados[indice].DNI = null;
-                            empleados[indice].NOMBRE = null;
-                            empleados[indice].APELLIDOS = null;
-                        }
+                        empleados[indice].DNI = null;
+                        empleados[indice].NOMBRE = null;
+                        empleados[indice].APELLIDOS = null;
                     }
-
-                    mensaje = "\n\t El usuario con DNI: " + DNI + " Se ha eliminado correctamente.";
                 }
-               else
-               {
-                   mensaje = "\n\t No se puede eliminar un empleado que no existe.";
-               }
+
+                mensaje = "\n\t El usuario con DNI: " + DNI + " Se ha eliminado correctamente.";
+            }
+            else
+            {
+                mensaje = "\n\t No se puede eliminar un empleado que no existe.";
+            }
 
         }
 
-          //Este metodo permite MODIFICAR un empleado especifico.
-          //Creado: Niels Bosch
-          //Metodo Publico
-          public static void ModificarEmpelado(ref Empleado[] empleados)
+        //Este metodo permite MODIFICAR un empleado especifico.
+        //Creado: Niels Bosch
+        //Metodo Publico
+        public static void ModificarEmpelado(ref Empleado[] empleados)
         {
 
 
-             
 
 
-         string dni = null;      // Empleado para la búsqueda del cliente
+
+            string dni = null;      // Empleado para la búsqueda del cliente
             float cantidad = 0.0F;  // Cantidad a ingresar o reintegrar
             int opcion;            // Opción del menú
             int indice = 0;         // Posición del cliente en la lista de clientes
             string mensaje = null;
+            string modificacion;
 
             // ENTRADA: Solicitud del DNI del cliente para operar
             dni = Interfaz.SolicitarDni();
@@ -186,35 +186,41 @@ namespace ConsoleApplication10
             // Comprobación de la existencia del Cliente
             if (!ExisteEmpleado(empleados, dni)) //1234 - No se si los parametros especificados aqui (empleados, dni) estan correctos o si deberia de pedir otros datos o lo que sea--> Yo tendré que crear un método que devolverá un boolean que te dirá si ese empleado está, y me tendrias que pasar solo el dni
             {
-               //Insertar codigo para pedir la opcion de la interfaz.
+                //Insertar codigo para pedir la opcion de la interfaz.
                 //1234 - Aqui esta hecho para que imprima el menu. Deberia de estar hecho por ruben todo lo de la interfaz
                 //pero creo que es mas sencillo que en este caso, lo haga yo no? ya que ademas las cosas que va a pedir
                 // es algo que solo se aplica si queremos eliminar un cliente. Jesus tambien lo hizo asi en su programa.--> No, en esta clase no puede ir nada de la interfaz, en todo caso ruben tendrá que mirar que opción ha sido seleccionada y él se encargará de llamar al método correspondiente.
 
                 Interfaz.ListarUnicoEmpleado(dni); //Este metodo devuelve la información de un unico empleado.
-                                                   //esto lo quiero tener para que el usuario vea los datos actuales del empleaod
+                //esto lo quiero tener para que el usuario vea los datos actuales del empleaod
 
 
                 opcion = Intefaz.pediropcion(); //devuelve la opción seleccionado por el usuario 1. Cambiar nombre, 2. Cambiar apellido, 3 cambiar DNI
                 switch (opcion)
                 {
-                   
-                    
+                        //depeniendo de la opcion, simplemente me tiene que mandar el nuevo dato introducido por el usuario y sera modificado.
+
                     case 1:
-                     
-
+                        modificacion = Intefaz.PedirModificacion();
+                        empleados.DNI = modificacion;
+                        break;
                     case 2:
-                      
-
+                        modificacion = Intefaz.PedirModificacion();
+                        empleados.NOMBRE = modificacion;
+                        break;
                     case 3:
+                        modificacion = Intefaz.PedirModificacion();
+                        empleados.APELLIDO = modificacion;
+                        break;
                 }
             }
-            else {
+            else
+            {
                 mensaje = "\n\tERROR: No se encuentra el Cliente\n";
             }
 
             // SALIDA
-            mensaje = mensaje + "\n\tPulse ENTER para continuar"; 
+            mensaje = mensaje + "\n\tPulse ENTER para continuar";
             Interfaz.Continuar(mensaje);
         }
 
