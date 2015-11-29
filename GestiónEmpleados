@@ -89,7 +89,7 @@ namespace ConsoleApplication10
                     empleados[empleados.Length - 1] = empleadoTemp;
 
                     mensaje = "\n\t Empeado registrado correctamente";
-                    ModificarEmpleados(empleados);
+                   
                 }
                 else
                 {
