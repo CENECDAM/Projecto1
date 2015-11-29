@@ -15,7 +15,7 @@ namespace ConsoleApplication10
     *                                  Ademas he comentado lo que tiene que hacer cada metodo para que a la hora de empezar (yo, Niels)
     *                                  a programar no hay duda de lo que hace cada metodo.
     *
-    *Ultima Edicion: 29/10/2015 ---- > Creado el metodo de eliminación del empleado. Limpiado el codigo.
+    *Ultima Edicion: 29/10/2015 ---- > Creado el metodo de eliminación del empleado y modificacion. Limpiado el codigo.
     */
 
 
