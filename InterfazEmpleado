@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Interfaces
+{
+    class InterfazEmpleado
+    {
+        public static void MenuPrincipalEmpleados()
+        {
+            byte opcion = 0;
+            string aux = null;
+            bool correcto = false;
+            bool error = false;
+            string mensaje = null;
+            
+
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("");
+            Console.WriteLine("                    G E S T I Ó N  DE  N Ó M I N A S");
+            Console.WriteLine("\t----------------------------------------------------------");
+            Console.WriteLine("");
+            Console.Write("\t\t1. Registrar Empleado\n");
+            Console.Write("\t\t2. Modificar Empleado\n");
+            Console.Write("\t\t3. Listar Empleados\n");
+            Console.Write("\t\t4. Dar de baja\n\n");
+            Console.Write("\t\t0. Salir\t\n\n");
+            Console.WriteLine("\t----------------------------------------------------------");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("\tPulse 0 para volver al Menú Principal...");
+            Console.ResetColor();
+            Console.ReadLine();
+
+            if (Byte.TryParse(aux, out opcion) && (opcion  >= 0) && (opcion <= 4))
+            {
+                correcto = true;
+            }
+            else
+            {
+                error = true;
+                mensaje = "Opción incorrecta (seleccione una opción válida: 0 - 2)";
+
+            }
+            switch (opcion)
+                        {
+                case 1:
+              
+                        }
+
+          
+        }
+    }
+}
