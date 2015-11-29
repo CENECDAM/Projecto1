@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Interfaces
+{
+    class InterfazNomina
+    {
+        public static void InterfazPrincipalNominas()
+        {
+            byte opcion = 0;
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("");
+            Console.WriteLine("                    G E S T I Ó N  DE  N Ó M I N A S");
+            Console.WriteLine("\t----------------------------------------------------------");
+            Console.WriteLine("");
+            Console.Write("\t\t1. Crear Nómina\n");
+            Console.Write("\t\t2. Editar Nómina\n");
+            Console.Write("\t\t3. Listar Nómina\n\n");
+            Console.Write("\t\t0. Salir\t\n\n");
+            Console.WriteLine("\t----------------------------------------------------------");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("\tPulse 0 para volver al Menú Principal...");
+            Console.ResetColor();
+            Console.ReadLine();
+
+         
+        }
+    }
+}
