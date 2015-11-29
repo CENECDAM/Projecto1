@@ -13,7 +13,7 @@ Ruben: Interfaz
 Niels: Terminar ControladorEmpleado
 
 
-Joaquin: Ayudar a pedro con la gestión de la nómina (por ahora)
+Joaquin: Ayudar a Pedro con la gestión de la nómina (por ahora)
 
 
 Pedro: Terminar Gestion Nomina
