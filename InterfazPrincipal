@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Interfaces
+{
+    class InterfazPrincipal
+    {
+        private static void Cabecera()
+        {
+            Console.Clear();
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("                    G E S T I Ó N  DE  N Ó M I N A S");
+            Console.ResetColor();
+        }
+
+        private static void MostrarError(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("ERROR: {0}\n", message);
+            Console.ResetColor();
+        }
+
+
+        public static byte MenuPrincipal()
+        {
+            byte seleccion = 0;
+            bool correcto = false;
+            bool error = false;
+            string mensaje = null;
+            string aux = null;
+
+            do
+            {
+
+                Cabecera();
+                if (error)
+                {
+                    MostrarError(mensaje);
+                }
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\t----------------------------------------------------------");
+                Console.WriteLine("");
+                Console.Write("\t\t1. Empleados\n");
+                Console.Write("\t\t2. Nóminas\n\n");
+                Console.Write("\t\t0. Salir\t\n\n");
+                Console.WriteLine("\t----------------------------------------------------------");
+                Console.ResetColor();
+
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write("\t\t Opción: ");
+                aux = Console.ReadLine();
+                aux = aux.Trim();
+                Console.ResetColor();
+
+
+
+                if (Byte.TryParse(aux, out seleccion) && (seleccion >= 0) && (seleccion <= 2))
+                {
+                    correcto = true;
+                }
+                else
+                {
+                    error = true;
+                    mensaje = "Opción incorrecta (seleccione una opción válida: 0 - 2)";
+
+                }
+
+            } while (!correcto);
+
+            return seleccion;
+        }
+
+    }
+}
