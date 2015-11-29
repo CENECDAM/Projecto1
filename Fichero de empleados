@@ -2,7 +2,7 @@ class FichEmpleados
 	{
 		// Método para leer todos los empleados
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 28/11/2015
+		// Fecha de última comprobación: 29/11/2015
 		public static bool LeerEmpleados(ref Empleado[] empleados)
 		{
 			FileStream flujo = null;
@@ -10,72 +10,56 @@ class FichEmpleados
 			Empleado empleado = null;
 			Empleado[] copia = null;
 			string[] datos = new string[3];
-			string[] dato_valor = null;
-			string aux = "";
 
-			if (File.Exists("..\\..\\empleados.lst"))
+			if (File.Exists("..\\..\\empleados.lst")) // Comprobar si el fichero existe, en caso de que no sea así devuelve false como indicando que la operación no se ha podido realizar
 			{
-				flujo = new FileStream("..\\..\\empleados.lst", FileMode.Open);
+
+				// Apertura de flujos
+				flujo = new FileStream("..\\..\\empleados.lst", FileMode.Open);	// El fichero debe de existir (Se debe realizar la comprobación antes, en la gestión)
 				lector = new StreamReader(flujo);
 
-				while (lector.Peek() != -1)
+				while (lector.Peek() != -1)											// Comprobar si es el final del fichero
 				{
-					aux = lector.ReadLine();
-					if (!aux.Equals(""))
+					datos = lector.ReadLine().Split(":".ToCharArray());				// Lectura de la linea y partición de los datos que están en el fichero separados por dobles puntos
+
+					empleado = new Empleado(datos[0], datos[1], datos[2]);			// Los datos del fichero deben estar en el orden Nombre, Apellidos y Dni, si no la lectura causara problemas
+
+					// Gestión dinámica de la creación de la lista de empleados
+					if (empleados == null)
 					{
-						dato_valor = aux.Split(":".ToCharArray());
-						if (dato_valor[0].Equals("NOMBRE"))
-						{
-							datos[0] = dato_valor[1];
-						}
-						else if (dato_valor[0].Equals("APELLIDOS"))
-						{
-							datos[1] = dato_valor[1];
-						}
-						else
-						{
-							datos[2] = dato_valor[1];
-						}
-						dato_valor = null;
+						empleados = new Empleado[1];
+					}
+					else
+					{
+						copia = new Empleado[empleados.Length];
+						empleados.CopyTo(copia, 0);
+						empleados = new Empleado[empleados.Length + 1];
+						copia.CopyTo(empleados, 0);
+						copia = null;
 					}
 
-					if(aux.Equals("") || lector.Peek() == -1)
-					{
-						empleado = new Empleado(datos[0], datos[1], datos[2]);
-
-						if (empleados == null)
-						{
-							empleados = new Empleado[1];
-						}
-						else
-						{
-							copia = new Empleado[empleados.Length];
-							empleados.CopyTo(copia, 0);
-							empleados = new Empleado[empleados.Length + 1];
-							copia.CopyTo(empleados, 0);
-							copia = null;
-						}
-
-						empleados[empleados.Length - 1] = empleado;
-						datos = new string[3];
-						empleado = null;
-					}
+					// Asignación en la lista y liberación de recursos
+					empleados[empleados.Length - 1] = empleado;
+					datos = new string[3];
+					empleado = null;
 				}
 
+				// Cerrar flujos
 				lector.Close();
 				flujo.Close();
 
-				return true;
+				return true;	// En caso de que se haya realizado la lectura se devuelve true
+				// IMPORTANTE: hay que tener cuidado por que si se realiza una lectura del fichero y esta vacío, la lista se quedará con el valor con el que se pasó, así que hay que tenerlo en cuenta
 			}
 			else
 			{
-				return false;
+				return false;	// En caso de que no se pueda realizar la lectura por que no existe el fichero se devuelve un false
 			}
 		}
 
 		// Método para comprobar si existe un empleado
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 28/11/2015
+		// Fecha de última comprobación: 29/11/2015
 		public static bool ExisteEmpleado(string dni)
 		{
 			FileStream flujo = null;
@@ -83,62 +67,86 @@ class FichEmpleados
 			bool existe = false;
 			string[] datos = null;
 
-			flujo = new FileStream("..\\..\\empleados.lst", FileMode.Open);
+			// Apertura de flujos
+			flujo = new FileStream("..\\..\\empleados.lst", FileMode.Open); // El fichero debe de existir (Se debe realizar la comprobación antes, en la gestión)
 			lector = new StreamReader(flujo);
 
-			while (lector.Peek() != -1 && existe == false)
+			while (lector.Peek() != -1 || existe == false)	// El bucle itera mientras no sea el final del fichero o no se encuentre el dni
 			{
-				datos = lector.ReadLine().Split(":".ToCharArray());
+				datos = lector.ReadLine().Split(":".ToCharArray());	// Lectura de la linea y partición de los datos que están en el fichero separados por dobles puntos
 
-				if (datos[0].Equals("DNI") && datos[1].Equals(dni.ToUpper()))
+				if (datos[2].Equals(dni.ToUpper()))					// Comprobar que el dni sea igual al deni que se da
 				{
-					existe = true;
+					existe = true;	//	En caso de que si lo sea, devuelve un verdadero
 				}
 			}
 
+			// Cerrar flujos
 			lector.Close();
 			flujo.Close();
 
-			return existe;
+			return existe;		// Se devuelve true o false si lo encuentra o no
 		}
 
 		// Método para escribir un único empleado
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 28/11/2015
+		// Fecha de última comprobación: 29/11/2015
 		public static bool EscribirEmpleado(Empleado empleado)
 		{
 			FileStream flujo = null;
 			StreamWriter escritor = null;
-			bool primero = true;
 
-			if (File.Exists("..\\..\\empleados.lst"))
+			if (File.Exists("..\\..\\empleados.lst"))	// Comprobar que el fichero existe para realizar la escritura
 			{
 
-				if (!File.ReadAllText("..\\..\\empleados.lst").Equals(""))
-				{
-					primero = false;
-				}
-
-				flujo = new FileStream("..\\..\\empleados.lst", FileMode.Append);
+				// Apertura de flujos
+				flujo = new FileStream("..\\..\\empleados.lst", FileMode.Append);	// Se añadirá la información al final del fichero
 				escritor = new StreamWriter(flujo);
 
-				if (!primero)
-				{
-					escritor.WriteLine("\r\n");
-				}
+				escritor.WriteLine(empleado.NOMBRE.ToUpper() + ":" + empleado.APELLIDOS.ToUpper() + ":" + empleado.DNI.ToUpper()); // Escritura del empleado en el formato necesario
 
-				escritor.WriteLine("NOMBRE:" + empleado.NOMBRE.ToUpper());
-				escritor.WriteLine("APELLIDOS:" + empleado.APELLIDOS.ToUpper());
-				escritor.Write("DNI:" + empleado.DNI.ToUpper());
-
+				// Cerrar flujos
 				escritor.Close();
 				flujo.Close();
 
-				return true;
+				return true;	// Indicar que la escritura se ha realizado
 			}
 			else
 			{
-				return false;
+				return false;	// Indicar que no se ha podido realizar la escritura debido a que no existía el fichero
+			}
+		}
+
+		// Método para modificar la lista de empleados (se escribirá una lista)
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 29/11/2015
+		public static bool ModificarEmpleados(Empleado[] empleados)
+		{
+			FileStream flujo = null;
+			StreamWriter escritor = null;
+			int contador = 0;
+
+			if (File.Exists("..\\..\\empleados.lst"))   // Comprobar que el fichero existe para realizar la escritura
+			{
+
+				// Apertura de flujos
+				flujo = new FileStream("..\\..\\empleados.lst", FileMode.Create);   // Se creara o sobreescribirá (la intención es sobreescribir) el fichero de empleados
+				escritor = new StreamWriter(flujo);
+
+				for (contador = 0; contador < empleados.Length; contador++)		// Iteración en la lista de empleados que se van a escribir
+				{
+					escritor.WriteLine(empleados[contador].NOMBRE.ToUpper() + ":" + empleados[contador].APELLIDOS.ToUpper() + ":" + empleados[contador].DNI.ToUpper()); // Escritura del empleado en el formato necesario
+				}
+
+				// Cerrar flujos
+				escritor.Close();
+				flujo.Close();
+
+				return true;    // Indicar que la escritura se ha realizado
+			}
+			else
+			{
+				return false;   // Indicar que no se ha podido realizar la escritura debido a que no existía el fichero
 			}
 		}
 
@@ -148,7 +156,7 @@ class FichEmpleados
 		public static bool ExisteFichero()
 		{
 
-			if (File.Exists("..\\..\\empleados.lst"))
+			if (File.Exists("..\\..\\empleados.lst"))	// Una simple condición para saber si el fichero existe o no
 			{
 				return true;
 			}
@@ -164,6 +172,8 @@ class FichEmpleados
 		// Fecha de última comprobación: 28/11/2015
 		public static void CrearFichero()
 		{
+			// La idea de este método es que cuando no se encuentre el fichero por alguno de los booleanos de arriba, se le pregunte por interfaz al usuario si quiere crear el archivo (vacio)
+			// y en caso afirmativo, se llamaría a este método, en caso contrario pues no podria hacer ninguna gestión en la plantilla de empleados
 
 			File.Create("..\\..\\empleados.lst");
 
