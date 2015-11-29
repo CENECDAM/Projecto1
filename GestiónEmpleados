@@ -15,7 +15,7 @@ namespace ConsoleApplication10
     *                                  Ademas he comentado lo que tiene que hacer cada metodo para que a la hora de empezar (yo, Niels)
     *                                  a programar no hay duda de lo que hace cada metodo.
     *
-    *Ultima Edicion: 29/10/2015 ---- > Creado el metodo de eliminación del empleado y modificacion. Limpiado el codigo.
+    *Ultima Edicion: 29/10/2015 ---- > Creado el metodo de eliminación del empleado y modificacion empleado. Limpiado el codigo.
     */
 
 
@@ -89,6 +89,7 @@ namespace ConsoleApplication10
                     empleados[empleados.Length - 1] = empleadoTemp;
 
                     mensaje = "\n\t Empeado registrado correctamente";
+                    ModificarEmpleados(empleados);
                 }
                 else
                 {
@@ -154,6 +155,7 @@ namespace ConsoleApplication10
                 }
 
                 mensaje = "\n\t El usuario con DNI: " + DNI + " Se ha eliminado correctamente.";
+                ModificarEmpleados(empleados);
             }
             else
             {
@@ -213,6 +215,8 @@ namespace ConsoleApplication10
                         empleados.APELLIDO = modificacion;
                         break;
                 }
+
+                ModificarEmpleados(empleados);
             }
             else
             {
