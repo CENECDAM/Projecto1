@@ -15,7 +15,7 @@ namespace Interfaces
         //donde le pide al usuario el dni. Esta variable esta "de mientras" para simularlo.
 
 
-
+// ------------------------- IMPORTANTE: EN PRINCIPIO SOLO FALTA EL METODO DE MODIFICACION DE EMPLEADO QUE SON 2 ------------------
 
         public static void MenuPrincipalEmpleados()
         {
