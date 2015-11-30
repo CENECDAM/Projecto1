@@ -15,7 +15,7 @@ namespace Interfaces
         //donde le pide al usuario el dni. Esta variable esta "de mientras" para simularlo.
 
 
-// ------------------------- IMPORTANTE: EN PRINCIPIO SOLO FALTA EL METODO DE MODIFICACION DE EMPLEADO QUE SON 2 ------------------
+
 
         public static void MenuPrincipalEmpleados()
         {
@@ -24,7 +24,10 @@ namespace Interfaces
             bool correcto = false;
             bool error = false;
             string mensaje = null;
-           
+            string empleadoDni = null;
+            string empleadoaeliminar = null;
+            string empleadoApellido = null;
+            string empleadoNombre = null;
 
 
             Console.Clear();
@@ -56,13 +59,70 @@ namespace Interfaces
 
             }
             switch (opcion)
-            {
+            { //CODIGO CREADO POR NIELSBOSCH
                 case 1:
+                    //VERSION CUTRE DEL INTERFAZ, ESTO OBV. TIENE QUE ESTAR MEJOR PERO ES PARA QUE COGA LA IDEA RUBEN
 
+                    Console.Write("DNI del nuevo empleado \n");
+                    empleadoDni = Console.ReadLine();
+                    Console.Write("Nombre del Empleado: \n");
+                    empleadoNombre = Console.ReadLine();
+                    Console.Write("Apellido del Empleado: \n");
+                    empleadoApellido = Console.ReadLine();
+
+                    NuevoEmpleado(empleadoNombre, empleadoApellido,empleadoDni); //ESto en principio envia los parametros de arriba al metodo de nuevo empleado que lo crea
+
+                    // ------ POR HACER: RECIBIR MENSAJE DE ERROR Y MOSTRARLO---------
+                    break;
+
+                case 2:
+
+
+                    ListarEmpleados(empleados); //aqui hay que pasarle el array empleados, esta en rojo porque todavia no esta declarado en la clase.
+
+
+                    // ------ POR HACER: RECIBIR MENSAJE DE ERROR Y MOSTRARLO---------
+                    break;
+
+                case 3:
+
+
+                    // ------ POR HACER: RECIBIR MENSAJE DE ERROR Y MOSTRARLO---------
+                    break;
+
+                case 4:
+                    //VERSION CUTRE DEL INTERFAZ, ESTO OBV. TIENE QUE ESTAR MEJOR PERO ES PARA QUE COGA LA IDEA RUBEN
+                    bool resultadodeeliminacion = false;
+             
+                    Console.WriteLine("Inserte DNI del empleado que desea eliminar");
+                    empleadoaeliminar = Console.ReadLine();
+                    //---- POR HACER: VALIDAR SI EL DNI ES CORRECTO
+                    // ----- POR HACER: SI LO ES, COMPROBAR QUE EXISTE, SI EXISTE
+
+                    //llamamos al metodo de eliminar empleado que devuelve un booleano.
+                    resultadodeeliminacion = EliminarEmpleado(empleado, empleadoaeliminar);
+
+                    if (!resultadodeeliminacion)
+                    {
+
+                        Console.WriteLine("El usuario ha sido eliminado correctamente");
+                        
+                    }
+                    else
+                    {
+
+                       //AQUI LAS COSAS PARA RECIBIR EL ERROR Y MOSTRARLO Y ESAS TONTERIAS
+                    }
+
+                    
+                    // ------ POR HACER: RECIBIR MENSAJE DE ERROR Y MOSTRARLO---------
+                    break;
             }
 
 
         }
+
+        //TODOS LOS METODOS DE AQUI, CREADOS POR NIELSBOSCH
         public string SolicitarDni(){
             //DUDA: Simplemente devolver DNI o hay que especificar cosas del array empleado? (DUDA PARA SAMU) 
             return dni;
