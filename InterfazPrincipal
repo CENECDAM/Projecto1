@@ -17,7 +17,7 @@ namespace Interfaces
             Console.ResetColor();
         }
 
-        private static void MostrarError(string message)
+        private static void mensaje(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("ERROR: {0}\n", message);
@@ -30,7 +30,7 @@ namespace Interfaces
             byte seleccion = 0;
             bool correcto = false;
             bool error = false;
-            string mensaje = null;
+            string mensajes = null;
             string aux = null;
 
             do
@@ -39,7 +39,7 @@ namespace Interfaces
                 Cabecera();
                 if (error)
                 {
-                    MostrarError(mensaje);
+                    mensaje(mensajes);
                 }
 
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -66,7 +66,7 @@ namespace Interfaces
                 else
                 {
                     error = true;
-                    mensaje = "Opción incorrecta (seleccione una opción válida: 0 - 2)";
+                    mensajes = "Opción incorrecta (seleccione una opción válida: 0 - 2)";
 
                 }
 
@@ -75,5 +75,9 @@ namespace Interfaces
             return seleccion;
         }
 
+       
     }
+
+   
+
 }
