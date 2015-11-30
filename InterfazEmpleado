@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace Interfaces
 {
+
+    //Todos los metodos creados por Niels Bosch
+    // ultima edicion >> 30/10/2015
     class InterfazEmpleado
     {
+        string dni = null; //esto lo vamos a usar para pedir el DNI. Lo uso en el metodo devolver DNI la cosa es que todavia no ha llegado ruben a la parte del codigo 
+        //donde le pide al usuario el dni. Esta variable esta "de mientras" para simularlo.
+
+
+
+
         public static void MenuPrincipalEmpleados()
         {
             byte opcion = 0;
@@ -15,7 +24,8 @@ namespace Interfaces
             bool correcto = false;
             bool error = false;
             string mensaje = null;
-            
+           
+
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
@@ -35,7 +45,7 @@ namespace Interfaces
             Console.ResetColor();
             Console.ReadLine();
 
-            if (Byte.TryParse(aux, out opcion) && (opcion  >= 0) && (opcion <= 4))
+            if (Byte.TryParse(aux, out opcion) && (opcion >= 0) && (opcion <= 4))
             {
                 correcto = true;
             }
@@ -46,12 +56,80 @@ namespace Interfaces
 
             }
             switch (opcion)
-                        {
+            {
                 case 1:
-              
-                        }
 
-          
+            }
+
+
+        }
+        public string SolicitarDni(){
+            //DUDA: Simplemente devolver DNI o hay que especificar cosas del array empleado? (DUDA PARA SAMU) 
+            return dni;
+
+        }
+
+        //Metodo ListarUnicoEmpleado
+        //Recibe un DNI y en funcion a esto, muestra los demas datos.
+        public void ListarUnicoEmpleado(Empleado empleado, string recibirdni) //recibe un DNI para saber el empleado que tiene que mostrar.
+        {
+            bool siExiste;
+            string mensaje;
+
+            
+            siExiste = GestionEmpleado.ExisteEmpleado(empleado.DNI, recibirdni); //devuelve true o false para ver si existe el empleado que se desea listar.
+                                                                              //usa el metodo existeempelado de la clase GestionEmpleado
+
+            if(!siExiste){
+                Cabecera(); 
+            Console.WriteLine("DNI Del Empleado solicitado" + recibirdni);
+            Console.WriteLine("Nombre Del Empleado solicitado" + recibirdni);
+            Console.WriteLine("Apellido Del Empleado solicitado" + recibirdni);
+            }
+            else{
+                mensaje = "No existe el empleado que esta solicitando";
+            }
+        }
+        public static void ListarEmpleados(Empleados[] lista)
+        {
+            int indice = 0;
+
+            Cabecera(); 
+            Console.WriteLine("\t LISTADO DE EMPLEADOS");
+           
+
+            for (indice = 0; indice < lista.Length; indice++) //bucle que aumenta el numero del indice
+            {
+                MostrarEmpleado(lista[indice]);
+            }
+        }
+        public static void MostrarEmpleado(Empleado empleado) //muestra un unico empleado depediendo del indice que recibe. Este metodo es usado por el metodo ListaEmpleados
+                                                                //ademas sirve para listar un unico empleado.
+        {
+            Cabecera(); 
+
+            Console.WriteLine("DNI: " + empleado.DNI);
+            Console.WriteLine("Nombre: " + empleado.NOMBRE);
+            Console.WriteLine("Apellido: " + empleado.Apellido);
+        }
+        public static bool Continuar(string message) //CODIGO COPIADO TAL Y CUAL DEL EJERCICIO DE JESUS. ESTE COMENTARIO BORRARLO ANTES DE SUBIRLO Y MODIFICAR UN POCO LOS NOMBRES
+                                                     //DE LOS VARIABLES, PARA DISIMULAR :P
+        {
+            bool seguir = false;    // Control de la confirmación
+            string aux = null;
+
+            // ENTRADA
+            Console.Write(message);
+            aux = Console.ReadLine();
+            aux = aux.Trim().ToLower(); // Métodos en cadena: 1º limpia ; 2º minúsculas
+
+            // VALIDACION --> PENDIENTE
+
+            // PROCESAMIENTO
+            if ((aux != "") && (aux[0] == 's')) seguir = true;   // Sólo true si 's', false en resto de casos
+
+            // SALIDA
+            return seguir;
         }
     }
 }
