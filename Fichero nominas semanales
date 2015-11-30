@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 
 namespace FichNomSemanal
 {
@@ -12,7 +13,7 @@ namespace FichNomSemanal
 		// Fecha de última comprobación: 26/11/2015
 		public FNomSemanal(string dni)
 		{
-			path_archivo = "..\\..\\nsemanal\\" + dni.ToUpper() + ".mact";
+			path_archivo = "..\\..\\nsemanal\\" + dni.ToUpper() + ".mact";	// Construimos un objeto de la clase incializando un string con el supuesto path del arhivo
 		}
 
 		// Método para saber si existe el fichero de las nóminas para el dni dado
@@ -20,74 +21,123 @@ namespace FichNomSemanal
 		// Fecha de última comprobación: 26/11/2015
 		public bool ExisteArchivo()
 		{
+			// Realizar esta comprobación siempre que querramos saber si el archivo para tal empleado existe, para poder aviasr al usuario
 			return File.Exists(path_archivo);
 		}
 
 		// Método para leer las semanas del archivo del empleado con el dni dado
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 26/11/2015
-		public bool LeerSemanas(ref string[][] nominas)
+		// Fecha de última comprobación: 30/11/2015
+		public bool LeerSemanas(ref Nomina[] nominas)
 		{
 			FileStream flujofichero;
 			StreamReader lector;
 			string[] aux = null;
-			string[][] copia = null;
+			Nomina[] copia = null;
+			Nomina nomina = null;
 
+			// Comprobar que el fichero existe para su lectura
 			if (File.Exists(path_archivo))
 			{
+				// Apertura de flujos
 				flujofichero = new FileStream(path_archivo, FileMode.Open);
 				lector = new StreamReader(flujofichero);
+
+				// IMPORTANTE: se asume que si se realiza la lectura, el formato del fichero es correcto
 				while (lector.Peek() != -1)
 				{
-					aux = lector.ReadLine().Split("/".ToCharArray());
+					aux = lector.ReadLine().Split(":".ToCharArray()); // Se lee la línea y se separan por los dos puntos
+					// FORMATO DEL FICHERO: Semana:Horas:Euros_Hora:Horas_Extras:Salario_Extra:Salario_Bruto:Impuestos:Salario_Neto:Jornada_De_Esa_Semana:Incremento_De_Esa_Semana:Retenciones_De_Esa_Semana
+					nomina = new Nomina(Convert.ToInt32(aux[1]), Convert.ToSingle(aux[2]), Convert.ToInt32(aux[3]), Convert.ToSingle(aux[4]), Convert.ToSingle(aux[5]), Convert.ToSingle(aux[6]), Convert.ToSingle(aux[7]), Convert.ToInt32(aux[8]), Convert.ToSingle(aux[9]), Convert.ToInt32(aux[10])); // Crear un objeto nómina con los datos del fichero
+					// Gestión dinámica de memoria
 					if (nominas == null)
 					{
-						nominas = new string[1][];
+						nominas = new Nomina[1];
 					}
 					else
 					{
-						copia = new string[nominas.Length][];
+						copia = new Nomina[nominas.Length];
 						nominas.CopyTo(copia, 0);
-						nominas = new string[nominas.Length + 1][];
+						nominas = new Nomina[nominas.Length + 1];
 						copia.CopyTo(nominas, 0);
 						copia = null;
 					}
-					nominas[nominas.Length - 1] = new string[aux.Length];
-					aux.CopyTo(nominas[nominas.Length-1], 0);
+					nominas[nominas.Length - 1] = nomina;
 					aux = null;
+					nomina = null;
 				}
+
+				// Cierre de flujos
 				lector.Close();
 				flujofichero.Close();
-				return true;
+
+				return true; // Indicar que se ha podido realizar la lectura
+				// IMPORTANTE: en la lectura puede que no haya encontrado ninguna línea, por lo que el array seguirá a null, hay que tenerlo en cuenta antes de mostrarlo
 			}
 			else
 			{
-				return false;
+				return false; // Indicar que no se ha podido realizar la lectura
 			}
 
 		}
 
 		// Método para escribir las nominas semanales del empleado en el archivo con el dni dado
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 26/11/2015
-		public bool EscribirFichero(string[][] nominas)
+		// Fecha de última comprobación: 30/11/2015
+		public void EscribirFichero(Nomina[] nominas)
 		{
 			FileStream flujofichero;
 			StreamWriter escritor;
 			int contador = 0;
 
-			flujofichero = new FileStream(path_archivo, FileMode.Create);
+			// Apertura de flujos
+			flujofichero = new FileStream(path_archivo, FileMode.Create);	// Se abre el flujo de tal manera que si el archivo ya existe, se sobreescribirá
 			escritor = new StreamWriter(flujofichero);
+
+			// Iterar por todas las semanas dadas
 			for (contador = 0; contador < nominas.Length; contador++)
 			{
-				escritor.WriteLine(String.Join("/", nominas[contador]));
+				// FORMATO DEL FICHERO: Semana:Horas:Euros_Hora:Horas_Extras:Salario_Extra:Salario_Bruto:Impuestos:Salario_Neto:Jornada_De_Esa_Semana:Incremento_De_Esa_Semana:Retenciones_De_Esa_Semana
+				escritor.WriteLine("semana" + (contador + 1) + ":" + nominas[contador].Horas.ToString() + ":" + nominas[contador].PagaHoras.ToString() + ":" + nominas[contador].HorasExtra.ToString() + ":" + nominas[contador].SalarioExtra.ToString() + ":" + nominas[contador].SalarioBruto.ToString() + ":" + nominas[contador].Impuesto.ToString() + ":" + nominas[contador].Neto.ToString() + ":" + nominas[contador].Jornada.ToString() + ":" + nominas[contador].PlusSalario.ToString() + ":" + nominas[contador].Retencion.ToString());
 			}
+
+			// Cierre de flujos
+			escritor.Close();
+			flujofichero.Close();
+		}
+
+		// Método para añadir una nomina semanal al fichero
+		// Desarrollador: Samuel Stratos Bater Herrero
+		// Fecha de última comprobación: 30/11/2015
+		public bool AddSemana(Nomina nomina)
+		{
+			FileStream flujofichero;
+			StreamWriter escritor;
+			bool crear = false;     // Sirve para saber si se ha tenido que crear el archivo o no
+			int linea = 0;
+
+			// Comprobar si existe el archivo para saber si se va a crear en la apertura de flujos
+			if (!ExisteArchivo())
+			{
+				crear = true;
+			}
+
+			linea = File.ReadLines(path_archivo).Count();
+
+			// Apertura de flujos
+			flujofichero = new FileStream(path_archivo, FileMode.Append);   // Se abre el flujo de tal manera que si el archivo ya existe, se añade al final, si no se crea
+			escritor = new StreamWriter(flujofichero);
+
+			// FORMATO DEL FICHERO: Semana:Horas:Euros_Hora:Horas_Extras:Salario_Extra:Salario_Bruto:Impuestos:Salario_Neto:Jornada_De_Esa_Semana:Incremento_De_Esa_Semana:Retenciones_De_Esa_Semana
+			escritor.WriteLine("semana" + (linea + 1) + ":" + nomina.Horas.ToString() + ":" + nomina.PagaHoras.ToString() + ":" + nomina.HorasExtra.ToString() + ":" + nomina.SalarioExtra.ToString() + ":" + nomina.SalarioBruto.ToString() + ":" + nomina.Impuesto.ToString() + ":" + nomina.Neto.ToString() + ":" + nomina.Jornada.ToString() + ":" + nomina.PlusSalario.ToString() + ":" + nomina.Retencion.ToString());
+			
+			// Cierre de flujos
 			escritor.Close();
 			flujofichero.Close();
 
-			return true;
+			return crear;	// Sirve para la retroalimentación del usuario, para informarle de que si ha sido la primera semana que se ha añadido a dicho empleado
 		}
-		
+
 		// Método para eliminar la nomina de las semanas de un empleado
 		// Desarrollador: Samuel Stratos Bater Herrero
 		// Fecha de última comprobación: 27/11/2015
