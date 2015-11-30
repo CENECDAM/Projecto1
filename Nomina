@@ -43,19 +43,19 @@ namespace MetodosNomina
         // Contructor para una crear una nómina semanal sabiendo ya todos los datos (Se necesita para los ficheros)
         // Desarrollador: Samuel Stratos Bater Herrero
         // Fecha de última revisión: 30/11/2015
-		public Nomina(int horas, float paga_horas, int horas_extra, float salario_extra, float salario_bruto, float impuesto, float neto, int jornada, float plus_salario, int retencion)
-		{
-			this.horas = horas;
-			this.paga_horas = paga_horas;
-			this.horas_extra = horas_extra;
-			this.salario_extra = salario_extra;
-			this.salario_bruto = salario_bruto;
-			this.impuesto = impuesto;
-			this.neto = neto;
-			this.jornada = jornada;
-			this.plus_salario = plus_salario;
-			this.retencion = retencion;
-		}
+	public Nomina(int horas, float paga_horas, int horas_extra, float salario_extra, float salario_bruto, float impuesto, float neto, int jornada, float plus_salario, int retencion)
+	{
+		this.horas = horas;
+		this.paga_horas = paga_horas;
+		this.horas_extra = horas_extra;
+		this.salario_extra = salario_extra;
+		this.salario_bruto = salario_bruto;
+		this.impuesto = impuesto;
+		this.neto = neto;
+		this.jornada = jornada;
+		this.plus_salario = plus_salario;
+		this.retencion = retencion;
+	}
 
         #region Propiedades
         // DESARROLLADOR: JOAQUIN CANCA
