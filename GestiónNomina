@@ -126,11 +126,12 @@ namespace BancoNomina
             string mensaje = null;
             bool salir = false;
 
-            do
+            doi
             {
                 // ENTRADA: Solicitud de la semana que deseamos eliminar
                 semana = Interfaz.SolicitarSemana(semanas,semana);
-                if (ExisteSemana(semanas, semana, ref indice))
+                indice = semana;
+                if (ExisteSemana(semanas, ref indice))
                 {
                     
                         //eliminacion de la semana seleccionada
@@ -206,7 +207,7 @@ namespace BancoNomina
             int indice = 0;         // Posición del cliente en la lista de nominas
             string mensaje = null;
             int semana=0;
-            Nomina[][] semanasTemp = new Nominas[5][];
+            Nomina[] semanasTemp = new Nominas[];
 
             // ENTRADA: Solicitud del DNI del cliente para gestionar sus nominas
            
@@ -237,9 +238,10 @@ namespace BancoNomina
                     case 1:
                         
                         semanasTemp = Interfaz.PedirDatosSemanas();  // Solicitud de Datos
-                        FichNomSemanal.EscribirFichero(semanasTemp);
+                        FnomSemanal fs = new FnomSemanal(dni);
+                        fs.EscribirFichero(semanasTemp);
                         //samu creo que hace falta aqui que me pidas el dni para saber de quien son las semanas que me tienes que pintar
-                        FichNomSemanal.LeerSemanas(dni);
+                        fs.LeerSemanas();
                         //  FichNomSemanal.LeerSemanas(semanasTemp);
                        
                        
@@ -248,19 +250,22 @@ namespace BancoNomina
                     case 2:
                         bool salir2 = false;
                         bool respuesta = true;
-                        Interfaz.ListarSemanas(dni);
-                        semanasTemp = Interfaz.EditarDatosSemanas();  // Solicitud de Datos
-                        FichNomSemanal.EscribirFichero();
+                        FnomSemanal fs = new FnomSemanal(dni);
+                        semanasTemp = fs.LeerSemanas(semanasTemp);
+                        Interfaz.ListarSemanas(semanasTemp);
+                        Interfaz.EditarDatosSemanas(semanasTemp);  // Solicitud de Datos
+                        fs.EscribirFichero();
                        
                         break;
 
                     case 3:
 
                         bool close = false;
-                        
-                        Interfaz.CerrarNomina();  // Cerrar nomina para confirmar imprension y eliminar
-                        FichNomSemanal.LeerSemanas(dni);
+                        semanasTemp = FichNomSemanal.LeerSemanas(dni);
+                        Interfaz.CerrarNomina(semanasTemp);  // Cerrar nomina para confirmar imprension y eliminar
+                       
                         Interfaz.ImprimirCerrar();
+                        fs.EliminarArchivo();
                         
                         
                         break;
