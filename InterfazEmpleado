@@ -76,7 +76,7 @@ namespace Interfaces
                     break;
 
                 case 2:
-
+                    //CODIGO CREADO POR NIELSBOSCH
 
                     ListarEmpleados(empleados); //aqui hay que pasarle el array empleados, esta en rojo porque todavia no esta declarado en la clase.
 
@@ -85,15 +85,14 @@ namespace Interfaces
                     break;
 
                 case 3:
+                    //CODIGO CREADO POR NIELSBOSCH
                     string empleadoamodificar = null;
                     bool resultadodni = false;
                     byte opcionModificacion;
-                    string nuevoapellido = null;
-                    string nuevodni = null;
-                    string nuevonombre = null;
-                    bool nombrecorrecto = false;
-                    bool apellidocorrecto = false;
-                    bool dnicorrecto = false;
+                    string nuevodato = null; //esto de aqui recibe el String (del nombre, apellido o DNI) que queremos modificar
+                    
+                    bool datocorrecto = false; //recibe el resultado si el "nuevodato" es correct o no
+                   
                     bool resultadoempleado = false;
                     Console.WriteLine("Inserte DNI del empleado que desea modificar");
                     empleadoamodificar = Console.ReadLine();
@@ -126,17 +125,29 @@ namespace Interfaces
                                 mensaje = "Opción incorrecta (seleccione una opción válida: 0 - 2)";
 
                             }
-                            pediropcion(opcionModificacion);
+
+
+                            //-----------------------------------------------------
+                            //Explicacion de Pediropcion y PedirModificacion ---- > 
+                            //Aver, el mismo Switch Case que hay en esta clase esta en la clase
+                            //de gestion de empleados. El pediropcion envia la opción a la clase
+                            //GestionEmpleados y selecciona el mismo case. El case pide un Dato,
+                            //esto lo envia el PedirModificacion. Dependiendo del case que se ha elegido
+                            //el NuevoDato sera asignado a lo que se queire modificar (ya sea el nombre, apellido o dni)
+                            //-----------------------------------------------------
+
+
+                            pediropcion(opcionModificacion); //Esto de aqui envia la opción elegida a la clase GestionEmpleado
                             switch (opcionModificacion)
                             {
                                 case 1:
                                     Console.WriteLine("Insertar el nuevo nombre del Empleado");
-                                    nuevonombre = Console.ReadLine();
-                                    nombrecorrecto = validar_Nombre(nuevonombre, mensaje); //valida si el nomrbe esta bien
-                                    if (!nombrecorrecto)
+                                    nuevodato = Console.ReadLine();
+                                    datocorrecto = validar_Nombre(nuevodato, mensaje); //valida si el nomrbe esta bien
+                                    if (!datocorrecto)
                                     {
 
-                                        PedirModificacion(nuevonombre);
+                                        PedirModificacion(nuevodato);//Esto envia el nuevodato a la clase pedirmodificacion
 
                                     }
                                     else
@@ -149,12 +160,12 @@ namespace Interfaces
 
                                 case 2:
                                     Console.WriteLine("Insertar el nuevo apellido del Empleado");
-                                    nuevoapellido = Console.ReadLine();
-                                    apellidocorrecto = validar_Nombre(nuevoapellido, mensaje); //valida si el nomrbe esta bien
-                                    if (!apellidocorrecto)
+                                    nuevodato = Console.ReadLine();
+                                    datocorrecto = validar_Nombre(nuevodato, mensaje); //valida si el nomrbe esta bien
+                                    if (!datocorrecto)
                                     {
 
-                                        PedirModificacion(nuevoapellido);
+                                        PedirModificacion(nuevodato);//Esto envia el nuevodato a la clase pedirmodificacion
 
                                     }
                                     else
@@ -169,12 +180,12 @@ namespace Interfaces
 
                                 case 3:
                                     Console.WriteLine("Insertar el nuevo DNI del Empleado");
-                                    nuevodni = Console.ReadLine();
-                                    dnicorrecto = validar_Dni(nuevodni, mensaje); //valida si el nomrbe esta bien
-                                    if (!dnicorrecto)
+                                    nuevodato = Console.ReadLine();
+                                    datocorrecto = validar_Dni(nuevodato, mensaje); //valida si el nomrbe esta bien
+                                    if (!datocorrecto)
                                     {
 
-                                        PedirModificacion(nuevodni);
+                                        PedirModificacion(nuevodato); //Esto envia el nuevodato a la clase pedirmodificacion
 
                                     }
                                     else
@@ -208,6 +219,7 @@ namespace Interfaces
                     break;
 
                 case 4:
+                    //CODIGO CREADO POR NIELSBOSCH
                     //VERSION CUTRE DEL INTERFAZ, ESTO OBV. TIENE QUE ESTAR MEJOR PERO ES PARA QUE COGA LA IDEA RUBEN
                     bool resultadodeeliminacion = false;
 
@@ -243,6 +255,7 @@ namespace Interfaces
       
 
         //Metodo ListarUnicoEmpleado
+        //CODIGO CREADO POR NIELSBOSCH
         //Recibe un DNI y en funcion a esto, muestra los demas datos.
         public void ListarUnicoEmpleado(Empleado empleado, string recibirdni) //recibe un DNI para saber el empleado que tiene que mostrar.
         {
@@ -265,6 +278,8 @@ namespace Interfaces
                 mensaje = "No existe el empleado que esta solicitando";
             }
         }
+        //CODIGO CREADO POR NIELSBOSCH
+        //Este metodo lista todos los empleados que hay.
         public static void ListarEmpleados(Empleados[] lista)
         {
             int indice = 0;
@@ -278,6 +293,7 @@ namespace Interfaces
                 MostrarEmpleado(lista[indice]);
             }
         }
+        //CODIGO CREADO POR NIELSBOSCH
         public static void MostrarEmpleado(Empleado empleado) //muestra un unico empleado depediendo del indice que recibe. Este metodo es usado por el metodo ListaEmpleados
         //ademas sirve para listar un unico empleado.
         {
@@ -287,6 +303,9 @@ namespace Interfaces
             Console.WriteLine("Nombre: " + empleado.NOMBRE);
             Console.WriteLine("Apellido: " + empleado.Apellido);
         }
+        //CODIGO CREADO POR NIELSBOSCH
+        // ----------- IMPROTATNE, ESTE CODIGO TODAVIA NO ESTA IMPLEMENTADA EN LA INTERFAZ.
+        // PEDRO Y NIELS LA LLAMAN Y CREO QUE ES ALGO QUE DEBERIAMOS DE IMPLEMENTAR.
         public static bool Continuar(string message) //CODIGO COPIADO TAL Y CUAL DEL EJERCICIO DE JESUS. ESTE COMENTARIO BORRARLO ANTES DE SUBIRLO Y MODIFICAR UN POCO LOS NOMBRES
         //DE LOS VARIABLES, PARA DISIMULAR :P
         {
@@ -306,13 +325,14 @@ namespace Interfaces
             // SALIDA
             return seguir;
         }
-
+        //CODIGO CREADO POR NIELSBOSCH
         static byte pediropcion(byte opcionelegido)
         {
 
             return opcionelegido;
 
         }
+        //CODIGO CREADO POR NIELSBOSCH
         static string PedirModificacion(string modificacion)
         {
 
