@@ -2,7 +2,7 @@
 Equipo: Joaquin, Samu, Pedro, Ruben y Niels
 
 
-Clases Finalizadas: Empleado y Nomina
+Clases Finalizadas: Empleado, Nomina, GestionEmpleado, InterfazEmpleado
 Clases Finalizadas sujetas a modificaciones: Ficheros
 
 -------------------------------------
