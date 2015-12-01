@@ -85,6 +85,123 @@ namespace Interfaces
                     break;
 
                 case 3:
+                    string empleadoamodificar = null;
+                    bool resultadodni = false;
+                    byte opcionModificacion;
+                    string nuevoapellido = null;
+                    string nuevodni = null;
+                    string nuevonombre = null;
+                    bool nombrecorrecto = false;
+                    bool apellidocorrecto = false;
+                    bool dnicorrecto = false;
+                    bool resultadoempleado = false;
+                    Console.WriteLine("Inserte DNI del empleado que desea modificar");
+                    empleadoamodificar = Console.ReadLine();
+
+                    resultadodni = validar_Dni(empleadoamodificar, mensaje); //Valida si la cadena es correcta
+
+                    if (!resultadodni)
+                    {
+
+                        // --- POR HACER: FALTA POR PONER LOS BUCLES QUE SI SALTA UN ERROR A LA HROA
+                        // DE INSERTAR UN NEUVO NOMBRE,APELLIDO O DNI VUELVA A PEDIR ESTE HASTA QUE SE HAYA INSERTADO
+                        // UNO QUE ES CORRECTO. TAMBIEN CONFIGURAR EL BOTTON 0 PARA QUE SALGA DEL MENU 
+                        resultadoempleado = ExisteEmpleado(empleadoaeliminar, empleadoamodificar); //Valida si realmente existe.
+                        if (!resultadoempleado)
+                        {
+                            ListarUnicoEmpleado(empleado, empleadoamodificar); //Esto es para mostrar la info actual del empleado
+                            Console.Write("\t\t1. Modificar Nombre\n");
+                            Console.Write("\t\t2. Modificar Apellido\n");
+                            Console.Write("\t\t3. Modificar DNI\n");
+                           
+                            Console.Write("\t\t0. Salir\t\n\n"); //Todavia por configurar. Leer el comentario largo de arriba.
+                            Console.ReadLine();
+                            if (Byte.TryParse(aux, out opcionModificacion) && (opcionModificacion >= 0) && (opcionModificacion <= 3))
+                            {
+                                correcto = true;
+                            }
+                            else
+                            {
+                                error = true;
+                                mensaje = "Opción incorrecta (seleccione una opción válida: 0 - 2)";
+
+                            }
+                            pediropcion(opcionModificacion);
+                            switch (opcionModificacion)
+                            {
+                                case 1:
+                                    Console.WriteLine("Insertar el nuevo nombre del Empleado");
+                                    nuevonombre = Console.ReadLine();
+                                    nombrecorrecto = validar_Nombre(nuevonombre, mensaje); //valida si el nomrbe esta bien
+                                    if (!nombrecorrecto)
+                                    {
+
+                                        PedirModificacion(nuevonombre);
+
+                                    }
+                                    else
+                                    {
+
+                                        Console.WriteLine(mensaje);
+                                    //AQUI TODAVIA INSERTAR COSAS PARA QUE VUELVA A PEDIR EL NOMBRE Y ESO.
+                                    }
+                                    break;
+
+                                case 2:
+                                    Console.WriteLine("Insertar el nuevo apellido del Empleado");
+                                    nuevoapellido = Console.ReadLine();
+                                    apellidocorrecto = validar_Nombre(nuevoapellido, mensaje); //valida si el nomrbe esta bien
+                                    if (!apellidocorrecto)
+                                    {
+
+                                        PedirModificacion(nuevoapellido);
+
+                                    }
+                                    else
+                                    {
+
+                                        Console.WriteLine(mensaje);
+                                    //AQUI TODAVIA INSERTAR COSAS PARA QUE VUELVA A PEDIR EL NOMBRE Y ESO.
+                                    }
+
+                                    break;
+
+
+                                case 3:
+                                    Console.WriteLine("Insertar el nuevo DNI del Empleado");
+                                    nuevodni = Console.ReadLine();
+                                    dnicorrecto = validar_Dni(nuevodni, mensaje); //valida si el nomrbe esta bien
+                                    if (!dnicorrecto)
+                                    {
+
+                                        PedirModificacion(nuevodni);
+
+                                    }
+                                    else
+                                    {
+
+                                        Console.WriteLine(mensaje);
+                                    //AQUI TODAVIA INSERTAR COSAS PARA QUE VUELVA A PEDIR EL NOMBRE Y ESO.
+                                    }
+
+
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("El empleado especificado no existe.");
+
+                        }
+                    }
+                    else
+                    {
+                        
+                        Console.WriteLine("El DNI insertado es de formato incorrecto");
+                    }
+                    
+
+
 
 
                     // ------ POR HACER: RECIBIR MENSAJE DE ERROR Y MOSTRARLO---------
@@ -123,12 +240,7 @@ namespace Interfaces
         }
 
         //TODOS LOS METODOS DE AQUI, CREADOS POR NIELSBOSCH
-        public string SolicitarDni()
-        {
-            //DUDA: Simplemente devolver DNI o hay que especificar cosas del array empleado? (DUDA PARA SAMU) 
-            return dni;
-
-        }
+      
 
         //Metodo ListarUnicoEmpleado
         //Recibe un DNI y en funcion a esto, muestra los demas datos.
@@ -193,6 +305,19 @@ namespace Interfaces
 
             // SALIDA
             return seguir;
+        }
+
+        static byte pediropcion(byte opcionelegido)
+        {
+
+            return opcionelegido;
+
+        }
+        static string PedirModificacion(string modificacion)
+        {
+
+            return modificacion;
+
         }
     }
 }
