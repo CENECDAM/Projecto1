@@ -69,8 +69,8 @@ namespace Interfaces
                     empleadoNombre = Console.ReadLine();
                     Console.Write("Apellido del Empleado: \n");
                     empleadoApellido = Console.ReadLine();
-
-                    NuevoEmpleado(empleadoNombre, empleadoApellido,empleadoDni); //ESto en principio envia los parametros de arriba al metodo de nuevo empleado que lo crea
+                    //empleado = new empleado
+                    NuevoEmpleado(empleadoNombre, empleadoApellido, empleadoDni); //ESto en principio envia los parametros de arriba al metodo de nuevo empleado que lo crea
 
                     // ------ POR HACER: RECIBIR MENSAJE DE ERROR Y MOSTRARLO---------
                     break;
@@ -93,28 +93,28 @@ namespace Interfaces
                 case 4:
                     //VERSION CUTRE DEL INTERFAZ, ESTO OBV. TIENE QUE ESTAR MEJOR PERO ES PARA QUE COGA LA IDEA RUBEN
                     bool resultadodeeliminacion = false;
-             
+
                     Console.WriteLine("Inserte DNI del empleado que desea eliminar");
                     empleadoaeliminar = Console.ReadLine();
                     //---- POR HACER: VALIDAR SI EL DNI ES CORRECTO
                     // ----- POR HACER: SI LO ES, COMPROBAR QUE EXISTE, SI EXISTE
 
                     //llamamos al metodo de eliminar empleado que devuelve un booleano.
-                    resultadodeeliminacion = EliminarEmpleado(empleado, empleadoaeliminar);
+                    resultadodeeliminacion = EliminarEmpleado(empleado.DNI, empleadoaeliminar);
 
                     if (!resultadodeeliminacion)
                     {
 
                         Console.WriteLine("El usuario ha sido eliminado correctamente");
-                        
+
                     }
                     else
                     {
 
-                       //AQUI LAS COSAS PARA RECIBIR EL ERROR Y MOSTRARLO Y ESAS TONTERIAS
+                        //AQUI LAS COSAS PARA RECIBIR EL ERROR Y MOSTRARLO Y ESAS TONTERIAS
                     }
 
-                    
+
                     // ------ POR HACER: RECIBIR MENSAJE DE ERROR Y MOSTRARLO---------
                     break;
             }
@@ -123,7 +123,8 @@ namespace Interfaces
         }
 
         //TODOS LOS METODOS DE AQUI, CREADOS POR NIELSBOSCH
-        public string SolicitarDni(){
+        public string SolicitarDni()
+        {
             //DUDA: Simplemente devolver DNI o hay que especificar cosas del array empleado? (DUDA PARA SAMU) 
             return dni;
 
@@ -136,17 +137,19 @@ namespace Interfaces
             bool siExiste;
             string mensaje;
 
-            
-            siExiste = GestionEmpleado.ExisteEmpleado(empleado.DNI, recibirdni); //devuelve true o false para ver si existe el empleado que se desea listar.
-                                                                              //usa el metodo existeempelado de la clase GestionEmpleado
 
-            if(!siExiste){
-                Cabecera(); 
-            Console.WriteLine("DNI Del Empleado solicitado" + recibirdni);
-            Console.WriteLine("Nombre Del Empleado solicitado" + recibirdni);
-            Console.WriteLine("Apellido Del Empleado solicitado" + recibirdni);
+            siExiste = GestionEmpleado.ExisteEmpleado(empleado.DNI, recibirdni); //devuelve true o false para ver si existe el empleado que se desea listar.
+            //usa el metodo existeempelado de la clase GestionEmpleado
+
+            if (!siExiste)
+            {
+                Cabecera();
+                Console.WriteLine("DNI Del Empleado solicitado" + recibirdni);
+                Console.WriteLine("Nombre Del Empleado solicitado" + recibirdni);
+                Console.WriteLine("Apellido Del Empleado solicitado" + recibirdni);
             }
-            else{
+            else
+            {
                 mensaje = "No existe el empleado que esta solicitando";
             }
         }
@@ -154,9 +157,9 @@ namespace Interfaces
         {
             int indice = 0;
 
-            Cabecera(); 
+            Cabecera();
             Console.WriteLine("\t LISTADO DE EMPLEADOS");
-           
+
 
             for (indice = 0; indice < lista.Length; indice++) //bucle que aumenta el numero del indice
             {
@@ -164,16 +167,16 @@ namespace Interfaces
             }
         }
         public static void MostrarEmpleado(Empleado empleado) //muestra un unico empleado depediendo del indice que recibe. Este metodo es usado por el metodo ListaEmpleados
-                                                                //ademas sirve para listar un unico empleado.
+        //ademas sirve para listar un unico empleado.
         {
-            Cabecera(); 
+            Cabecera();
 
             Console.WriteLine("DNI: " + empleado.DNI);
             Console.WriteLine("Nombre: " + empleado.NOMBRE);
             Console.WriteLine("Apellido: " + empleado.Apellido);
         }
         public static bool Continuar(string message) //CODIGO COPIADO TAL Y CUAL DEL EJERCICIO DE JESUS. ESTE COMENTARIO BORRARLO ANTES DE SUBIRLO Y MODIFICAR UN POCO LOS NOMBRES
-                                                     //DE LOS VARIABLES, PARA DISIMULAR :P
+        //DE LOS VARIABLES, PARA DISIMULAR :P
         {
             bool seguir = false;    // Control de la confirmación
             string aux = null;
