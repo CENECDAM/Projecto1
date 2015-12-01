@@ -167,14 +167,14 @@ namespace ConsoleApplication10
         //Este metodo permite MODIFICAR un empleado especifico.
         //Creado: Niels Bosch
         //Metodo Publico
-        public static void ModificarEmpelado(ref Empleado[] empleados)
+        public static void ModificarEmpelado(ref Empleado[] empleados, string dni)
         {
 
 
 
 
 
-            string dni = null;      // Empleado para la búsqueda del cliente
+           
             float cantidad = 0.0F;  // Cantidad a ingresar o reintegrar
             int opcion;            // Opción del menú
             int indice = 0;         // Posición del cliente en la lista de clientes
@@ -182,7 +182,7 @@ namespace ConsoleApplication10
             string modificacion;
 
             // ENTRADA: Solicitud del DNI del cliente para operar
-            dni = Interfaz.SolicitarDni();
+         
 
             // PROCESO
             // Comprobación de la existencia del Cliente
