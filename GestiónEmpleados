@@ -176,7 +176,7 @@ namespace ConsoleApplication10
 
            
             float cantidad = 0.0F;  // Cantidad a ingresar o reintegrar
-            int opcion;            // Opción del menú
+            byte opcion;            // Opción del menú
             int indice = 0;         // Posición del cliente en la lista de clientes
             string mensaje = null;
             string modificacion;
