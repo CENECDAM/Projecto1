@@ -40,30 +40,35 @@ namespace FichNomSemanal
 			FileStream flujofichero;
 			StreamWriter escritor;
 			Nomina[] lista = null;
+			Nomina total = null;
 			int año = 0;
 			int mes = 0;
 
 			// Puede que se quiera poner cualquier fecha, por lo que primero se tendria que preguntar por interfaz 1, si se quiere y 2, cual sería
 
 			fichero.LeerSemanas(ref lista);
+			total = Total(lista);
 
 			flujofichero = new FileStream("..\\..\\nmensual\\" + año + "_" + mes + "_" + empleado.DNI + ".nomm", FileMode.Create);   // Se abre el flujo de tal manera que si el archivo ya existe, se sobreescribirá
 			escritor = new StreamWriter(flujofichero);
 
 			Cabecera(empleado, escritor);
 			Cuerpo(lista, escritor);
+			Pie(total, escritor);
 
 			escritor.Close();
 			flujofichero.Close();
+
+			fichero.EliminarArchivo();
 		}
 
 		private static void Cabecera(Empleado empleado, StreamWriter escritor)
 		{
 
-			escritor.WriteLine("--------------------------------------------------------------------------------------------------------------------------------");
+			escritor.WriteLine("------------------------------------------------------------------------------------------------------");
 			escritor.WriteLine("Trabajador");
-			escritor.WriteLine("DNI: {0}\tNombre: {1}\tApellidos: {2}", empleado.DNI, empleado.NOMBRE, empleado.APELLIDOS);
-			escritor.WriteLine("--------------------------------------------------------------------------------------------------------------------------------");
+			escritor.WriteLine("DNI: {0}\t\tNombre: {1}   Apellidos: {2}", empleado.DNI, empleado.NOMBRE, empleado.APELLIDOS);
+			escritor.WriteLine("------------------------------------------------------------------------------------------------------");
 
 		}
 
@@ -71,12 +76,22 @@ namespace FichNomSemanal
 		{
 			int contador = 0;
 
-			escritor.WriteLine();
+			escritor.WriteLine("\t     |{0, -8}|{1,-13}|{2,-14}|{3,-13}|{4,-13}|{5,-12}|{6,-12}", "Horas", "Euros/Hora", "Horas Extra", "Sal. Extra", "Sal. Bruto", "Impuestos", "Sal.Neto");
+			escritor.WriteLine("------------------------------------------------------------------------------------------------------");
 
 			for (contador = 0; contador < lista.Length; contador++)
 			{
-
+				escritor.WriteLine("Semana " + (contador + 1) + "     |{0, -8}|{1,-13}|{2,-14}|{3,-13}|{4,-13}|{5,-12}|{6,-12}", lista[contador].Horas, lista[contador].PagaHoras, lista[contador].HorasExtra, lista[contador].SalarioExtra, lista[contador].SalarioBruto, lista[contador].Impuesto, lista[contador].Neto);
+				escritor.WriteLine("------------------------------------------------------------------------------------------------------");
 			}
+
+		}
+
+		private static void Pie(Nomina total, StreamWriter escritor)
+		{
+
+			escritor.WriteLine("------------------------------------------------------------------------------------------------------");
+			escritor.WriteLine("TOTAL MES:   |{0, -8}|{1,-13}|{2,-14}|{3,-13}|{4,-13}|{5,-12}|{6,-12}", total.Horas, total.PagaHoras, total.HorasExtra, total.SalarioExtra, total.SalarioBruto, total.Impuesto, total.Neto);
 
 		}
 
