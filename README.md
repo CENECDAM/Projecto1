@@ -7,16 +7,16 @@ Clases Finalizadas sujetas a modificaciones: Ficheros
 
 -------------------------------------
 
-Ruben: Interfaz
+Ruben: 
 
 
-Niels: Terminar ControladorEmpleado
+Niels: 
 
 
-Joaquin: Ayudar a Pedro con la gestión de la nómina (por ahora)
+Joaquin: 
 
 
-Pedro: Terminar Gestion Nomina
+Pedro:
 
 
-Samu: Terminar las clases de impresión de los ficheros
+Samu: 
