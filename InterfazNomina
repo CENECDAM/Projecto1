@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 namespace Interfaces
 {
     class InterfazNomina
-    {
+    {   
+		// Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         private static void Cabecera()
         {
             Console.Clear();
@@ -18,11 +20,15 @@ namespace Interfaces
             Console.WriteLine("");
         }
        
+		// Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         private static void MostrarError(string message)
         {
             Console.WriteLine("ERROR: {0}\n", message);
         }
 
+		// Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         public static void MenuGestionNominas()
         {
             
@@ -66,6 +72,9 @@ namespace Interfaces
 
 
         }
+        
+		// Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         public static string SolicitarDni()
         {
             string dni = null;
@@ -87,6 +96,8 @@ namespace Interfaces
 
             return dni;
         }
+        // Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         private static bool LeerDni(ref string dni, ref string mensaje)
         {
             bool error = false;
@@ -119,6 +130,8 @@ namespace Interfaces
 
             return error;
         }
+        // Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         public static Nomina DatosNominasSemana()
         {
             bool correcto = false;
@@ -158,16 +171,28 @@ namespace Interfaces
 
             return cliente;     // Datos Nominas
         }
+        // Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         public static int SolicitarSemana(){
         }
+        // Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         public static void MostrarNomina(Nomina semana) { 
         }
+        // Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         public static Nomina PedirDatosSemanas(){
         }
+        // Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         public static void ListarSemanas(Nomina semmanasTemp) { 
         }
+        // Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         public static Nomina EditarDatosSemanas(Nomina semanasTemp){
         }
+        // Desarrollador: Pedro Cánovas Medina
+		// Fecha de última comprobación: 02/12/2015
         public static void CerrarNomina(Nomina semenasTemp) {
 
             ListarSemanas(semanasTemp); //mostramos la lista de semanas de la nomina para su posterior confirmación
