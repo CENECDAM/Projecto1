@@ -8,27 +8,169 @@ namespace Interfaces
 {
     class InterfazNomina
     {
-        public static void InterfazPrincipalNominas()
+        private static void Cabecera()
         {
-            byte opcion = 0;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("");
             Console.WriteLine("                    G E S T I Ó N  DE  N Ó M I N A S");
             Console.WriteLine("\t----------------------------------------------------------");
             Console.WriteLine("");
-            Console.Write("\t\t1. Crear Nómina\n");
-            Console.Write("\t\t2. Editar Nómina\n");
-            Console.Write("\t\t3. Listar Nómina\n\n");
-            Console.Write("\t\t0. Salir\t\n\n");
-            Console.WriteLine("\t----------------------------------------------------------");
-            Console.ResetColor();
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("\tPulse 0 para volver al Menú Principal...");
-            Console.ResetColor();
-            Console.ReadLine();
+        }
+       
+        private static void MostrarError(string message)
+        {
+            Console.WriteLine("ERROR: {0}\n", message);
+        }
 
-         
+        public static void MenuGestionNominas()
+        {
+            
+            bool correcto = false;  // Control de datos correctos
+            bool error = false;     // Control de errores
+            string mensaje = null;  // Mensaje de error
+            string aux = null;
+            byte opcion = 0;
+            do
+            {
+                Cabecera();
+                if (error)
+                {
+                    MostrarError(mensaje);  // Presentación de Errores
+                }
+                Console.Write("\t\t1. Crear Nómina\n");
+                Console.Write("\t\t2. Editar Nómina\n");
+                Console.Write("\t\t3. Listar Nómina\n\n");
+                Console.Write("\t\t0. Salir\t\n\n");
+                Console.WriteLine("\t----------------------------------------------------------");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine("\tPulse 0 para volver al Menú Principal...");
+                Console.ResetColor();
+
+                aux = Console.ReadLine();   // Leemos la opcion
+                aux = aux.Trim();           // Limpiamos los espacios en blanco
+                if (Byte.TryParse(aux, out seleccion) && (seleccion >= 0) && (seleccion <= 3))
+                {
+                    correcto = true;
+                }
+                else
+                {
+                    // Configuración ERROR
+                    error = true;
+                    mensaje = "Opción Incorrecta (seleccione una opción del menú: 0 - 3)";
+                }
+                
+            } while (!correccto);
+            
+
+
+        }
+        public static string SolicitarDni()
+        {
+            string dni = null;
+            string mensaje = null;
+            bool error = false;
+
+            do
+            {
+                Cabecera();
+                if (error)
+                {
+                    MostrarError(mensaje);  // Presentación de Errores
+                    error = false;          // Reinicio del Control de Errores
+                }
+
+                error = LeerDni(ref dni, ref mensaje);
+
+            } while (error);
+
+            return dni;
+        }
+        private static bool LeerDni(ref string dni, ref string mensaje)
+        {
+            bool error = false;
+            string aux = null;
+
+
+            Console.Write("\t\t Introduzca Dniiii (12345678A): ");
+
+            aux = Console.ReadLine();
+            int numero;
+            aux = aux.Trim();   // Limpieza de entrada (espacios en blanco)
+
+            
+            if ((aux.Length != 9))
+            {
+                error = true;
+                mensaje = "Dni Incorrecto IIII: Introduzca 8 números y una letra";
+            }
+            else if (!Int32.TryParse(aux.Substring(0, 8), out numero) || (Int32.TryParse(aux[8].ToString(), out numero)))
+            {
+                error = true;
+                mensaje = "Dni Incorrecto IIIII: Formato erróneo (22334455A)";
+            }
+            else
+            {
+                // Registro Dni válido con letra en mayúscula
+                dni = aux.ToUpper();
+            }
+
+
+            return error;
+        }
+        public static Nomina DatosNominasSemana()
+        {
+            bool correcto = false;
+            bool error = false;    
+            string mensaje = null;
+
+            Nomina nomina = new Nomina();  // Cliente Temporal
+            string aux = null;
+            float cantidad = 0.0F;
+            int horas;
+            float paga_horas = 0.0F;
+
+            do
+            {
+
+                Cabecera();
+                if (error)
+                {
+                    MostrarError(mensaje);  // Presentación de Errores
+                    error = false;          // Reinicio del Control de Errores
+                }
+                Console.WriteLine("\t DATOS PARA LAS NOMINAS SEMANALES: DATOS DE LAS SEMANAS\n");
+
+                // ENTRADA: Datos de la nomina
+
+
+                Console.Write("Horas \n");
+                horas = Console.ReadLine();
+                Console.Write("Cantidad pagada por hora: \n");
+                paga_horas = Console.Readline();
+                nomina(horas,paga_horas); //aqui hay q meter el resto de los valores del constructor...creo que deberia de traerlos de tu clase samu?
+               
+                
+
+               
+            } while (!correcto);
+
+            return cliente;     // Datos Nominas
+        }
+        public static int SolicitarSemana(){
+        }
+        public static void MostrarNomina(Nomina semana) { 
+        }
+        public static Nomina PedirDatosSemanas(){
+        }
+        public static void ListarSemanas(Nomina semmanasTemp) { 
+        }
+        public static Nomina EditarDatosSemanas(Nomina semanasTemp){
+        }
+        public static void CerrarNomina(Nomina semenasTemp) {
+
+            ListarSemanas(semanasTemp); //mostramos la lista de semanas de la nomina para su posterior confirmación
         }
     }
 }
