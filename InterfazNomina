@@ -3,13 +3,115 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions; 
 
 namespace Interfaces
 {
     class InterfazNomina
-    {   
-		// Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
+    {
+
+        //metodo que recoge el dato introducido y comprueba si es un entero
+        //return error = false si todo esta correcto, return error = true si el formato no es el correcto
+        private static bool LeerHoras(ref int horas, ref string mensaje)
+        {
+
+            string aux = null;
+            bool error = false;
+
+            Console.Write("\t\t Introduzca el numero de horas trabajadas en la semana: ");
+            aux = Console.ReadLine();
+            aux = aux.Trim();
+            //controlo que en la cadena aux pueda haber algun punto
+            int point = aux.IndexOf(".");
+            int coma = aux.IndexOf(",");
+
+            if ((point != -1)&&(coma != -1))
+            {
+                // -1 es lo que IndexOf devuelve si NO encuentra  el punto, entonces si es distinto 
+                //a -1 quiere decir que existe un punto
+                // -1 es lo que IndexOf devuelve si NO encuentra  la coma, entonces si es distinto 
+                //a -1 quiere decir que existe una coma
+                error = true;
+                mensaje = "Numero de horas incorrectas: Las horas han de ser un numero entero positivo";
+            }
+
+            // comprobación del formato entero ademas de que el numero tiene quee ser positivo
+            
+            if (!(Single.TryParse(aux, out horas) && (horas > 0)))
+            {
+
+                error = true;
+                mensaje = "Numero de horas incorrectas: Las horas han de ser un numero entero positivo";
+            }
+            
+            return error;
+
+        }
+        private static bool LeerPagaHoras(ref int paga_horas, ref string mensaje)
+        {
+
+            string aux = null;
+            bool error = false;
+
+            Console.Write("\t\t Introduzca Cantidad: ");
+            aux = Console.ReadLine();
+            aux = aux.Trim();
+            //controlo que en la cadena aux pueda haber algun punto
+            int point = aux.IndexOf(".");
+            int coma = aux.IndexOf(",");
+
+            if ((point != -1) && (coma != -1))
+            {
+                // -1 es lo que IndexOf devuelve si NO encuentra  el punto, entonces si es distinto 
+                //a -1 quiere decir que existe un punto
+                // -1 es lo que IndexOf devuelve si NO encuentra  la coma, entonces si es distinto 
+                //a -1 quiere decir que existe una coma
+                error = true;
+                mensaje = "Importe precio/hora incorrecto: El importe precio/hora ha de ser un numero entero positivo";
+            }
+            // comprobación del formato entero ademas de que el numero tiene quee ser positivo
+            if (!(Single.TryParse(aux, out paga_horas) && (paga_horas > 0)))
+            {
+
+                error = true;
+                mensaje = "Importe precio/hora incorrecto: El importe precio/hora ha de ser un numero entero positivo";
+            }
+            // aux = valor.ToString();
+            return error;
+
+        }
+        private static bool LeerDni(ref string dni, ref string mensaje)
+        {
+            bool error = false;
+            string aux = null;
+
+
+            Console.Write("\t\t Introduzca Dniiii (12345678A): ");
+
+            aux = Console.ReadLine();
+            int numero;
+            aux = aux.Trim();   // Limpieza de entrada (espacios en blanco)
+
+
+            if ((aux.Length != 9))
+            {
+                error = true;
+                mensaje = "Dni Incorrecto IIII: Introduzca 8 números y una letra";
+            }
+            else if (!Int32.TryParse(aux.Substring(0, 8), out numero) || (Int32.TryParse(aux[8].ToString(), out numero)))
+            {
+                error = true;
+                mensaje = "Dni Incorrecto IIIII: Formato erróneo (22334455A)";
+            }
+            else
+            {
+                // Registro Dni válido con letra en mayúscula
+                dni = aux.ToUpper();
+            }
+
+
+            return error;
+        }
         private static void Cabecera()
         {
             Console.Clear();
@@ -19,16 +121,46 @@ namespace Interfaces
             Console.WriteLine("\t----------------------------------------------------------");
             Console.WriteLine("");
         }
-       
-		// Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
         private static void MostrarError(string message)
         {
             Console.WriteLine("ERROR: {0}\n", message);
         }
+        private static bool LeerNumeroSemana(ref int semana, ref string mensaje)
+        {
 
-		// Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
+            
+            bool error = false;
+
+            semana = semana.Trim();
+            //controlo que en la cadena aux pueda haber algun punto
+            int point = semana.IndexOf(".");
+            int coma = semana.IndexOf(",");
+
+            if ((point != -1) && (coma != -1))
+            {
+                // -1 es lo que IndexOf devuelve si NO encuentra  el punto, entonces si es distinto 
+                //a -1 quiere decir que existe un punto
+                // -1 es lo que IndexOf devuelve si NO encuentra  la coma, entonces si es distinto 
+                //a -1 quiere decir que existe una coma
+                error = true;
+                mensaje = "Numero de horas incorrectas: Las horas han de ser un numero entero positivo";
+            }
+
+            // comprobación del formato entero ademas de que el numero tiene quee ser positivo
+
+            if (!(Single.TryParse(semana, out numeroSemanas) && (numeroSemanas > 0)))
+            {
+
+                error = true;
+                mensaje = "Numero de horas incorrectas: Las horas han de ser un numero entero positivo";
+            }
+
+            return error;
+
+        }
+
+       
+        
         public static void MenuGestionNominas()
         {
             
@@ -72,9 +204,6 @@ namespace Interfaces
 
 
         }
-        
-		// Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
         public static string SolicitarDni()
         {
             string dni = null;
@@ -96,53 +225,20 @@ namespace Interfaces
 
             return dni;
         }
-        // Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
-        private static bool LeerDni(ref string dni, ref string mensaje)
-        {
-            bool error = false;
-            string aux = null;
-
-
-            Console.Write("\t\t Introduzca Dniiii (12345678A): ");
-
-            aux = Console.ReadLine();
-            int numero;
-            aux = aux.Trim();   // Limpieza de entrada (espacios en blanco)
-
-            
-            if ((aux.Length != 9))
-            {
-                error = true;
-                mensaje = "Dni Incorrecto IIII: Introduzca 8 números y una letra";
-            }
-            else if (!Int32.TryParse(aux.Substring(0, 8), out numero) || (Int32.TryParse(aux[8].ToString(), out numero)))
-            {
-                error = true;
-                mensaje = "Dni Incorrecto IIIII: Formato erróneo (22334455A)";
-            }
-            else
-            {
-                // Registro Dni válido con letra en mayúscula
-                dni = aux.ToUpper();
-            }
-
-
-            return error;
-        }
-        // Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
+        
         public static Nomina DatosNominasSemana()
         {
             bool correcto = false;
             bool error = false;    
             string mensaje = null;
 
-            Nomina nomina = new Nomina();  // Cliente Temporal
+            
             string aux = null;
             float cantidad = 0.0F;
             int horas;
             float paga_horas = 0.0F;
+            bool errorHoras = false;
+            bool errorPagaHoras = false;
 
             do
             {
@@ -157,42 +253,109 @@ namespace Interfaces
 
                 // ENTRADA: Datos de la nomina
 
+                do
+                {
+                    errorHoras = LeerHoras(ref horas, ref mensaje);
+                } 
+                while (errorHoras);
 
-                Console.Write("Horas \n");
-                horas = Console.ReadLine();
-                Console.Write("Cantidad pagada por hora: \n");
-                paga_horas = Console.Readline();
-                nomina(horas,paga_horas); //aqui hay q meter el resto de los valores del constructor...creo que deberia de traerlos de tu clase samu?
-               
+                do
+                {
+                    errorPagaHoras = LeerPagaHoras(ref paga_horas, ref mensaje);
+                } 
+                while (errorPagaHoras);
                 
-
+                if ((!LeerEnteros(horas))&&(LeerEnteros(paga_horas)))
+                {
+                    nomina(horas, paga_horas); 
+                }
+             
                
             } while (!correcto);
-
-            return cliente;     // Datos Nominas
+            FicheroConfig fc = new FicheroConfig();
+            int retencion = fc.getRetenciones();
+            int jornada = fc.getJornada();
+            float plus_salario = fc.getPlusSalario(); //No se que es plus_salario ni de donde viene pero se que tiene que estar
+            
+            Nomina nomina = new Nomina(horas, paga_horas, retencion, jornada, plus_salario);  // Creacion de Nomina
+           
+            return nomina;     // Datos Nominas
         }
-        // Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
         public static int SolicitarSemana(){
+            //llamo a dni
+            //leo el fichero pasando el dni por el constructor con la clase de samu
+            //una vez que hemos pasado el dni, la superp clase de samu ya nos trae la lista de semanas de ese cliente
+            bool error = false;
+            int numeroSemanas=0;
+            Nominas[] semanas;
+            FichNomSemanal fs = FichNomSemanal(ref dni);
+            semanas = fs.LeerSemanas(semanas);
+            numeroSemanas = semanas.Length();
+            //LeerNumeroSemana(numeroSemanas);
+            do
+            {
+                Cabecera();
+                if (error)
+                {
+                    MostrarError(mensaje);  // Presentación de Errores
+                    error = false;          // Reinicio del Control de Errores
+                }
+
+                error = LeerNumeroSemana(numeroSemanas, ref mensaje);
+
+            } while (error);
+
+            return numeroSemanas;
+            
+
+
         }
-        // Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
-        public static void MostrarNomina(Nomina semana) { 
+        public static void MostrarNomina(Nomina semana) {
+            //llamo a dni
+            //leo el fichero pasando el dni por el constructor
+            //una vez que hemos pasado el dni, la superp clase de samu ya nos trae la lista de semanas de ese cliente
+            //me creo 
         }
-        // Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
-        public static Nomina PedirDatosSemanas(){
+        public static Nomina PedirDatosSemanas(Nomina semanas, ref float cantidad, byte opcion)
+        {
+
+            
+            bool error = false;
+            string mensaje = null;
+
+            do
+            {
+                Cabecera();
+                if (error)
+                {
+                    MostrarError(mensaje);
+                    error = false;
+                }
+
+                switch (opcion)
+                {
+                    case 1:
+                        Console.WriteLine("\t EDITAR SEMANA\n");
+                        break;
+                    case 2:
+                        Console.WriteLine("\t BORRAR SEMANA\n");
+                        break;
+                }
+
+                Cabecera();
+                
+
+                Console.WriteLine();
+
+                error = LeerCantidad(ref cantidad, ref mensaje);
+
+            } while (error);
+
         }
-        // Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
         public static void ListarSemanas(Nomina semmanasTemp) { 
         }
-        // Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
         public static Nomina EditarDatosSemanas(Nomina semanasTemp){
         }
-        // Desarrollador: Pedro Cánovas Medina
-		// Fecha de última comprobación: 02/12/2015
         public static void CerrarNomina(Nomina semenasTemp) {
 
             ListarSemanas(semanasTemp); //mostramos la lista de semanas de la nomina para su posterior confirmación
