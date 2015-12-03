@@ -199,88 +199,76 @@ namespace BancoNomina
         
         
         // Método público: Gestionar las noominas
-        public static void GestionNominas(ref Nomina[] nominas)
-        {
-            string dni = null;      // dni para la búsqueda del usuario
-           
-            byte opcion;            // Opción del menú
-            int indice = 0;         // Posición del cliente en la lista de nominas
-            string mensaje = null;
-            int semana=0;
-            Nomina[] semanasTemp = new Nominas[];
+       // Modificado: Samuel
+	public static void GestionNominas() // ref Nomina[] nominas originalmente, creo que no hacen falta
+	{
+		string dni = null;      // dni para la búsqueda del usuario
+		byte opcion;            // Opción del menú
+		int indice = 0;         // Posición del cliente en la lista de nominas
+		string mensaje = null;
+		int semana = 0;
+		Nomina[] semanasTemp = new Nominas[];
 
-            // ENTRADA: Solicitud del DNI del cliente para gestionar sus nominas
-           
-            try
-            {
-                dni = Interfaz.SolicitarDni();
-            }
-            catch (Exception e)
-            {
-                
-                mensaje = (e.Message.ToString());
-            }
+		// ENTRADA: Solicitud del DNI del empleado para gestionar sus nominas
 
-            // PROCESO
-            // Comprobación de la existencia del Cliente
-            if (ExisteCliente(nominas, dni, ref indice))
-            {
-            	//recogemos la opcion deseada del menu de gestion de nominas
-                opcion = Interfaz.MenuGestionNominas();
+		try
+		{
+			dni = InterfazNomina.SolicitarDni();
+		}
+		catch (Exception e)
+		{
+				mensaje = (e.Message.ToString());
+		}
 
-                switch (opcion)
-                {
-                    // Salida del Menú de Operación
-                    case 0:
-                        mensaje = "\n\tSaliendo...\n";
-                        break;
-                    // Crear Nomina
-                    case 1:
-                        
-                        semanasTemp = Interfaz.PedirDatosSemanas();  // Solicitud de Datos
-                        FnomSemanal fs = new FnomSemanal(dni);
-                        fs.EscribirFichero(semanasTemp);
-                        //samu creo que hace falta aqui que me pidas el dni para saber de quien son las semanas que me tienes que pintar
-                        fs.LeerSemanas();
-                        //  FichNomSemanal.LeerSemanas(semanasTemp);
-                       
-                       
-                        break;
-                    // Editar Nomina
-                    case 2:
-                        bool salir2 = false;
-                        bool respuesta = true;
-                        FnomSemanal fs = new FnomSemanal(dni);
-                        semanasTemp = fs.LeerSemanas(semanasTemp);
-                        Interfaz.ListarSemanas(semanasTemp);
-                        Interfaz.EditarDatosSemanas(semanasTemp);  // Solicitud de Datos
-                        fs.EscribirFichero();
-                       
-                        break;
+		// PROCESO
+		// Comprobación de la existencia del empleado
+		if (ExisteCliente(nominas, dni, ref indice))
+		{
+			//recogemos la opcion deseada del menu de gestion de nominas
+			opcion = InterfazNomina.MenuGestionNominas();
+			switch (opcion)
+			{
+				// Salida del Menú de Operación
+				case 0:
+					mensaje = "\n\tSaliendo...\n";
+					break;
+				// Crear Nomina
+				case 1:
+					semanasTemp = InterfazNomina.PedirDatosSemanas();  // Solicitud de Datos
+					FnomSemanal fs = new FnomSemanal(dni);
+					fs.EscribirFichero(semanasTemp);
+					//samu creo que hace falta aqui que me pidas el dni para saber de quien son las semanas que me tienes que pintar
+					fs.LeerSemanas();
+					//  FichNomSemanal.LeerSemanas(semanasTemp);
+					break;
+				// Editar Nomina
+				case 2:
+					bool salir2 = false;
+					bool respuesta = true;
+					FnomSemanal fs = new FnomSemanal(dni);
+					semanasTemp = fs.LeerSemanas(semanasTemp);
+					Interfaz.ListarSemanas(semanasTemp);
+					Interfaz.EditarDatosSemanas(semanasTemp);  // Solicitud de Datos
+					fs.EscribirFichero();
+					break;
+				case 3:
+					bool close = false;
+					semanasTemp = FichNomSemanal.LeerSemanas(dni);
+					Interfaz.CerrarNomina(semanasTemp);  // Cerrar nomina para confirmar imprension y eliminar
+					Interfaz.ImprimirCerrar();
+					fs.EliminarArchivo();
+					break;
+			}
+		}
+		else
+		{
+			mensaje = "\n\tERROR: No se encuentra el empleado\n";
+		}
 
-                    case 3:
-
-                        bool close = false;
-                        semanasTemp = FichNomSemanal.LeerSemanas(dni);
-                        Interfaz.CerrarNomina(semanasTemp);  // Cerrar nomina para confirmar imprension y eliminar
-                       
-                        Interfaz.ImprimirCerrar();
-                        fs.EliminarArchivo();
-                        
-                        
-                        break;
-                }
-            }
-            else
-            {
-                mensaje = "\n\tERROR: No se encuentra el Cliente\n";
-            }
-
-            // SALIDA
-            mensaje = mensaje + "\n\tPulse ENTER para continuar";
-            Interfaz.Continuar(mensaje);
-
-        }
+		// SALIDA
+		mensaje = mensaje + "\n\tPulse ENTER para continuar";
+		Interfaz.Continuar(mensaje);
+	}
     }
 }
 
