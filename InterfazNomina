@@ -226,6 +226,7 @@ namespace Interfaces
 			float plus_salario = 0.0F;
 			int retencion = 0;
 
+			// Console.Clear --> No estoy seguro si lo tengo que hacer vaya a ser que borre algo importante, pero lo dejo aqui por si aca
 			Cabecera();
 			Console.WriteLine("\t DATOS PARA LAS NOMINAS SEMANALES: DATOS DE LAS SEMANAS\n");
 
@@ -317,12 +318,23 @@ namespace Interfaces
 
 
 		}
+
+		// Modificado (más o menos): Samuel
 		public static void MostrarNomina(Nomina semana)
 		{
 			//llamo a dni
 			//leo el fichero pasando el dni por el constructor
 			//una vez que hemos pasado el dni, la superp clase de samu ya nos trae la lista de semanas de ese cliente
-			//me creo 
+			//me creo
+			// Aqui supongo que es una única semana, igualmente voy a poner el código comentado por si acaso
+			/*
+			Console.Clear();
+			Cabecera();
+			Console.WriteLine("|{0, -8}|{1,-13}|{2,-14}|{3,-13}|{4,-13}|{5,-12}|{6,-12}", "Horas", "Euros/Hora", "Horas Extra", "Sal. Extra", "Sal. Bruto", "Impuestos", "Sal.Neto");
+			Console.WriteLine("------------------------------------------------------------------------------------------------------");
+			Console.WriteLine("|{0, -8}|{1,-13}|{2,-14}|{3,-13}|{4,-13}|{5,-12}|{6,-12}", semana.Horas, semana.PagaHoras, semana.HorasExtra, semana.SalarioExtra, semana.SalarioBruto, semana.Impuesto, semana.Neto);
+			Console.WriteLine("------------------------------------------------------------------------------------------------------");
+			*/
 		}
 		public static Nomina PedirDatosSemanas(Nomina semanas, ref float cantidad, byte opcion)
 		{
@@ -366,6 +378,9 @@ namespace Interfaces
 		{
 			//int contador = 0;
 
+			Console.Clear();
+			Cabecera();
+
 			//for (contador = 0; contador < semanasTemp.Length; contador++)
 			//{
 
@@ -397,6 +412,7 @@ namespace Interfaces
 		{
 			bool cerrar = false;
 
+			Console.Clear();
 			Cabecera();
 			Console.WriteLine("");
 			/*escritor.WriteLine("------------------------------------------------------------------------------------------------------");
