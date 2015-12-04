@@ -24,8 +24,8 @@ namespace MetodosNomina
         private float impuesto;
         private float neto;
 
-        
-       
+
+
         public Nomina(int horas, float paga_horas, int retencion, int jornada, float plus_salario)
         {
             this.horas = horas;
@@ -39,28 +39,27 @@ namespace MetodosNomina
             impuesto = calcImpuesto(salario_bruto, retencion);
             neto = calcNeto(salario_bruto, impuesto);
         }
-        
+
         // Contructor para una crear una nómina semanal sabiendo ya todos los datos (Se necesita para los ficheros)
         // Desarrollador: Samuel Stratos Bater Herrero
         // Fecha de última revisión: 30/11/2015
-	public Nomina(int horas, float paga_horas, int horas_extra, float salario_extra, float salario_bruto, float impuesto, float neto, int jornada, float plus_salario, int retencion)
-	{
-		this.horas = horas;
-		this.paga_horas = paga_horas;
-		this.horas_extra = horas_extra;
-		this.salario_extra = salario_extra;
-		this.salario_bruto = salario_bruto;
-		this.impuesto = impuesto;
-		this.neto = neto;
-		this.jornada = jornada;
-		this.plus_salario = plus_salario;
-		this.retencion = retencion;
-	}
+        public Nomina(int horas, float paga_horas, int horas_extra, float salario_extra, float salario_bruto, float impuesto, float neto, int jornada, float plus_salario, int retencion)
+        {
+            this.horas = horas;
+            this.paga_horas = paga_horas;
+            this.horas_extra = horas_extra;
+            this.salario_extra = salario_extra;
+            this.salario_bruto = salario_bruto;
+            this.impuesto = impuesto;
+            this.neto = neto;
+            this.jornada = jornada;
+            this.plus_salario = plus_salario;
+            this.rete0=ncion = retencion;
+        }
 
         #region Propiedades
         // DESARROLLADOR: JOAQUIN CANCA
         // ÚLTIMA REVISIÓN EL 28//11/2015 12:00
-
         //Propiedad Horas totales
         public int Horas
         {
@@ -68,8 +67,19 @@ namespace MetodosNomina
             {
                 return horas;
             }
+            set
+            {
+                horas = this.horas;
+                bool datoCorrecto = false;
+                datoCorrecto = int.TryParse(horas, out horasCorrectas);
+                
+                if ((datoCorrecto == false)&&(horasCorrectas<0)&&(horasCorrectas>120)){
+                    throw new Exception ("Error en las horas introducidas: Las horas deben ser un numero entero positivo, ademas de no poder superar 120 horas de trabajo a la semana.");
+                    
+                }
+            } 
         }
-
+        // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de los euros por horas
         public float PagaHoras
         {
@@ -77,8 +87,19 @@ namespace MetodosNomina
             {
                 return paga_horas;
             }
+            set
+            {
+                paga_horas = this.paga_horas;
+                bool datoCorrecto = false;
+                datoCorrecto = Single.TryParse(paga_horas, out paga_horasCorrectas);
+                
+                if ((datoCorrecto == false)&&(paga_horasCorrectas<0)){
+                    throw new Exception ("Error en las horas introducidas: Las horas deben ser un numero entero positivo, ademas de no poder superar 120 horas de trabajo a la semana.");
+                    
+                }
+            }
         }
-
+        // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo de la retención(Fichero Configuración)
         public int Retencion
         {
@@ -86,8 +107,10 @@ namespace MetodosNomina
             {
                 return retencion;
             }
+            
         }
-
+        
+        // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo de la Jornada de un empleado(Fichero Configuración)
         public int Jornada
         {
@@ -95,8 +118,10 @@ namespace MetodosNomina
             {
                 return jornada;
             }
+            
         }
 
+        // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo del plus del salario (Fichero Configuración)
         public float PlusSalario
         {
@@ -104,8 +129,10 @@ namespace MetodosNomina
             {
                 return plus_salario;
             }
+           
         }
 
+        //DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo de las horas extra
         public int HorasExtra
         {
@@ -113,17 +140,28 @@ namespace MetodosNomina
             {
                 return horas_extra;
             }
+            
         }
-
+        // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo del salario extra
         public float SalarioExtra
         {
-            get
-            {
+            get{
                 return salario_extra;
             }
+            set{
+                salario_extra = this.salario_extra;
+                bool datoCorrecto = false;
+                datoCorrecto = int.TryParse(salario_extra, out salarioExtraCorrectas);
+                
+                if ((datoCorrecto == false)&&(salarioExtraCorrectas<0)&&(salarioExtraCorrectas>120)){
+                    throw new Exception ("Error en las horas introducidas: Las horas deben ser un numero entero positivo, ademas de no poder superar 120 horas de trabajo a la semana.");
+                    
+                }
+            }
+            
         }
-
+        // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo del salario bruto
         public float SalarioBruto
         {
@@ -131,8 +169,9 @@ namespace MetodosNomina
             {
                 return salario_bruto;
             }
+            
         }
-        
+        // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo del impuesto
         public float Impuesto
         {
@@ -140,8 +179,9 @@ namespace MetodosNomina
             {
                 return impuesto;
             }
+            
         }
-
+        // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Proppiedad de cálculo del salrio neto
         public float Neto
         {
@@ -174,15 +214,15 @@ namespace MetodosNomina
             return res;
 
         }
-              
+
         // METODOS PARA CALCULAR EL SALARIO EXTRA
         // DESARROLLADOR: JOAQUIN CANCA
         // ÚLTIMA REVISIÓN EL 22//11/2015 12:00
-        private float salarioExtra (int horasExtra,float eurosHora,float plusSalario)
+        private float salarioExtra(int horasExtra, float eurosHora, float plusSalario)
         {
-            
+
             float res;
-            res = (eurosHora * plusSalario) * horasExtra; 
+            res = (eurosHora * plusSalario) * horasExtra;
             //El salario horas se corresponde con el salario de las horas ordinarias y será obtenido del fichero de configuraciín
             return res;
         }
@@ -193,7 +233,7 @@ namespace MetodosNomina
         private float salarioBruto(int horas, float eurosHora, int horasExtra, float salarioExtra, float plusSalario)
         {
             float res;
-            res = ((horas - horasExtra) * eurosHora )+ salarioExtra;
+            res = ((horas - horasExtra) * eurosHora) + salarioExtra;
             return res;
         }
 
@@ -201,10 +241,10 @@ namespace MetodosNomina
         // METODOS PARA CALCULAR LOS IMPUESTOS A PAGAR
         // DESARROLLADORES: JOAQUIN CANCA LÓPEZ
         // ÚLTIMA REVISIÓN EL 28/11/2015 12:00
-        private float calcImpuesto (float salarioBruto,int impuesto)
+        private float calcImpuesto(float salarioBruto, int impuesto)
         {
             float res;
-            res = salarioBruto *(impuesto/100); //0.16 es el valor del pocentaje de las retenciones el cual deberá ser obtenido del fichero de configuración
+            res = salarioBruto * (impuesto / 100); //0.16 es el valor del pocentaje de las retenciones el cual deberá ser obtenido del fichero de configuración
             return res;
 
         }
@@ -212,7 +252,7 @@ namespace MetodosNomina
         // METODOS PARA CALCULAR EL SALARIO BRUTO
         // DESARROLLADOR: JOAQUIN CANCA
         // ÚLTIMA REVISIÓN EL 28//11/2015 12:00
-        private float calcNeto (float salarioBruto,float impuesto)
+        private float calcNeto(float salarioBruto, float impuesto)
         {
             float res;
             res = salarioBruto - impuesto;
