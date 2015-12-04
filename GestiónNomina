@@ -55,33 +55,55 @@ namespace BancoNomina
             return existe;
         }
 
+        private static bool ExisteEmpleado(Empleado[] listaDni, string dni, ref int posicion)
+        {
+            bool existe = false;    // Control de existencia
+            int indice = 0;
 
+            if (listaDni != null)
+            {
+                // Recorre la lista de nominas hasta que:
+                //      Peor caso: Realiza un recorrido completo (No lo encuentra)
+                //      Mejor caso: Encuentra equivalencia
+                for (indice = 0; (indice < listaDni.Length) && !existe; indice++)
+                {
+                    if (listaDni[indice].Dni.Equals(dni))
+                    {
+                        existe = true;
+                        posicion = indice;
+                        //hacer console con lo que pasa
+                    }
+                }
+            }
+
+            return existe;
+        }
         // Método público: Añadir nueva nomina - esto lo haremos desde el main: ControladorNomina.NuevaNomina()
         public static void NuevaNomina()
         {
             Nomina nominaTemp;          // Datos de la nomina a añadir
             Nomina[][] copia = null;    // Lista temporal de nominas
-        
+
             bool salir = false;
             string mensaje = null;
-            
+
             // Entrada de Datos
             do
             {
                 // ENTRADA de datos para la nomina, como vamos a crearla nueva, pedimos los datos de la primera semana
                 nominaTemp = Interfaz.DatosNominaSemana();  // Solicitud de Datos para crear la nomina
                 //se debera de crear el flujo para solicitar las semanas una a una
-		//una vez rellenado el array nominaTemp, se lo mandamos a Samu para que cree el file
+                //una vez rellenado el array nominaTemp, se lo mandamos a Samu para que cree el file
                 // PROCESAMIENTO
                 // Validación: Comprobar si la nomina existe
                 if (!ExisteNomina(DatosNomina, nominaTemp.Dni))
                 {
                     // Registro Cliente: Gestión Dinámica de Memoria
-                   
+
                     // Almacenamiento de la nomina
-                   
-			//llamo al metodo de escritura del fichero
-			EscribirFichero(nominaTemp);
+
+                    //llamo al metodo de escritura del fichero
+                    EscribirFichero(nominaTemp);
                     mensaje = "\n\t Nomina registrada correctamente";
                 }
                 else
@@ -99,6 +121,7 @@ namespace BancoNomina
             } while (!salir);
 
         }
+
 
 
         // Método público: Mostrar lista de nominas
@@ -126,7 +149,7 @@ namespace BancoNomina
             string mensaje = null;
             bool salir = false;
 
-            doi
+            do
             {
                 // ENTRADA: Solicitud de la semana que deseamos eliminar
                 semana = Interfaz.SolicitarSemana(semanas,semana);
@@ -190,17 +213,15 @@ namespace BancoNomina
 
 
             } while (!salir);
-	{
-	         
-	}
+	
 
 
         }
-        
-        
+
+
         // Método público: Gestionar las noominas
-       // Modificado: Samuel
-	public static void GestionNominas() // ref Nomina[] nominas originalmente, creo que no hacen falta
+        // Modificado: Samuel
+        public static void GestionNominas() // ref Nomina[] nominas originalmente, creo que no hacen falta
 	{
 		string dni = null;      // dni para la búsqueda del usuario
 		byte opcion;            // Opción del menú
@@ -254,9 +275,10 @@ namespace BancoNomina
 				case 3:
 					bool close = false;
 					semanasTemp = FichNomSemanal.LeerSemanas(dni);
-					Interfaz.CerrarNomina(semanasTemp);  // Cerrar nomina para confirmar imprension y eliminar
+                    CerrarMes(dni);
+					
 					Interfaz.ImprimirCerrar();
-					fs.EliminarArchivo();
+					
 					break;
 			}
 		}
@@ -269,7 +291,85 @@ namespace BancoNomina
 		mensaje = mensaje + "\n\tPulse ENTER para continuar";
 		Interfaz.Continuar(mensaje);
 	}
+
+        public static void CerrarMes(string dni)
+        {
+            Empleados[] empleadosTemp = null;
+            bool encontrado = false;
+            bool existeAchivo = false;
+            Nomina[] semanasTemp = null;
+            Nomina[] semanasCopia = null;
+            Nomina nominaTotal;
+            int pos = 0;
+            bool cerrar = false;
+
+
+
+            if ((!FichEmpleados.LeerEmpleados(ref empleadosTemp)) && (empleadosTemp == null))
+            {
+
+                Intefaz.MensajeFichEmp();
+            }
+            else {
+
+               FnomSemanal fs = new FnomSemanal(dni);
+               encontrado= ExisteEmpleado(empleadosTemp, dni, ref pos);
+
+
+                if(encontrado){
+                    existeArchivo = fs.ExisteArchivo();
+                    fs.LeerSemanas(ref semanasTemp);
+                    
+                    if((existeArchivo)&&(semanasTemp == null)){
+
+                        nominaTotal = FichNomMensual.Total(semanasTemp);
+
+                        semanasCopia = new Nomina[semnasTemp.Length];
+                        semanasTemp.CopyTo(semanasCopia, 0);
+                        semanasTemp = new Nomina[semanasTemp.Length + 1];
+                        semanasCopia.CopyTo(semanasTemp, 0);
+                        semanasCopia = null;   // Liberación de Memoria
+
+                        semnasTemp[semanasTemp.Length -1] = semanasTotal;
+                        
+
+
+                        cerrar= Interfaz.CerrarNomina(semanasTemp,empleadosTemp[pos]);  // Cerrar nomina para confirmar imprension y eliminar7
+
+                        
+
+            if (cerrar == true)
+            {
+                //GestionNomina.CerrarMes(emp);	// Habría que crear un método que se encargase de recibir el empleado 
+                //de aqui, ya que con el dni de ese empleado ya se tendría el objeto
+                // FNomSemanal, y con esos dos objetos llamar al metodo de crear mes de FnomMensual.
+                
+                FichNomMensual.CrearMes(empleado,fs);
+
+                Console.WriteLine("\n\tEl mes ha sido cerrado, y el fichero esta listo para imprimir");
+            }
+            else
+            {
+                Console.WriteLine("\n\tEl mes no ha sido cerrado");
+            }
+                        
+
+                    }
+  
+                }
+
+
+                
+
+               
+
+            }
+            
+          
+
+        }
     }
+   
 }
 
 
