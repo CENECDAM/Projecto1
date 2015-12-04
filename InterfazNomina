@@ -294,7 +294,7 @@ namespace Interfaces
             //leo el fichero pasando el dni por el constructor con la clase de samu
             //una vez que hemos pasado el dni, la superp clase de samu ya nos trae la lista de semanas de ese empleado
             bool error = false;
-            int numeroSemanas = 0;
+            int numeroSemana = 0;
             Nominas[] semanas;
             FichNomSemanal fs = FichNomSemanal(ref dni);
             semanas = fs.LeerSemanas(semanas);
@@ -313,7 +313,7 @@ namespace Interfaces
 
             } while (error);
 
-            return numeroSemanas;
+            return numeroSemana;
 
 
 
@@ -336,7 +336,7 @@ namespace Interfaces
             Console.WriteLine("------------------------------------------------------------------------------------------------------");
             
         }*/
-        public static Nomina PedirDatosSemanas(Nomina[] semanas, ref float cantidad, byte opcion)
+       /* public static Nomina PedirDatosSemanas(Nomina[] semanas, ref int pos, byte opcion)
         {
 
 
@@ -356,9 +356,11 @@ namespace Interfaces
                 {
                     case 1:
                         Console.WriteLine("\t EDITAR SEMANA\n");
+                        //aqui hacemos la llamada al metodo de edicion
                         break;
                     case 2:
                         Console.WriteLine("\t BORRAR SEMANA\n");
+                        //aqui haremo el metodo de la eliminacion
                         break;
                 }
 
@@ -371,7 +373,7 @@ namespace Interfaces
 
             } while (error);
 
-        }
+        }*/
 
         // Modificado: Samuel
         public static void ListarSemanas(Nomina[] semanasTemp) // Creo que es una lista, pero no estoy seguro, igualmente lo pongo de las dos maneras
@@ -405,13 +407,132 @@ namespace Interfaces
 
             }
         }
-        public static Nomina EditarDatosSemanas(Nomina semanasTemp)
+        public static Nomina EditarDatosSemanas(Nomina[] semanasTemp,int selSemana)
         {
+            bool selSemana = false;
+            bool editar = false;
+            int semana;
+            
+            int horas = 0;
+            float precioHora = 0;
+            int horasExtra = 0;
+            int salarioExtra = 0;
+            int salarioBruto = 0;
+
+
+           
+
+           // selSemana = SolicitarSemana();
+
+            do
+            {
+                Cabecera();
+                if (error)
+                {
+                    MostrarError(mensaje);  // Presentación de Errores
+                }
+                Console.Write("\t\t1. Editar Horas\n");
+                Console.Write("\t\t2. Editar Euros-Hora \n");
+                Console.Write("\t\t3. Editar Horas Extra\n\n");
+                Console.Write("\t\t4. Editar Salario Extra\n\n");
+                Console.Write("\t\t5. Editar Salario Bruto\n\n");
+                
+                Console.Write("\t\t0. Eliminar Semana\t\n\n");
+                
+                Console.WriteLine("\t----------------------------------------------------------");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write("\t\t0. Salir\t\n\n");
+                Console.ResetColor();
+
+                opt = Console.ReadLine();   // Leemos la opcion
+                opt = aux.Trim();           // Limpiamos los espacios en blanco
+                if (Byte.TryParse(opt, out opcion) && (opcion >= 0) && (opcion <= 5))
+                {
+                    correcto = true;
+                }
+                else
+                {
+                    // Configuración ERROR
+                    correcto = false;
+                    mensaje = "Opción Incorrecta (seleccione una opción del menú: 0 - 5)";
+                }
+
+            } while (!correcto);
+
+            switch (opcion)
+            {
+                case 1:
+                    Console.WriteLine("\t Editar Horas\n");
+                    horas = Console.ReadlLine();
+                    try
+                    {
+                     semanasTemp[selSemana - 1].Horas=horas;
+                    }
+                    catch (Exception e )
+                    {
+
+                        Console.WriteLine(); e.Message();
+                    }
+                   
+
+
+
+                    
+                   
+                    break;
+                case 2:
+                    Console.WriteLine("\t Editar Euros-Hora\n");
+                    euros_horas = Console.ReadlLine();
+                    try
+                    {
+                        semanasTemp[selSemana - 1].HorasExtra = euros_horas;
+                    }
+                    catch (Exception e )
+                    {
+
+                        Console.WriteLine(); e.Message();
+                    }
+
+                    
+                    break;
+                case 3:
+                    Console.WriteLine("\t Editar numero de Horas Extra\n");
+                    NumHorasExtra = Console.ReadlLine();
+                    try
+                    {
+                        semanasTemp[selSemana - 1].PagaHoras = NumHorasExtra;
+                    }
+                    catch (Exception e )
+                    {
+
+                        Console.WriteLine(); e.Message();
+                    }
+
+                    break;
+               
+
+                    break;
+                case 0:
+                    Console.WriteLine("\t Eliminar Semana\n");
+
+                    break;
+               
+            }
+            
+             editar = Continuar("\n\n\t ¿Desea editar otra semana? (s/n): ");
+            return editar;
+
+                
+           // PedirDatosSemanas(semanasTemp,selSemana,opt);
+
+
+           
 
         }
 
         // Modificado: Samuel
-        public static void CerrarNomina(Nomina[] semanasTemp , Empleado emp)	// Creo que es una lista, pero no estoy seguro, además
+        public static bool CerrarNomina(Nomina[] semanasTemp , Empleado empleado)	// Creo que es una lista, pero no estoy seguro, además
         // hace falta pasar el empleado para mostrarlo y una nómina
         // que sirve como total de todas las semanas (en FNomMensual está el método que devuelve tal nómina calculada)
         {
@@ -420,7 +541,7 @@ namespace Interfaces
             Console.Clear();
             Cabecera();
             Console.WriteLine("");
-            /*escritor.WriteLine("------------------------------------------------------------------------------------------------------");
+            escritor.WriteLine("------------------------------------------------------------------------------------------------------");
             escritor.WriteLine("Trabajador");
             escritor.WriteLine("DNI: {0}\t\tNombre: {1}   Apellidos: {2}", empleado.DNI, empleado.NOMBRE, empleado.APELLIDOS);
             escritor.WriteLine("------------------------------------------------------------------------------------------------------"); ----> Se puede poner en un método aparte*/
@@ -428,19 +549,8 @@ namespace Interfaces
             //ListarSemanas(total); //Este es en caso de que no sea una lista, o se puede sobrecargar
             Console.WriteLine("");
 
-            cerrar = Continuar("\n\n\t ¿Desea continuar? (s/n): ");
-
-            if (cerrar)
-            {
-                //GestionNomina.CerrarMes(emp);	// Habría que crear un método que se encargase de recibir el empleado 
-                //de aqui, ya que con el dni de ese empleado ya se tendría el objeto
-                // FNomSemanal, y con esos dos objetos llamar al metodo de crear mes de FnomMensual.
-                Console.WriteLine("\n\tEl mes ha sido cerrado");
-            }
-            else
-            {
-                Console.WriteLine("\n\tEl mes no ha sido cerrado");
-            }
+            cerrar = Continuar("\n\n\t ¿Desea cerrar la nomina? (s/n): ");
+            return cerrar;
         }
     }
 }
