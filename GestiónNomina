@@ -228,7 +228,7 @@ namespace BancoNomina
 		int indice = 0;         // Posición del cliente en la lista de nominas
 		string mensaje = null;
 		int semana = 0;
-		Nomina[] semanasTemp = new Nominas[];
+		Nomina[] semanasTemp = new Nominas[5];
 
 		// ENTRADA: Solicitud del DNI del empleado para gestionar sus nominas
 
@@ -266,11 +266,30 @@ namespace BancoNomina
 				case 2:
 					bool salir2 = false;
 					bool respuesta = true;
+                    bool otraSem = true;
 					FnomSemanal fs = new FnomSemanal(dni);
-					semanasTemp = fs.LeerSemanas(semanasTemp);
-					Interfaz.ListarSemanas(semanasTemp);
-					Interfaz.EditarDatosSemanas(semanasTemp);  // Solicitud de Datos
-					fs.EscribirFichero();
+					
+                    if ((fs.LeerSemanas(ref semanasTemp))&&(semanasTemp != null))
+	                {
+		 
+                    
+                    
+                      do
+	                    {
+                        Interfaz.ListarSemanas(semanasTemp);
+                        selSemana = Interfaz.SolicitarSemana();
+                        otraSem=Interfaz.EditarDatosSemanas(semanasTemp,selSemana);  // Solicitud de Datos
+	         
+	                    } while (otraSem);  
+                       
+                        
+					
+
+					fs.EscribirFichero(semanasTemp);
+                        
+
+	                }
+					
 					break;
 				case 3:
 					bool close = false;
