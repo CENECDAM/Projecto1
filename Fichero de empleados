@@ -119,7 +119,7 @@ class FichEmpleados
 
 		// Método para modificar la lista de empleados (se escribirá una lista)
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 29/11/2015
+		// Fecha de última comprobación: 05/12/2015
 		public static bool ModificarEmpleados(Empleado[] empleados)
 		{
 			FileStream flujo = null;
@@ -128,19 +128,25 @@ class FichEmpleados
 
 			if (File.Exists("..\\..\\empleados.lst"))   // Comprobar que el fichero existe para realizar la escritura
 			{
-
-				// Apertura de flujos
-				flujo = new FileStream("..\\..\\empleados.lst", FileMode.Create);   // Se creara o sobreescribirá (la intención es sobreescribir) el fichero de empleados
-				escritor = new StreamWriter(flujo);
-
-				for (contador = 0; contador < empleados.Length; contador++)		// Iteración en la lista de empleados que se van a escribir
+				if (empleados != null)  // Comprobar que la lista contiene algo
 				{
-					escritor.WriteLine(empleados[contador].NOMBRE.ToUpper() + ":" + empleados[contador].APELLIDOS.ToUpper() + ":" + empleados[contador].DNI.ToUpper()); // Escritura del empleado en el formato necesario
-				}
+					// Apertura de flujos
+					flujo = new FileStream("..\\..\\empleados.lst", FileMode.Create);   // Se creara o sobreescribirá (la intención es sobreescribir) el fichero de empleados
+					escritor = new StreamWriter(flujo);
 
-				// Cerrar flujos
-				escritor.Close();
-				flujo.Close();
+					for (contador = 0; contador < empleados.Length; contador++)     // Iteración en la lista de empleados que se van a escribir
+					{
+						escritor.WriteLine(empleados[contador].NOMBRE.ToUpper() + ":" + empleados[contador].APELLIDOS.ToUpper() + ":" + empleados[contador].DNI.ToUpper()); // Escritura del empleado en el formato necesario
+					}
+
+					// Cerrar flujos
+					escritor.Close();
+					flujo.Close();
+				}
+				else	// En caso de que no contenga nada (que significaría que lo ha borrado todo), sobreescribe el documento actual con otro nuevo vacío
+				{
+					File.Create("..\\..\\empleados.lst");
+				}
 
 				return true;    // Indicar que la escritura se ha realizado
 			}
