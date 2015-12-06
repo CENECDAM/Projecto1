@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetodosNomina
+namespace GestionNominaEmpleados
 {
     class Nomina
     {
@@ -54,7 +54,7 @@ namespace MetodosNomina
             this.neto = neto;
             this.jornada = jornada;
             this.plus_salario = plus_salario;
-            this.rete0=ncion = retencion;
+            this.retencion = retencion;
         }
 
         #region Propiedades
@@ -69,15 +69,39 @@ namespace MetodosNomina
             }
             set
             {
-                horas = this.horas;
-                bool datoCorrecto = false;
-                datoCorrecto = int.TryParse(horas, out horasCorrectas);
+                horas = value;
+                horas_extra = horasExtra(this.horas,this.jornada);
+                salario_extra = salarioExtra(this.horas_extra,this.paga_horas,this.plus_salario);
+                salario_bruto = salarioBruto(this.horas, this.paga_horas, this.horas_extra, this.salario_extra, this.plus_salario);
+                impuesto = calcImpuesto(salario_bruto, this.retencion);
+                neto = calcNeto(salario_bruto,this.impuesto);
+
+
+
+               
+            }
+        }
+        public static bool leerHoras(ref int horasTemp, ref string mensaje) {
+            //bool datoCorrecto = false;
+            bool error = false;
+
+            //datoCorrecto = int.TryParse(horasTemp, out horasTemp);
+
+            if ((horasTemp < 0) && (horasTemp > 120))
+            {
                 
-                if ((datoCorrecto == false)&&(horasCorrectas<0)&&(horasCorrectas>120)){
-                    throw new Exception ("Error en las horas introducidas: Las horas deben ser un numero entero positivo, ademas de no poder superar 120 horas de trabajo a la semana.");
-                    
-                }
-            } 
+                error = true;
+                mensaje = ("Error en las horas introducidas: Las horas deben ser un numero entero positivo, ademas de no poder superar 120 horas de trabajo a la semana.");
+
+            }
+            if (error)
+            {
+
+                InterfazNomina.MostrarError(mensaje);
+
+            }
+            return error;
+        
         }
         // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de los euros por horas
@@ -89,27 +113,61 @@ namespace MetodosNomina
             }
             set
             {
-                paga_horas = this.paga_horas;
-                bool datoCorrecto = false;
-                datoCorrecto = Single.TryParse(paga_horas, out paga_horasCorrectas);
+                paga_horas = value;
                 
-                if ((datoCorrecto == false)&&(paga_horasCorrectas<0)){
-                    throw new Exception ("Error en las horas introducidas: Las horas deben ser un numero entero positivo, ademas de no poder superar 120 horas de trabajo a la semana.");
-                    
-                }
+                salario_extra = salarioExtra(this.horas_extra, this.paga_horas, this.plus_salario);
+                salario_bruto = salarioBruto(this.horas, this.paga_horas, this.horas_extra, this.salario_extra, this.plus_salario);
+                impuesto = calcImpuesto(salario_bruto, this.retencion);
+                neto = calcNeto(salario_bruto, this.impuesto);
             }
         }
+
+
+
+
+
+        public static bool leerPagaHoras(ref float PagaHorasTemp, ref string mensaje) 
+        {
+            //bool datoCorrecto = false;
+            bool error = false;
+
+            //datoCorrecto = int.TryParse(horasTemp, out horasTemp);
+            Single.TryParse(PagaHorasTemp,out resutl);
+
+            if ((PagaHorasTemp < 0))
+            {
+
+                error = true;
+                mensaje = ("Error en la cantidad de euros por hora: Debe ser un numero entero positivo.");
+
+            }
+            if (error)
+            {
+
+                InterfazNomina.MostrarError(mensaje);
+
+            }
+            return error;
+
+        }
+        
+        
         // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo de la retención(Fichero Configuración)
+
+
+       
+
+
         public int Retencion
         {
             get
             {
                 return retencion;
             }
-            
+
         }
-        
+
         // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo de la Jornada de un empleado(Fichero Configuración)
         public int Jornada
@@ -118,7 +176,7 @@ namespace MetodosNomina
             {
                 return jornada;
             }
-            
+
         }
 
         // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
@@ -129,37 +187,49 @@ namespace MetodosNomina
             {
                 return plus_salario;
             }
-           
+
         }
 
         //DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
-        //Propiedad de cálculo de las horas extra
+        //Propiedad de devolucion de las horas extra
         public int HorasExtra
         {
             get
             {
                 return horas_extra;
             }
-            
+            set {
+                horas_extra = value;
+                this.horas = this.jornada + this.horas_extra;
+                salario_extra = salarioExtra(this.horas_extra, this.paga_horas, this.plus_salario);
+                salario_bruto = salarioBruto(this.horas, this.paga_horas, this.horas_extra, this.salario_extra, this.plus_salario);
+                impuesto = calcImpuesto(salario_bruto, this.retencion);
+                neto = calcNeto(salario_bruto, this.impuesto);
+            }
+
         }
         // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo del salario extra
         public float SalarioExtra
         {
-            get{
+            get
+            {
                 return salario_extra;
             }
-            set{
-                salario_extra = this.salario_extra;
+            set
+            {
+                int salarioExtraCorrectas;
+                salario_extra = value;
                 bool datoCorrecto = false;
-                datoCorrecto = int.TryParse(salario_extra, out salarioExtraCorrectas);
-                
-                if ((datoCorrecto == false)&&(salarioExtraCorrectas<0)&&(salarioExtraCorrectas>120)){
-                    throw new Exception ("Error en las horas introducidas: Las horas deben ser un numero entero positivo, ademas de no poder superar 120 horas de trabajo a la semana.");
-                    
+                datoCorrecto = Int32.TryParse(salario_extra, out salarioExtraCorrectas);
+
+                if ((datoCorrecto == false) && (salarioExtraCorrectas < 0) && (salarioExtraCorrectas > 120))
+                {
+                    throw new Exception("Error en las horas introducidas: Las horas deben ser un numero entero positivo, ademas de no poder superar 120 horas de trabajo a la semana.");
+
                 }
             }
-            
+
         }
         // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo del salario bruto
@@ -169,7 +239,7 @@ namespace MetodosNomina
             {
                 return salario_bruto;
             }
-            
+
         }
         // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Propiedad de cálculo del impuesto
@@ -179,7 +249,7 @@ namespace MetodosNomina
             {
                 return impuesto;
             }
-            
+
         }
         // DESARROLLADOR: JOAQUIN CANCA - PEDRO CANOVAS
         //Proppiedad de cálculo del salrio neto
@@ -252,10 +322,10 @@ namespace MetodosNomina
         // METODOS PARA CALCULAR EL SALARIO BRUTO
         // DESARROLLADOR: JOAQUIN CANCA
         // ÚLTIMA REVISIÓN EL 28//11/2015 12:00
-        private float calcNeto(float salarioBruto, float impuesto)
+        private float calcNeto(float salarioBruto, float impuestoCalculado)
         {
             float res;
-            res = salarioBruto - impuesto;
+            res = salarioBruto - impuestoCalculado;
             return res;
         }
         #endregion
