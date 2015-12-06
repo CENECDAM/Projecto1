@@ -90,7 +90,7 @@ class FichEmpleados
 
 		// Método para escribir un único empleado
 		// Desarrollador: Samuel Stratos Bater Herrero
-		// Fecha de última comprobación: 29/11/2015
+		// Fecha de última comprobación: 05/12/2015
 		public static bool EscribirEmpleado(Empleado empleado)
 		{
 			FileStream flujo = null;
@@ -103,7 +103,12 @@ class FichEmpleados
 				flujo = new FileStream("..\\..\\empleados.lst", FileMode.Append);	// Se añadirá la información al final del fichero
 				escritor = new StreamWriter(flujo);
 
-				escritor.WriteLine(empleado.NOMBRE.ToUpper() + ":" + empleado.APELLIDOS.ToUpper() + ":" + empleado.DNI.ToUpper()); // Escritura del empleado en el formato necesario
+				if (new FileInfo("..\\..\\empleados.lst").Length != 0)	// Controlar si es el principio del fichero para los saltos de línea
+				{
+					escritor.Write("\r\n");
+				}
+
+				escritor.Write(empleado.NOMBRE.ToUpper() + ":" + empleado.APELLIDOS.ToUpper() + ":" + empleado.DNI.ToUpper()); // Escritura del empleado en el formato necesario
 
 				// Cerrar flujos
 				escritor.Close();
@@ -136,14 +141,20 @@ class FichEmpleados
 
 					for (contador = 0; contador < empleados.Length; contador++)     // Iteración en la lista de empleados que se van a escribir
 					{
-						escritor.WriteLine(empleados[contador].NOMBRE.ToUpper() + ":" + empleados[contador].APELLIDOS.ToUpper() + ":" + empleados[contador].DNI.ToUpper()); // Escritura del empleado en el formato necesario
+
+						if (contador != 0) // Controlar si es el principio del fichero para los saltos de línea
+						{
+							escritor.Write("\r\n");
+						}
+
+						escritor.Write(empleados[contador].NOMBRE.ToUpper() + ":" + empleados[contador].APELLIDOS.ToUpper() + ":" + empleados[contador].DNI.ToUpper()); // Escritura del empleado en el formato necesario
 					}
 
 					// Cerrar flujos
 					escritor.Close();
 					flujo.Close();
 				}
-				else	// En caso de que no contenga nada (que significaría que lo ha borrado todo), sobreescribe el documento actual con otro nuevo vacío
+				else    // En caso de que no contenga nada (que significaría que lo ha borrado todo), sobreescribe el documento actual con otro nuevo vacío
 				{
 					File.Create("..\\..\\empleados.lst");
 				}
