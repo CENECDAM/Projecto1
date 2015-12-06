@@ -266,7 +266,11 @@ namespace BancoNomina
 				case 2:
 					bool salir2 = false;
 					bool respuesta = true;
-                    bool otraSem = true;
+                    bool opcionEditar = true;
+                    bool editar = false;
+                    float paga_horas=0.0F;
+                    int horas=0;
+                    int horas_extra = 0;
 					FnomSemanal fs = new FnomSemanal(dni);
 					
                     if ((fs.LeerSemanas(ref semanasTemp))&&(semanasTemp != null))
@@ -274,13 +278,74 @@ namespace BancoNomina
 		 
                     
                     
-                      do
-	                    {
-                        Interfaz.ListarSemanas(semanasTemp);
-                        selSemana = Interfaz.SolicitarSemana();
-                        otraSem=Interfaz.EditarDatosSemanas(semanasTemp,selSemana);  // Solicitud de Datos
+                              do
+	                            {
+                                Interfaz.ListarSemanas(semanasTemp);
+                                selSemana = Interfaz.SolicitarSemana();
+                                opcionEditar=Interfaz.EditarDatosSemanas(semanasTemp,selSemana);  // Solicitud de Datos
+                        
+                                 switch (opcion)
+                                {
+                                         //EDitar horas
+                            case 1:
+                            bool horasOk = false;
+                            
+                            horasOk=LeerHoras(ref horas, mensaje);
+                            if (horasOk)
+                            {
+                                semanasTemp[selSemana - 1].Horas = horas;
+                            }
+                            else {
+                                InterfazNomina.MostrarError(mensaje);
+                            }
+
+
+
+
+
+
+                            break;
+                            //EDitar euro hora
+                        case 2:
+                             bool eurosHoraOk = false;
+
+                             eurosHoraOk = LeerPagaHoras(ref paga_horas, mensaje);
+                             if (eurosHoraOk)
+                            {
+                                semanasTemp[selSemana - 1].PagaHoras = paga_horas;
+                            }
+                            else {
+                                InterfazNomina.MostrarError(mensaje);
+                            }
+
+
+                            break;
+                        case 3:
+                             bool extraOk = false;
+
+                             extraOk = LeerPagaHoras(ref horas_extra, mensaje);
+                             if (eurosHoraOk)
+                            {
+                                semanasTemp[selSemana - 1].HorasExtra = horas_extra;
+                            }
+                            else {
+                                InterfazNomina.MostrarError(mensaje);
+                            }
+
+                            break;
+
+
+                            break;
+                        case 0:
+                            Console.WriteLine("\t Eliminar Semana\n");
+
+                            break;
+
+                    }
+                         editar = Continuar("\n\n\t ¿Desea editar otra semana? (s/n): ");
+                            
 	         
-	                    } while (otraSem);  
+	                    } while (editar);  
                        
                         
 					
