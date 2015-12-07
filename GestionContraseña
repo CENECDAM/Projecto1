@@ -1,0 +1,121 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GestionContraseña
+{
+    class GestionContraseña
+    {
+        #region
+        // MÉTODO PARA MODIFICAR EL FICHERO DE CONFIGURACIÓN
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+        private string contraseña;
+        private float precio;
+        private float retencion;
+        #endregion
+
+        #region
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+        public string pass
+        {
+            get
+            {
+                return contraseña;
+            }
+            set
+            {
+                this.contraseña = modificarContraseña(contraseña);
+
+            }
+        }
+        #endregion
+
+        #region
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+        public float PrecioOrdinario
+        {
+            get
+            {
+                return precio;
+            }
+            set
+            {
+                this.precio = modificarPrecioOrdinario(precio);
+            }
+        }
+        #endregion
+        #region
+
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+        public float PorcentajeRetencion
+        {
+            get
+            {
+                return retencion;
+            }
+            set
+            {
+                this.retencion = modificarPorcentajeRetencion(retencion);
+            }
+        }
+        #endregion
+        #region
+
+        // MÉTODO PARA COMPROBAR QUE LA CONTRASEÑA SEA CORRECTA
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+        private Boolean contraseñaCorrecta(string contraseña)
+        {
+            bool res=false;
+            if (contraseña.Equals(pass))
+            {
+                res = true;
+            }
+            return res;
+        }
+        #endregion
+        #region
+        // MÉTODO PARA MODIFICAR LA CONTRASEÑA
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+        private string modificarContraseña (string contraseña)
+        {
+            string res;
+            Console.WriteLine("Por favor, introduzca la nueva contraseña: ");
+            res = System.Console.ReadLine();
+            return res;
+        }
+        #endregion
+        #region
+        // MÉTODO PARA MODIFICAR EL PRECIO ORDINARIO
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+        private float modificarPrecioOrdinario(float precioOrdinario)
+        {
+            float res;
+            Console.WriteLine("Por favor, introduzca el nuevo precio de la hora ordinaria: ");
+            res = float.Parse(Console.ReadLine());
+            return res;
+        }
+        #endregion
+        #region
+        // MÉTODO PARA MODIFICAR EL PORCENTAJE DE LA RETENCIÓN
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+
+        private float modificarPorcentajeRetencion(float porcentajeRetencion)
+        {
+            float res;
+            Console.WriteLine("Por favor introduzca el nuevo valor de la retención que desee modificar");
+            res = float.Parse(Console.ReadLine();
+            return res;
+        }
+        #endregion
+    }
+}
