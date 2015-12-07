@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GestionContraseña
+{
+    class InterfazContraseña
+    {
+        #region
+        // INTERFAZ DEL FICHERO DE CONFIGURACIÓN
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+        private static string pasar_contraseña;
+        public static string pasarContraseña
+        {
+            get
+            {
+                return pasar_contraseña;
+            }
+
+        }
+        #endregion
+        #region
+        // DESARROLLADOR: JOAQUIN CANCA
+        // ÚLTIMA REVISIÓN EL 07//12/2015 17:30
+        public static void Main()
+        {
+            string contraseña;
+            bool acceso = false;
+            while (acceso == false)
+            {
+                //Se le solicita la contraseña al usuario.
+                Console.WriteLine("Por favor, introduzca la contraseña: ");
+                contraseña = System.Console.ReadLine();
+                //Se comprueba que la contraseña introducida sea correcta.
+                if (contraseña.Equals(pasarContraseña))
+                {
+                    acceso = true;
+                    Console.WriteLine("Acceso correcto ¡Bienvenido al Sistema de gestión de la configuración!");
+                    //Procedemos a mostrar las opciones a modificar del fichero de configuración.
+                    Console.Clear(); //Limpiar pantalla
+
+                    //Introducimos la opción que deseemos
+                    int opcion = 1;
+                    while (opcion > 4)
+                    {
+                        Console.WriteLine("--------------SISTEMA DE GESTIÓN DE LA CONFIGURACIÓN--------------");
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        switch (opcion)
+                        {
+                            case 1:
+                                Console.WriteLine("1. MODIFICAR CONTRASEÑA");
+                                break;
+                            case 2:
+                                Console.WriteLine("2. MODIFICAR VALOR DE LA HORA ORDINARIA");
+                                break;
+                            case 3:
+                                Console.WriteLine("3. PORCENTAJE DE LA RETENCIÓN APLICADO AL SALARIO BRUTO");
+                                break;
+                            case 4:
+                                Console.WriteLine("4. SALIR");
+                                break;
+                        }
+                        Console.WriteLine("Por favor,introduzca la opción deseada: ");
+                        opcion = Convert.ToInt32(Console.ReadLine());
+                    }
+                    /*Si la opción introducida es mayor que 4, el programa volverá a solicitar la opción deseada. 
+                    En caso de que sea 4, el programa deberá salirse del programa, tal y como lo solicita el usuario.*/
+                }
+                else
+                {
+                    Console.WriteLine("La contraseña introducida no es correcta. Por favor, vuelva a intentarlo.");
+                    //La contraseña introducida no es correcta. Se le solicita la contraseña nuevamente al usuario.
+                }
+            }
+            #endregion
+        }
+    }
+}
